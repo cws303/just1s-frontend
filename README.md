@@ -1,4 +1,5 @@
 # just1s-frontend
+<<<<<<< HEAD
 
 > A Vue.js project
 
@@ -28,3 +29,6 @@ npm test
 ```
 
 For a detailed explanation on how things work, check out the [guide](http://vuejs-templates.github.io/webpack/) and [docs for vue-loader](http://vuejs.github.io/vue-loader).
+=======
+just1s frontend
+>>>>>>> 91838beb3c9e91420222e99b331f61d5d3612c44
