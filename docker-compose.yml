@@ -1,15 +1,12 @@
 version: '2.0'
 services:
   web:
-    # 프론트 앱 설정
     build: './'
     ports: 
       - "3000:3000"
     environment:
-      # 환경 변수로 포트 설정을 해준다.
       - PORT=3000
   nginx:
-    # nginx 설정
     image: nginx:latest
     ports:
       - "80:80"
