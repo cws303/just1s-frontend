@@ -1,6 +1,6 @@
 <template>
   <div>
-    <b-form @submit="onSubmit" @reset="onReset" class="detail">
+    <b-form @submit="onSubmit" @reset="onReset" class="detail" v-cloak>
       <b-form-group
         label="Id"
         label-for="input-id"
@@ -113,9 +113,7 @@ export default {
     },
     getUser(id) {
       return axios.get('/api/users/'+id).then(res => {
-        console.log(res.data.user)
-        console.log(this.data)
-        this.form = res.data.user
+        this.form = res.data
       })
     },
     addUser(data) {
@@ -136,6 +134,9 @@ export default {
     if( userId ) {
       this.getUser(userId)
     }
+  },
+  mounted() {
+    
   }
 }
 </script>
