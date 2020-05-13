@@ -1,8 +1,7 @@
-import helloWorld from '../../components/helloWorld'
+import Common from '../../views/Common/Common'
 
 export default {
   path: '/',
-  name: 'home',
-  component: helloWorld,
-  mode: 'history'
+  name: 'common',
+  component: Common,
 }

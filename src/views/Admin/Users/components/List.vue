@@ -1,7 +1,7 @@
 <template>
   <div class="wrap-list">
     <div class="wrap-top">
-      <span class="title">리뷰 리스트</span>
+      <span class="title">유저 리스트</span>
       <router-link to='/admin/users/add'>
         <b-button variant="danger" class="add">추가</b-button>
       </router-link>
