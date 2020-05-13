@@ -1,12 +1,12 @@
 import Vue from "vue";
 import Router from "vue-router";
 import Admin from "./admin/routes";
-import Common from "./common/routes";
-import PageNotFound from "../views/Common/PageNotFound";
+import Web from "./web/routes";
+import PageNotFound from "../components/PageNotFound.vue";
 
 Vue.use(Router);
 
-const routes = [Admin, Common, { path: "*", component: PageNotFound }];
+const routes = [Admin, Web, { path: "*", component: PageNotFound }];
 
 const router = new Router({
   mode: "history",

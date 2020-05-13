@@ -1,14 +1,14 @@
 <template>
   <div class="home-body">
-    테스트
+    #Decks#list
     <router-view></router-view>
   </div>
 </template>
 
 <script>
 export default {
-  name: 'Common',
-}
+  name: "DecksList"
+};
 </script>
 <style lang="scss" scoped>
 </style>

@@ -6,24 +6,24 @@
 
 <script>
 export default {
-  name: 'AdminHeader'
-}
+  name: "AdminHeader"
+};
 </script>
 
 <style lang="scss" scoped>
-  .header {
-    background-color:black;
-    color: white;
-    position: fixed;
-    top: 0;
-    height: 10%;
-    width: 100%;
+.header {
+  background-color: black;
+  color: white;
+  position: fixed;
+  top: 0;
+  height: 10%;
+  width: 100%;
 
-    .title {
-      margin-top: 20px;
-      margin-left: 100px;
-      font-size: 30px;
-      font-weight: bold;
-    }
+  .title {
+    margin-top: 20px;
+    margin-left: 100px;
+    font-size: 30px;
+    font-weight: bold;
   }
+}
 </style>
