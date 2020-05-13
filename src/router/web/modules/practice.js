@@ -1,4 +1,4 @@
-import Practice from "../../../views/Web/Practice/Practice";
+import Practice from "@/views/Web/Practice/Practice";
 
 export default {
   path: "practice",

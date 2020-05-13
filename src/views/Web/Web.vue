@@ -1,6 +1,8 @@
 <template>
   <div class="web-root">
     <web-header></web-header>
+    <router-link to="/practice">Practice 이동</router-link>
+
     <div class="container-root">
       <router-view></router-view>
     </div>
@@ -11,11 +13,13 @@
 <script>
 import WebHeader from "./components/header";
 import WebFooter from "./components/footer";
+import Decks from "./Decks/Decks";
 export default {
   name: "Web",
   components: {
     WebHeader,
-    WebFooter
+    WebFooter,
+    Decks
   }
 };
 </script>
@@ -28,6 +32,7 @@ export default {
 
   .container-root {
     flex: 1;
+    padding: 16px;
   }
 }
 </style>

@@ -1,7 +1,6 @@
-import deckHome from "../../../views/Web/Decks/Decks";
-import deckList from "../../../views/Web/Decks/components/List";
-import deckDetail from "../../../views/Web/Decks/components/Detail";
-import PageNotFound from "../../../components/PageNotFound.vue";
+import deckHome from "@/views/Web/Decks/Decks";
+import deckList from "@/views/Web/Decks/components/List";
+import deckDetail from "@/views/Web/Decks/components/Detail";
 
 export default {
   path: "decks",
@@ -18,7 +17,6 @@ export default {
       name: "DeckDetail",
       component: deckDetail,
       meta: { tagview: "deck" }
-    },
-    { path: "*", component: PageNotFound }
+    }
   ]
 };
