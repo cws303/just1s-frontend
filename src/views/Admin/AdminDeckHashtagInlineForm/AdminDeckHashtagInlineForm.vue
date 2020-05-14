@@ -51,7 +51,7 @@ export default {
   },
   methods: {
     async getDeck(id) {
-      const res = await axios.get("/api/decks/" + id);
+      const res = await axios.get("http://localhost:3000/decks/" + id);
       if (!res.data) {
         throw Error();
       }
@@ -95,7 +95,7 @@ export default {
     if (deckId) {
       this.getDeck(deckId).catch(e => {
         alert("데이터를 가져오는데 실패했습니다.");
-        this.$router.push({ name: "AdminDeckAdd" });
+        // this.$router.push({ name: "AdminDeckAdd" });
       });
     }
   },

@@ -14,8 +14,8 @@
           <b-th>hitsCount</b-th>
           <b-th>averageScore</b-th>
           <b-th>user</b-th>
-          <b-th>Created at</b-th>
-          <b-th>Updated at</b-th>
+          <b-th>hashtags 수</b-th>
+          <b-th>Created at/ Updated at</b-th>
           <b-th></b-th>
         </b-tr>
       </b-thead>
@@ -26,9 +26,13 @@
           <b-td>{{ deck.title }}</b-td>
           <b-td>{{ deck.hitsCount }}</b-td>
           <b-td>{{ deck.averageScore }}</b-td>
-          <b-td>{{ deck.user }}</b-td>
-          <b-td>{{ deck.createdAt }}</b-td>
-          <b-td>{{ deck.updatedAt }}</b-td>
+          <b-td>{{ deck.user ? deck.user.name : '' }}</b-td>
+          <b-td>{{ deck.hashtags? deck.hashtags.length : '' }}</b-td>
+          <b-td>
+            {{ deck.createdAt }}
+            <br />
+            {{ deck.updatedAt }}
+          </b-td>
           <b-td>
             <b-icon
               class="icon-delete"

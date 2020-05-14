@@ -15,9 +15,16 @@
     <b-card class="mt-3" header="Form Data Result">
       <pre class="m-0">{{ deck }}</pre>
     </b-card>
-    <b-card class="mt-3" header="해시태그">
-      {{ deck.hashtags}}
-      <b-button @click="goHashtagInlineForm()" variant="danger">관리</b-button>
+    <b-card class="mt-3" border-variant="dark">
+      <div slot="header">
+        <span>해시태그</span>
+        <b-button @click="goHashtagInlineForm()" variant="danger" size="sm">관리</b-button>
+      </div>
+      <b-badge
+        class="mr-2"
+        v-for="(hashtag, index) in deck.hashtags"
+        :key="index"
+      >{{hashtag.hashtag}}</b-badge>
     </b-card>
   </div>
 </template>
@@ -38,6 +45,7 @@ export default {
         throw Error();
       }
       this.deck = res.data;
+      console.log(this.deck);
     },
     async add() {
       // TODO : common method로 빼기
