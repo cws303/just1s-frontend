@@ -1,23 +1,18 @@
 <template>
-  <div id="home">
-    HomeTest
-  </div>
+  <div id="home">AdminHome</div>
 </template>
 
 <script>
 export default {
-  name: 'adminHome',
-  data () {
+  name: "AdminHome",
+  data() {
     return {
-      msg: 'adminhome'
-    }
+      msg: "AdminHome"
+    };
   }
-}
+};
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="scss" scoped>
-  #home {
-    margin-top: 100px;
-  }
 </style>
