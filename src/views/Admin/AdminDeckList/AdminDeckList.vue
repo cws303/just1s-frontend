@@ -75,7 +75,7 @@ export default {
       }
     },
     goDetail(id) {
-      this.$router.push("/admin/decks/" + id);
+      this.$router.push({ name: "AdminDeckEdit", params: { id: id } });
     }
   }
 };

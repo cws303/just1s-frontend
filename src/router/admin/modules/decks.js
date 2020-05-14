@@ -1,5 +1,6 @@
 import AdminDeckList from "@/views/Admin/AdminDeckList/AdminDeckList";
 import AdminDeckDetail from "@/views/Admin/AdminDeckDetail/AdminDeckDetail";
+import AdminDeckHashtagInlineForm from "@/views/Admin/AdminDeckHashtagInlineForm/AdminDeckHashtagInlineForm";
 
 const AdminDecksRoutes = [
   {
@@ -18,6 +19,11 @@ const AdminDecksRoutes = [
     name: "AdminDeckEdit",
     component: AdminDeckDetail,
     meta: { tagview: "deck" }
+  },
+  {
+    path: "decks/:deckId(\\d+)/hashtags",
+    name: "AdminDeckHashtagInlineForm",
+    component: AdminDeckHashtagInlineForm
   }
 ];
 
