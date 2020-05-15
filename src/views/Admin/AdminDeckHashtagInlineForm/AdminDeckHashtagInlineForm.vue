@@ -30,7 +30,9 @@
           </b-card>
         </b-col>
         <b-col cols="3">
-          <b-button variant="primary" @click="addForm()">추가</b-button>
+          <b-card>
+            <b-button variant="primary" @click="addForm()">추가</b-button>
+          </b-card>
         </b-col>
       </b-row>
       <b-button type="submit" variant="primary">Submit</b-button>
@@ -61,8 +63,6 @@ export default {
         hashtag.toDelete = false;
         return hashtag;
       });
-      this.addForm();
-      console.log(this.hashtags);
     },
     async onSubmit(e) {
       e.preventDefault();

@@ -1,6 +1,7 @@
 import AdminDeckList from "@/views/Admin/AdminDeckList/AdminDeckList";
 import AdminDeckDetail from "@/views/Admin/AdminDeckDetail/AdminDeckDetail";
 import AdminDeckHashtagInlineForm from "@/views/Admin/AdminDeckHashtagInlineForm/AdminDeckHashtagInlineForm";
+import AdminDeckMusicInlineForm from "@/views/Admin/AdminDeckMusicInlineForm/AdminDeckMusicInlineForm";
 
 const AdminDecksRoutes = [
   {
@@ -24,6 +25,11 @@ const AdminDecksRoutes = [
     path: "decks/:deckId(\\d+)/hashtags",
     name: "AdminDeckHashtagInlineForm",
     component: AdminDeckHashtagInlineForm
+  },
+  {
+    path: "decks/:deckId(\\d+)/musics",
+    name: "AdminDeckMusicInlineForm",
+    component: AdminDeckMusicInlineForm
   }
 ];
 

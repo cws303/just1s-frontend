@@ -7,10 +7,15 @@ import { BootstrapVue, BootstrapVueIcons } from "bootstrap-vue";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap-vue/dist/bootstrap-vue.css";
 import VueYoutube from "vue-youtube";
+const moment = require("moment");
+require("moment/locale/ko");
 
 Vue.use(BootstrapVue);
 Vue.use(BootstrapVueIcons);
 Vue.use(VueYoutube);
+Vue.use(require("vue-moment"), {
+  moment
+});
 Vue.config.productionTip = false;
 
 /* eslint-disable no-new */

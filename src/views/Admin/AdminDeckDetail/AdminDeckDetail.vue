@@ -13,19 +13,32 @@
       <b-button type="reset" variant="danger">Reset</b-button>
     </b-form>
     <b-card class="mt-3" header="Form Data Result">
-      <pre class="m-0">{{ deck }}</pre>
+      <pre style="font-size:9px" class="m-0">{{ deck }}</pre>
     </b-card>
-    <b-card class="mt-3" border-variant="dark">
-      <div slot="header">
-        <span>해시태그</span>
-        <b-button @click="goHashtagInlineForm()" variant="danger" size="sm">관리</b-button>
-      </div>
-      <b-badge
-        class="mr-2"
-        v-for="(hashtag, index) in deck.hashtags"
-        :key="index"
-      >{{hashtag.hashtag}}</b-badge>
-    </b-card>
+    <div v-if="deck.id">
+      <b-card class="mt-3" border-variant="dark">
+        <div slot="header">
+          <span>해시태그</span>
+          <b-button @click="goHashtagInlineForm()" variant="danger" size="sm">관리</b-button>
+        </div>
+        <b-badge
+          class="mr-2"
+          v-for="(hashtag, index) in deck.hashtags"
+          :key="index"
+        >{{hashtag.hashtag}}</b-badge>
+      </b-card>
+      <b-card class="mt-3" border-variant="dark">
+        <div slot="header">
+          <span>음악</span>
+          <b-button @click="goMusicInlineForm()" variant="danger" size="sm">관리</b-button>
+        </div>
+        <b-badge
+          class="mr-2"
+          v-for="(deckMusic, index) in deck.deckMusics"
+          :key="index"
+        >{{deckMusic.music.title}} / {{deckMusic.music.artist}} / {{deckMusic.second+"s"}}</b-badge>
+      </b-card>
+    </div>
   </div>
 </template>
 <script>
@@ -75,6 +88,12 @@ export default {
     goHashtagInlineForm() {
       this.$router.push({
         name: "AdminDeckHashtagInlineForm",
+        params: { deckId: this.deck.id }
+      });
+    },
+    goMusicInlineForm() {
+      this.$router.push({
+        name: "AdminDeckMusicInlineForm",
         params: { deckId: this.deck.id }
       });
     },
