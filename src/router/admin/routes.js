@@ -1,11 +1,25 @@
-import Users from './modules/users'
-import adminHome from '../../views/Admin/Admin'
+import { AdminUsersRoutes } from "@/router/admin/modules/users";
+import { AdminDecksRoutes } from "@/router/admin/modules/decks";
+import Admin from "@/views/Admin/Admin";
+import AdminHome from "@/views/Admin/AdminHome/AdminHome";
 
-export default {
-  path: '/admin',
-  name: 'admin',
-  component: adminHome,
+const routes = {
+  path: "/admin",
+  name: "admin",
+  component: Admin,
   children: [
-    Users
+    {
+      component: AdminHome,
+      path: ""
+    }
   ]
-}
+};
+
+const childrenRoutes = [AdminDecksRoutes, AdminUsersRoutes];
+childrenRoutes.forEach(childrenRoute => {
+  childrenRoute.forEach(route => {
+    routes.children.push(route);
+  });
+});
+
+export default routes;

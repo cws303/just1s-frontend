@@ -1,21 +1,32 @@
 <template>
-  <div class="admin-body">
+  <div class="admin-page">
     <admin-header></admin-header>
-    <router-view></router-view>
+    <!-- I'm "Admin" Component -->
+    <div class="container-admin">
+      <router-view></router-view>
+    </div>
   </div>
 </template>
 
 <script>
-import AdminHeader from './components/header'
+import AdminHeader from "./components/AdminHeader";
 export default {
-  name: 'Admin',
+  name: "Admin",
   components: {
     AdminHeader
+  },
+  data() {
+    return {
+      // route: this.$route
+    };
   }
-}
+};
 </script>
 <style lang="scss" scoped>
-  .admin-body {
-    padding-top: 10%;
-  }
+// .admin-page {
+//   padding-top: 10%;
+// }
+.container-admin {
+  padding: 20px;
+}
 </style>

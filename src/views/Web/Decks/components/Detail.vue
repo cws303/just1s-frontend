@@ -1,17 +1,14 @@
 <template>
-  <div id="users">
+  <div class="home-body">
+    #Decks#Detail
     <router-view></router-view>
   </div>
 </template>
 
 <script>
 export default {
-  name: 'User'
-}
+  name: "DecksDetail"
+};
 </script>
 <style lang="scss" scoped>
-  #users {
-    height: 100%;
-    position: relative;
-  }
 </style>
