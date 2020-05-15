@@ -1,7 +1,7 @@
 <template>
   <div class="admin-page">
-    I'm "Admin" Component
     <admin-header></admin-header>
+    <!-- I'm "Admin" Component -->
     <div class="container-admin">
       <router-view></router-view>
     </div>
@@ -23,10 +23,10 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
-.admin-page {
-  padding-top: 10%;
-}
+// .admin-page {
+//   padding-top: 10%;
+// }
 .container-admin {
-  padding: 0 20px 20px 20px;
+  padding: 20px;
 }
 </style>

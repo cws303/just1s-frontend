@@ -1,19 +1,15 @@
 <template>
   <div class="wrap-list">
-    {{ query }}
     <div class="wrap-top">
       <span class="title">덱 리스트</span>
       <router-link to="/admin/decks/add">
         <b-button variant="danger" class="add">추가</b-button>
       </router-link>
     </div>
+    {{ query }}
     <b-row class="mb-3">
       <b-col cols="2">
-        <b-form-select
-          v-model="query.orderby"
-          :options="orderbys"
-          @change="getDeckList(query)"
-        ></b-form-select>
+        <b-form-select v-model="query.orderby" :options="orderbys" @change="getDeckList(query)"></b-form-select>
       </b-col>
 
       <b-col cols="2">
@@ -52,6 +48,7 @@
           v-for="(deck, index) in decks"
           :key="index"
           @click="goDetail(deck.id)"
+          :style="{cursor:'pointer'}"
         >
           <b-td>{{ deck.id }}</b-td>
           <b-td>{{ deck.title }}</b-td>
