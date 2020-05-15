@@ -11,8 +11,8 @@
 </template>
 
 <script>
-import WebHeader from "./components/header";
-import WebFooter from "./components/footer";
+import WebHeader from "./components/Header";
+import WebFooter from "./components/Footer";
 import Decks from "./Decks/Decks";
 export default {
   name: "Web",
