@@ -1,12 +1,9 @@
 <template>
-  <div class="wrap-list">
-    <div class="wrap-top">
-      <span class="title">덱 리스트</span>
-      <router-link to="/admin/decks/add">
-        <b-button variant="danger" class="add">추가</b-button>
-      </router-link>
+  <div class="view-admin-deck-list">
+    <div class="d-flex flex-row justify-content-between bd-highlight mb-3">
+      <h1>덱 리스트</h1>
+      <b-button to="/admin/decks/add" variant="danger">추가</b-button>
     </div>
-    {{ query }}
     <b-row class="mb-3">
       <b-col cols="2">
         <b-form-select v-model="query.orderby" :options="orderbys" @change="getDeckList(query)"></b-form-select>
@@ -32,14 +29,14 @@
     <b-table-simple hover small caption-top responsive>
       <b-thead head-variant="dark">
         <b-tr>
-          <b-th>id</b-th>
-          <b-th>title</b-th>
-          <b-th>hitsCount</b-th>
-          <b-th>averageScore</b-th>
-          <b-th>user</b-th>
-          <b-th>hashtags 수</b-th>
-          <b-th>Created at/ Updated at</b-th>
-          <b-th></b-th>
+          <b-th class="align-middle text-center">id</b-th>
+          <b-th class="align-middle text-center">title</b-th>
+          <b-th class="align-middle text-center">hitsCount</b-th>
+          <b-th class="align-middle text-center">averageScore</b-th>
+          <b-th class="align-middle text-center">user</b-th>
+          <b-th class="align-middle text-center">hashtags 수</b-th>
+          <b-th class="align-middle text-center">CreatedAt</b-th>
+          <b-th class="align-middle text-center">관리</b-th>
         </b-tr>
       </b-thead>
 
@@ -50,29 +47,32 @@
           @click="goDetail(deck.id)"
           :style="{cursor:'pointer'}"
         >
-          <b-td>{{ deck.id }}</b-td>
-          <b-td>{{ deck.title }}</b-td>
-          <b-td>{{ deck.hitsCount }}</b-td>
-          <b-td>{{ deck.averageScore }}</b-td>
-          <b-td>{{ deck.user ? deck.user.name : "" }}</b-td>
-          <b-td>{{ deck.hashtags ? deck.hashtags.length : "" }}</b-td>
-          <b-td>
-            {{ deck.createdAt | moment("YYYY년 MMMM Do H:mm:ss") }}
-            <br />
-            {{ deck.updatedAt | moment("YYYY년 MMMM Do H:mm:ss") }}
-          </b-td>
-          <b-td>
+          <b-td class="align-middle text-center">{{ deck.id }}</b-td>
+          <b-td class="align-middle text-center">{{ deck.title }}</b-td>
+          <b-td class="align-middle text-center">{{ deck.hitsCount }}</b-td>
+          <b-td class="align-middle text-center">{{ deck.averageScore }}</b-td>
+          <b-td class="align-middle text-center">{{ deck.user ? deck.user.name : "" }}</b-td>
+          <b-td class="align-middle text-center">{{ deck.hashtags ? deck.hashtags.length : "" }}</b-td>
+          <b-td
+            class="align-middle text-center"
+          >{{ deck.createdAt | moment("YYYY년 MMMM Do H:mm:ss") }}</b-td>
+          <b-td class="align-middle text-center">
             <b-icon
-              class="icon-delete"
-              icon="x"
+              class="icon-delete align-middle text-center"
+              icon="trash"
               variant="danger"
-              font-scale="2"
               @click="deleteDeck(deck.id)"
             ></b-icon>
           </b-td>
         </b-tr>
       </b-tbody>
     </b-table-simple>
+    <b-pagination
+      v-model="currentPage"
+      :total-rows="totalCount"
+      :per-page="query.take"
+      @change="getDeckList(query)"
+    ></b-pagination>
   </div>
 </template>
 <script>
@@ -82,40 +82,46 @@ export default {
   name: "AdminDeckList",
   data() {
     return {
+      currentPage: 1,
       decks: [],
       query: {},
       orderbys: [
         { text: "ID내림차순", value: "ID__DESC" },
         { text: "ID오름차순", value: "ID__ASC" }
-      ]
-
-      // fields: ['id', 'createdAt', 'updateAt', 'snsType', 'status', 'snsKey', 'email', 'name']
+      ],
+      totalCount: -1
     };
   },
   created() {
     this.query = Object.assign(
       {
-        orderby: "ID__DESC"
+        orderby: "ID__DESC",
+        take: 5
       },
       this.$route.query
     );
     this.getDeckList(this.query);
   },
-  mounted() {},
+  watch: {
+    currentPage() {
+      this.getDeckList(this.query);
+    }
+  },
   methods: {
     getDeckList(query) {
       // remove empty
       Object.keys(query).forEach(key =>
         query[key] === undefined || query[key] === "" ? delete query[key] : {}
       );
+      query.offset = this.currentPage - 1;
 
       return axios
         .get("/api/decks", {
           params: query
         })
         .then(res => {
-          console.log(res.data.decks);
           this.decks = res.data.decks;
+          this.totalCount = res.data.totalCount;
         });
     },
     deleteDeck(id) {
@@ -133,19 +139,4 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
-.wrap-list {
-  .wrap-top {
-    display: flex;
-    flex-flow: row nowrap;
-    justify-content: space-between;
-    .title {
-      font-size: 40px;
-    }
-  }
-}
-.icon-delete {
-  &:hover {
-    cursor: pointer;
-  }
-}
 </style>

@@ -10,7 +10,7 @@ WORKDIR /app
 COPY package*.json ./
 
 # install project dependencies
-RUN npm install --dev
+RUN npm install --only=dev
 
 # copy project files and folders to the current working directory (i.e. 'app' folder)
 COPY . .
@@ -18,7 +18,7 @@ COPY . .
 # build app for production with minification
 RUN npm run build
 
-# Test Expose 
+# Test Expose
 EXPOSE 3000
 
 CMD [ "http-server", "dist" ]
