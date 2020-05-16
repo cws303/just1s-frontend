@@ -90,7 +90,7 @@ export default {
   },
   methods: {
     async getDeck(id) {
-      const res = await this.$http.get("http://localhost:3000/decks/" + id);
+      const res = await this.$http.get("/decks/" + id);
       if (!res.data) {
         throw Error();
       }
