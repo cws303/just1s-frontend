@@ -1,24 +1,61 @@
-FROM node:lts-alpine
+FROM node:lts-alpine as build-stage
 
-# install simple http server for serving static content
-RUN npm install -g http-server
-
-# make the 'app' folder the current working directory
 WORKDIR /app
 
-# copy both 'package.json' and 'package-lock.json' (if available)
+# ENV PATH /app/node_modules/.bin:$PATH
+
 COPY package*.json ./
+RUN npm install
 
-# install project dependencies
-RUN npm install --only=dev
-
-# copy project files and folders to the current working directory (i.e. 'app' folder)
 COPY . .
 
-# build app for production with minification
 RUN npm run build
+# RUN npm run start
 
-# Test Expose
-EXPOSE 3000
+FROM nginx:stable-alpine
+# # COPY ./default.conf /etc/nginx/nginx.conf/.conf
+# COPY ./default.conf /etc/nginx/conf.d/default.conf
+COPY --from=build-stage /app/dist /usr/share/nginx/html
 
-CMD [ "http-server", "dist" ]
+EXPOSE 80
+
+CMD ["nginx"]
+
+# FROM nginx:1.16.0-alpine
+# COPY --from=build /app/dist /usr/share/nginx/html
+# RUN rm /etc/nginx/conf.d/default.conf
+# COPY default.conf /etc/nginx/conf.d
+# EXPOSE 80
+# CMD ["nginx", "-g", "daemon off;"]
+
+# start app
+
+# CMD ["npm", "run", "start"]
+
+
+# FROM node:lts-alpine as build
+
+# WORKDIR /app
+
+# ENV PATH /app/node_modules/.bin:$PATH
+
+# COPY package.json /app/package.json
+# RUN npm install
+# RUN npm install @vue/cli -g
+
+# COPY . .
+
+# RUN npm run build
+# # RUN npm run start
+
+
+# FROM nginx:1.16.0-alpine
+# COPY --from=build /app/dist /usr/share/nginx/html
+# RUN rm /etc/nginx/conf.d/default.conf
+# COPY default.conf /etc/nginx/conf.d
+# EXPOSE 80
+# CMD ["nginx", "-g", "daemon off;"]
+
+# # start app
+
+# # CMD ["npm", "run", "start"]
