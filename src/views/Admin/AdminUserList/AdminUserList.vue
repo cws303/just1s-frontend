@@ -45,9 +45,6 @@
   </div>
 </template>
 <script>
-import axios from "axios";
-// import * as users from '@/api/users'
-
 export default {
   name: "List",
   data() {
@@ -71,14 +68,14 @@ export default {
   mounted() {},
   methods: {
     getUserList() {
-      return axios.get("/api/users").then(res => {
+      return this.$http.get("/api/users").then(res => {
         console.log(res.data.users);
         this.users = res.data.users;
       });
     },
     deleteUser(id) {
       if (confirm("realy want delete this user?")) {
-        return axios.delete("/api/users/" + id).then(res => {
+        return this.$http.delete("/api/users/" + id).then(res => {
           console.log(res);
           alert("delete success");
         });

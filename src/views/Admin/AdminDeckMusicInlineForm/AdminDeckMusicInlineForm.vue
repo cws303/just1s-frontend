@@ -80,8 +80,6 @@
   </div>
 </template>
 <script>
-import axios from "axios";
-
 export default {
   name: "AdminDeckMusicInlineForm",
   data() {
@@ -92,7 +90,7 @@ export default {
   },
   methods: {
     async getDeck(id) {
-      const res = await axios.get("http://localhost:3000/decks/" + id);
+      const res = await this.$http.get("http://localhost:3000/decks/" + id);
       if (!res.data) {
         throw Error();
       }
@@ -109,7 +107,7 @@ export default {
       console.log(this.deckMusics);
       const formData = [...this.deckMusics];
       console.log(formData);
-      const res = await axios.post(
+      const res = await this.$http.post(
         "/api/decks/" + this.deck.id + "/musics",
         formData
       );

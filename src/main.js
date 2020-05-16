@@ -9,6 +9,13 @@ import "bootstrap-vue/dist/bootstrap-vue.css";
 import VueYoutube from "vue-youtube";
 const moment = require("moment");
 require("moment/locale/ko");
+import axios from "axios";
+
+const baseURLs = {
+  // local: "/api",
+  development: "/api",
+  production: "http://www.kimjbstar.com"
+};
 
 Vue.use(BootstrapVue);
 Vue.use(BootstrapVueIcons);
@@ -17,6 +24,13 @@ Vue.use(require("vue-moment"), {
   moment
 });
 Vue.config.productionTip = false;
+Vue.use({
+  install(Vue) {
+    Vue.prototype.$http = axios.create({
+      baseURL: baseURLs[process.env.NODE_ENV]
+    });
+  }
+});
 
 /* eslint-disable no-new */
 new Vue({

@@ -76,8 +76,6 @@
   </div>
 </template>
 <script>
-import axios from "axios";
-
 export default {
   name: "AdminDeckList",
   data() {
@@ -115,8 +113,8 @@ export default {
       );
       query.offset = this.currentPage - 1;
 
-      return axios
-        .get("/api/decks", {
+      return this.$http
+        .get("/decks", {
           params: query
         })
         .then(res => {
@@ -126,7 +124,7 @@ export default {
     },
     deleteDeck(id) {
       if (confirm("realy want delete this deck?")) {
-        return axios.delete("/api/decks/" + id).then(res => {
+        return this.$http.delete("/api/decks/" + id).then(res => {
           console.log(res);
           alert("delete success");
         });

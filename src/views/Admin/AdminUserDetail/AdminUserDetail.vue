@@ -48,8 +48,6 @@
   </div>
 </template>
 <script>
-import axios from "axios";
-
 export default {
   name: "Detail",
   data() {
@@ -93,18 +91,18 @@ export default {
       });
     },
     getUser(id) {
-      return axios.get("/api/users/" + id).then(res => {
+      return this.$http.get("/api/users/" + id).then(res => {
         this.form = res.data;
       });
     },
     addUser(data) {
-      return axios.post("/api/users", data).then(res => {
+      return this.$http.post("/api/users", data).then(res => {
         console.log(res);
         alert("ok");
       });
     },
     updateUser(data) {
-      return axios.put("/api/users/" + data.id, data).then(res => {
+      return this.$http.put("/api/users/" + data.id, data).then(res => {
         console.log(res);
         alert("ok");
       });
