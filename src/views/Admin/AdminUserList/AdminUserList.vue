@@ -68,14 +68,14 @@ export default {
   mounted() {},
   methods: {
     getUserList() {
-      return this.$http.get("/api/users").then(res => {
+      return this.$http.get("/users").then(res => {
         console.log(res.data.users);
         this.users = res.data.users;
       });
     },
     deleteUser(id) {
       if (confirm("realy want delete this user?")) {
-        return this.$http.delete("/api/users/" + id).then(res => {
+        return this.$http.delete("/users/" + id).then(res => {
           console.log(res);
           alert("delete success");
         });

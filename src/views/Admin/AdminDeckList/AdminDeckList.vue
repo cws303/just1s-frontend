@@ -124,7 +124,7 @@ export default {
     },
     deleteDeck(id) {
       if (confirm("realy want delete this deck?")) {
-        return this.$http.delete("/api/decks/" + id).then(res => {
+        return this.$http.delete("/decks/" + id).then(res => {
           console.log(res);
           alert("delete success");
         });

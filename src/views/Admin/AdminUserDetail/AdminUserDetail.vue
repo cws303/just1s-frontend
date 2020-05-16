@@ -91,18 +91,18 @@ export default {
       });
     },
     getUser(id) {
-      return this.$http.get("/api/users/" + id).then(res => {
+      return this.$http.get("/users/" + id).then(res => {
         this.form = res.data;
       });
     },
     addUser(data) {
-      return this.$http.post("/api/users", data).then(res => {
+      return this.$http.post("/users", data).then(res => {
         console.log(res);
         alert("ok");
       });
     },
     updateUser(data) {
-      return this.$http.put("/api/users/" + data.id, data).then(res => {
+      return this.$http.put("/users/" + data.id, data).then(res => {
         console.log(res);
         alert("ok");
       });

@@ -51,7 +51,7 @@ export default {
   },
   methods: {
     async getOldOne(id) {
-      const res = await this.$http.get("/api/decks/" + id);
+      const res = await this.$http.get("/decks/" + id);
       if (!res.data) {
         throw Error();
       }
@@ -67,7 +67,7 @@ export default {
         }
         return result;
       }, {});
-      const res = await this.$http.post("/api/decks", formData);
+      const res = await this.$http.post("/decks", formData);
       alert("추가되었습니다.");
       this.$router.push({ name: "AdminDeckList" });
     },
@@ -79,7 +79,7 @@ export default {
         }
         return result;
       }, {});
-      const res = await this.$http.put("/api/decks/" + formData.id, formData);
+      const res = await this.$http.put("/decks/" + formData.id, formData);
       alert("수정되었습니다.");
       this.$router.push({ name: "AdminDeckList" });
     },

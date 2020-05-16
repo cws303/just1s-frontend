@@ -51,7 +51,7 @@ export default {
   },
   methods: {
     async getDeck(id) {
-      const res = await this.$http.get("http://localhost:3000/decks/" + id);
+      const res = await this.$http.get("/decks/" + id);
       if (!res.data) {
         throw Error();
       }
@@ -68,7 +68,7 @@ export default {
       const formData = [...this.hashtags];
       console.log(formData);
       const res = await this.$http.post(
-        "/api/decks/" + this.deck.id + "/hashtags",
+        "/decks/" + this.deck.id + "/hashtags",
         formData
       );
       if (!res.data) {

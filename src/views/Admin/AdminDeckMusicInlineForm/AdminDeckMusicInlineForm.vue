@@ -108,7 +108,7 @@ export default {
       const formData = [...this.deckMusics];
       console.log(formData);
       const res = await this.$http.post(
-        "/api/decks/" + this.deck.id + "/musics",
+        "/decks/" + this.deck.id + "/musics",
         formData
       );
       if (!res.data) {
