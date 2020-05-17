@@ -41,6 +41,12 @@
         <b-form-input id="input-name" v-model="user.name" required placeholder="Enter name"></b-form-input>
       </b-form-group>
 
+      <hr />
+
+      <b-form-group label="pw" label-for="input-pw">
+        <b-form-input id="input-pw" v-model="user.pw" placeholder="Enter"></b-form-input>
+      </b-form-group>
+
       <b-button type="submit" variant="primary">Submit</b-button>
       <b-button type="reset" variant="danger">Reset</b-button>
     </b-form>
@@ -68,6 +74,7 @@ export default {
         throw Error();
       }
       this.user = res.data;
+      delete this.user.pw;
       console.log(this.user);
     },
     async add() {
@@ -77,9 +84,10 @@ export default {
         "status",
         "snsKey",
         "email",
-        "imgeUrl",
+        "imgUrl",
         "name",
-        "role"
+        "role",
+        "pw"
       ];
       const formData = Object.keys(this.user).reduce((result, key) => {
         if (fieldsToAdd.includes(key)) {
@@ -87,6 +95,7 @@ export default {
         }
         return result;
       }, {});
+
       const res = await this.$httpService.post("/users", formData);
       alert("추가되었습니다.");
       this.$router.push({ name: "AdminUserList" });
@@ -98,9 +107,10 @@ export default {
         "status",
         "snsKey",
         "email",
-        "imgeUrl",
+        "imgUrl",
         "name",
-        "role"
+        "role",
+        "pw"
       ];
       const formData = Object.keys(this.user).reduce((result, key) => {
         if (fieldsToEdit.includes(key)) {
@@ -112,6 +122,7 @@ export default {
         "/users/" + formData.id,
         formData
       );
+      console.log(formData);
       alert("수정되었습니다.");
       this.$router.push({ name: "AdminUserList" });
     },
@@ -137,6 +148,8 @@ export default {
         alert("데이터를 가져오는데 실패했습니다. 추가 페이지로 이동합니다.");
         this.$router.push({ name: "AdminUserAdd" });
       });
+    } else {
+      this.user.pw = "";
     }
   },
   mounted() {}

@@ -25,7 +25,6 @@
         ></b-form-input>
       </b-col>
     </b-row>
-
     <b-table-simple hover small caption-top responsive>
       <b-thead head-variant="dark">
         <b-tr>
@@ -57,6 +56,12 @@
             class="align-middle text-center"
           >{{ deck.createdAt | moment("YYYY년 MMMM Do H:mm:ss") }}</b-td>
           <b-td class="align-middle text-center">
+            <b-icon
+              class="icon-delete align-middle text-center"
+              icon="pencil"
+              variant="success"
+              @click:stop="goDetail(deck.id)"
+            ></b-icon>
             <b-icon
               class="icon-delete align-middle text-center"
               icon="trash"
@@ -122,10 +127,9 @@ export default {
         });
     },
     deleteDeck(id) {
-      if (confirm("realy want delete this deck?")) {
-        return this.$httpService.delete("/decks/" + id).then(res => {
-          console.log(res);
-          alert("delete success");
+      if (confirm("정말 삭제하시겠습니까?") !== false) {
+        this.$httpService.delete("/decks/" + id).then(res => {
+          this.getDeckList(this.query);
         });
       }
     },

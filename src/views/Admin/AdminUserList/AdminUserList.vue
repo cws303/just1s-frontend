@@ -1,54 +1,75 @@
 <template>
   <div class="wrap-list">
-    <div class="wrap-top">
-      <span class="title">유저 리스트</span>
-      <router-link to="/admin/users/add">
-        <b-button variant="danger" class="add">추가</b-button>
-      </router-link>
+    <div class="d-flex flex-row justify-content-between bd-highlight mb-3">
+      <h1>유저 리스트</h1>
+      <b-button to="/admin/users/add" variant="danger">추가</b-button>
     </div>
-    <!-- <b-table class="list" striped hover :items="users" :fields="fields"></b-table> -->
+    <b-row class="mb-3">
+      <b-col cols="2">
+        <b-form-select v-model="query.orderby" :options="orderbys" @change="getUserList(query)"></b-form-select>
+      </b-col>
+
+      <b-col cols="2">
+        <b-form-input
+          v-model="query.name"
+          placeholder="name 입력"
+          v-on:keyup.enter="getUserList(query)"
+        ></b-form-input>
+      </b-col>
+    </b-row>
     <b-table-simple hover small caption-top responsive>
       <b-thead head-variant="dark">
         <b-tr>
-          <b-th>Id</b-th>
-          <b-th>Role</b-th>
-          <b-th>SNS type</b-th>
-          <b-th>Status</b-th>
-          <b-th>Email</b-th>
-          <b-th>Name</b-th>
-          <b-th>Created at</b-th>
-          <b-th>Updated at</b-th>
-          <b-th></b-th>
+          <b-th class="align-middle text-center">Id</b-th>
+          <b-th class="align-middle text-center">Role</b-th>
+          <b-th class="align-middle text-center">Name</b-th>
+          <b-th class="align-middle text-center">SNS type</b-th>
+          <b-th class="align-middle text-center">Status</b-th>
+          <b-th class="align-middle text-center">Email</b-th>
+          <b-th class="align-middle text-center">CreatedAt</b-th>
+          <b-th class="align-middle text-center">관리</b-th>
         </b-tr>
       </b-thead>
 
       <b-tbody v-cloak>
-        <b-tr v-for="(user, index) in users" :key="index" @click="goDetail(user.id)">
-          <b-td>{{ user.id }}</b-td>
-          <b-td>{{ user.role }}</b-td>
-          <b-td>{{ user.snsType }}</b-td>
-          <b-td>{{ user.status }}</b-td>
-          <b-td>{{ user.email }}</b-td>
-          <b-td>{{ user.name }}</b-td>
-          <b-td>{{ user.createdAt }}</b-td>
-          <b-td>{{ user.updatedAt }}</b-td>
-          <b-td>
+        <b-tr v-for="(user, index) in users" :key="index">
+          <b-td class="align-middle text-center">{{ user.id }}</b-td>
+          <b-td class="align-middle text-center">{{ user.role }}</b-td>
+          <b-td class="align-middle text-center">{{ user.name }}</b-td>
+          <b-td class="align-middle text-center">{{ user.snsType }}</b-td>
+          <b-td class="align-middle text-center">{{ user.status }}</b-td>
+          <b-td class="align-middle text-center">{{ user.email }}</b-td>
+          <b-td
+            class="align-middle text-center"
+          >{{ user.createdAt | moment("YYYY년 MMMM Do H:mm:ss") }}</b-td>
+          <b-td class="align-middle text-center">
             <b-icon
-              class="icon-delete"
-              icon="x"
+              class="icon-delete align-middle text-center"
+              icon="pencil"
+              variant="success"
+              @click="goDetail(user.id)"
+            ></b-icon>
+            <b-icon
+              class="icon-delete align-middle text-center"
+              icon="trash"
               variant="danger"
-              font-scale="2"
               @click="deleteUser(user.id)"
             ></b-icon>
           </b-td>
         </b-tr>
       </b-tbody>
     </b-table-simple>
+    <b-pagination
+      v-model="currentPage"
+      :total-rows="totalCount"
+      :per-page="query.take"
+      @change="getUserList(query)"
+    ></b-pagination>
   </div>
 </template>
 <script>
 export default {
-  name: "AdminUserLit",
+  name: "AdminUserList",
   data() {
     return {
       currentPage: 1,
@@ -94,10 +115,9 @@ export default {
         });
     },
     deleteUser(id) {
-      if (confirm("realy want delete this user?")) {
-        return this.$httpService.delete("/users/" + id).then(res => {
-          console.log(res);
-          alert("delete success");
+      if (confirm("정말 삭제하시겠습니까?") !== false) {
+        this.$httpService.delete("/users/" + id).then(res => {
+          this.getUserList(this.query);
         });
       }
     },
