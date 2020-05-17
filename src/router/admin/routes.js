@@ -2,6 +2,7 @@ import { AdminUsersRoutes } from "@/router/admin/modules/users";
 import { AdminDecksRoutes } from "@/router/admin/modules/decks";
 import Admin from "@/views/Admin/Admin";
 import AdminHome from "@/views/Admin/AdminHome/AdminHome";
+import AdminLoginForm from "@/views/Admin/AdminLoginForm/AdminLoginForm";
 
 const routes = {
   path: "/admin",
@@ -11,6 +12,10 @@ const routes = {
     {
       component: AdminHome,
       path: ""
+    },
+    {
+      component: AdminLoginForm,
+      path: "login"
     }
   ]
 };

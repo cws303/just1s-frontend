@@ -107,7 +107,6 @@ export default {
   },
   methods: {
     getDeckList(query) {
-      // remove empty
       Object.keys(query).forEach(key =>
         query[key] === undefined || query[key] === "" ? delete query[key] : {}
       );

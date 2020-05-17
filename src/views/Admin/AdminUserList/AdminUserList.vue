@@ -11,6 +11,7 @@
       <b-thead head-variant="dark">
         <b-tr>
           <b-th>Id</b-th>
+          <b-th>Role</b-th>
           <b-th>SNS type</b-th>
           <b-th>Status</b-th>
           <b-th>Email</b-th>
@@ -22,12 +23,9 @@
       </b-thead>
 
       <b-tbody v-cloak>
-        <b-tr
-          v-for="(user, index) in users"
-          :key="index"
-          @click="goDetail(user.id)"
-        >
+        <b-tr v-for="(user, index) in users" :key="index" @click="goDetail(user.id)">
           <b-td>{{ user.id }}</b-td>
+          <b-td>{{ user.role }}</b-td>
           <b-td>{{ user.snsType }}</b-td>
           <b-td>{{ user.status }}</b-td>
           <b-td>{{ user.email }}</b-td>
@@ -50,32 +48,50 @@
 </template>
 <script>
 export default {
-  name: "List",
+  name: "AdminUserLit",
   data() {
     return {
+      currentPage: 1,
       users: [],
-      fields: [
-        "id",
-        "createdAt",
-        "updateAt",
-        "snsType",
-        "status",
-        "snsKey",
-        "email",
-        "name"
-      ]
+      query: {},
+      orderbys: [
+        { text: "ID내림차순", value: "ID__DESC" },
+        { text: "ID오름차순", value: "ID__ASC" }
+      ],
+      totalCount: -1
     };
   },
   created() {
-    this.getUserList();
+    this.query = Object.assign(
+      {
+        orderby: "ID__DESC",
+        take: 5
+      },
+      this.$route.query
+    );
+    this.getUserList(this.query);
+  },
+  watch: {
+    currentPage() {
+      this.getUserList(this.query);
+    }
   },
   mounted() {},
   methods: {
-    getUserList() {
-      return this.$httpService.get("/users").then(res => {
-        console.log(res.data.users);
-        this.users = res.data.users;
-      });
+    getUserList(query) {
+      Object.keys(query).forEach(key =>
+        query[key] === undefined || query[key] === "" ? delete query[key] : {}
+      );
+      query.offset = this.currentPage - 1;
+
+      return this.$httpService
+        .get("/users", {
+          params: query
+        })
+        .then(res => {
+          this.users = res.data.users;
+          this.totalCount = res.data.totalCount;
+        });
     },
     deleteUser(id) {
       if (confirm("realy want delete this user?")) {
@@ -86,25 +102,10 @@ export default {
       }
     },
     goDetail(id) {
-      this.$router.push("/admin/users/" + id);
+      this.$router.push({ name: "AdminUserEdit", params: { id: id } });
     }
   }
 };
 </script>
 <style lang="scss" scoped>
-.wrap-list {
-  .wrap-top {
-    display: flex;
-    flex-flow: row nowrap;
-    justify-content: space-between;
-    .title {
-      font-size: 40px;
-    }
-  }
-}
-.icon-delete {
-  &:hover {
-    cursor: pointer;
-  }
-}
 </style>

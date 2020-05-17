@@ -32,9 +32,11 @@ export default {
   },
   methods: {
     async login() {
-      await this.$httpService.login("kimjbstar@gmail.com", "dummy");
+      // await this.$httpService.login("kimjbstar@gmail.com", "dummy");
+      this.$router.push({ name: "AdminLoginForm" });
     },
     logout() {
+      alert("로그아웃되었습니다.");
       this.$httpService.logout();
     }
   },
