@@ -12,14 +12,33 @@
     </b-navbar-nav>
     <!-- Right aligned nav items -->
     <b-navbar-nav class="ml-auto">
-      <b-navbar-brand>이름</b-navbar-brand>
+      <div v-if="currentUser">
+        <b-navbar-brand>[ #{{ currentUser.id }} {{ currentUser.name }} ]</b-navbar-brand>
+        <b-navbar-brand @click="logout()">로그아웃</b-navbar-brand>
+      </div>
+      <div v-if="!currentUser">
+        <b-navbar-brand @click="login()">로그인</b-navbar-brand>
+      </div>
     </b-navbar-nav>
   </b-navbar>
 </template>
 
 <script>
+import { mapState } from "vuex";
 export default {
-  name: "AdminHeader"
+  name: "AdminHeader",
+  data: {
+    currentUser: {}
+  },
+  methods: {
+    async login() {
+      await this.$httpService.login("kimjbstar@gmail.com", "dummy");
+    },
+    logout() {
+      this.$httpService.logout();
+    }
+  },
+  computed: mapState(["currentUser"])
 };
 </script>
 

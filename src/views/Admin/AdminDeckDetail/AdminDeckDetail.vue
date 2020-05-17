@@ -2,11 +2,21 @@
   <div>
     <b-form @submit="onSubmit" @reset="onReset" class="detail" v-cloak>
       <b-form-group label="Id" label-for="input-id">
-        <b-form-input id="input-id" v-model="deck.id" disabled placeholder="Id"></b-form-input>
+        <b-form-input
+          id="input-id"
+          v-model="deck.id"
+          disabled
+          placeholder="Id"
+        ></b-form-input>
       </b-form-group>
 
       <b-form-group label="title" label-for="input-title">
-        <b-form-input id="input-title" v-model="deck.title" required placeholder="Enter"></b-form-input>
+        <b-form-input
+          id="input-title"
+          v-model="deck.title"
+          required
+          placeholder="Enter"
+        ></b-form-input>
       </b-form-group>
 
       <b-button type="submit" variant="primary">Submit</b-button>
@@ -19,24 +29,31 @@
       <b-card class="mt-3" border-variant="dark">
         <div slot="header">
           <span>해시태그</span>
-          <b-button @click="goHashtagInlineForm()" variant="danger" size="sm">관리</b-button>
+          <b-button @click="goHashtagInlineForm()" variant="danger" size="sm"
+            >관리</b-button
+          >
         </div>
         <b-badge
           class="mr-2"
           v-for="(hashtag, index) in deck.hashtags"
           :key="index"
-        >{{hashtag.hashtag}}</b-badge>
+          >{{ hashtag.hashtag }}</b-badge
+        >
       </b-card>
       <b-card class="mt-3" border-variant="dark">
         <div slot="header">
           <span>음악</span>
-          <b-button @click="goMusicInlineForm()" variant="danger" size="sm">관리</b-button>
+          <b-button @click="goMusicInlineForm()" variant="danger" size="sm"
+            >관리</b-button
+          >
         </div>
         <b-badge
           class="mr-2"
           v-for="(deckMusic, index) in deck.deckMusics"
           :key="index"
-        >{{deckMusic.music.title}} / {{deckMusic.music.artist}} / {{deckMusic.second+"s"}}</b-badge>
+          >{{ deckMusic.music.title }} / {{ deckMusic.music.artist }} /
+          {{ deckMusic.second + "s" }}</b-badge
+        >
       </b-card>
     </div>
   </div>
@@ -51,7 +68,7 @@ export default {
   },
   methods: {
     async getOldOne(id) {
-      const res = await this.$http.get("/decks/" + id);
+      const res = await this.$httpService.get("/decks/" + id);
       if (!res.data) {
         throw Error();
       }
@@ -67,7 +84,7 @@ export default {
         }
         return result;
       }, {});
-      const res = await this.$http.post("/decks", formData);
+      const res = await this.$httpService.post("/decks", formData);
       alert("추가되었습니다.");
       this.$router.push({ name: "AdminDeckList" });
     },
@@ -79,7 +96,10 @@ export default {
         }
         return result;
       }, {});
-      const res = await this.$http.put("/decks/" + formData.id, formData);
+      const res = await this.$httpService.put(
+        "/decks/" + formData.id,
+        formData
+      );
       alert("수정되었습니다.");
       this.$router.push({ name: "AdminDeckList" });
     },

@@ -113,7 +113,7 @@ export default {
       );
       query.offset = this.currentPage - 1;
 
-      return this.$http
+      return this.$httpService
         .get("/decks", {
           params: query
         })
@@ -124,7 +124,7 @@ export default {
     },
     deleteDeck(id) {
       if (confirm("realy want delete this deck?")) {
-        return this.$http.delete("/decks/" + id).then(res => {
+        return this.$httpService.delete("/decks/" + id).then(res => {
           console.log(res);
           alert("delete success");
         });

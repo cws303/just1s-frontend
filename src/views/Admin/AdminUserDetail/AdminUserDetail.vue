@@ -6,15 +6,30 @@
         label-for="input-id"
         description="We'll never share your email with anyone else."
       >
-        <b-form-input id="input-id" v-model="form.id" disabled placeholder="Id"></b-form-input>
+        <b-form-input
+          id="input-id"
+          v-model="form.id"
+          disabled
+          placeholder="Id"
+        ></b-form-input>
       </b-form-group>
 
       <b-form-group label="SNS type" label-for="input-snstype">
-        <b-form-select id="input-snstype" v-model="form.snsType" :options="snsTypes" required></b-form-select>
+        <b-form-select
+          id="input-snstype"
+          v-model="form.snsType"
+          :options="snsTypes"
+          required
+        ></b-form-select>
       </b-form-group>
 
       <b-form-group label="status" label-for="input-status">
-        <b-form-select id="input-status" v-model="form.status" :options="statuses" required></b-form-select>
+        <b-form-select
+          id="input-status"
+          v-model="form.status"
+          :options="statuses"
+          required
+        ></b-form-select>
       </b-form-group>
 
       <b-form-group
@@ -32,11 +47,21 @@
       </b-form-group>
 
       <b-form-group label="img url" label-for="input-imgUrl">
-        <b-form-input id="input-imgUrl" v-model="form.imgUrl" required placeholder="Enter"></b-form-input>
+        <b-form-input
+          id="input-imgUrl"
+          v-model="form.imgUrl"
+          required
+          placeholder="Enter"
+        ></b-form-input>
       </b-form-group>
 
       <b-form-group label="name" label-for="input-name">
-        <b-form-input id="input-name" v-model="form.name" required placeholder="Enter name"></b-form-input>
+        <b-form-input
+          id="input-name"
+          v-model="form.name"
+          required
+          placeholder="Enter name"
+        ></b-form-input>
       </b-form-group>
 
       <b-button type="submit" variant="primary">Submit</b-button>
@@ -91,18 +116,18 @@ export default {
       });
     },
     getUser(id) {
-      return this.$http.get("/users/" + id).then(res => {
+      return this.$httpService.get("/users/" + id).then(res => {
         this.form = res.data;
       });
     },
     addUser(data) {
-      return this.$http.post("/users", data).then(res => {
+      return this.$httpService.post("/users", data).then(res => {
         console.log(res);
         alert("ok");
       });
     },
     updateUser(data) {
-      return this.$http.put("/users/" + data.id, data).then(res => {
+      return this.$httpService.put("/users/" + data.id, data).then(res => {
         console.log(res);
         alert("ok");
       });
@@ -123,4 +148,3 @@ export default {
   padding: 0 40px;
 }
 </style>
-

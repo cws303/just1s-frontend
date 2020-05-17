@@ -1,28 +1,48 @@
 <template>
   <div>
     AdminDeckMusicInlineForm2
-    <div>{{deck}}</div>
+    <div>{{ deck }}</div>
     <b-form @submit="onSubmit" class="inine-form" v-cloak>
       <b-row>
         <b-col cols="3" v-for="(deckMusic, index) in deckMusics" :key="index">
           <b-card>
             <b-card-sub-title align="right">
-              <div style="color:red" @click="deleteForm(index)" v-if="!deckMusic.id">X</div>
+              <div
+                style="color:red"
+                @click="deleteForm(index)"
+                v-if="!deckMusic.id"
+              >
+                X
+              </div>
             </b-card-sub-title>
             <b-form-group label="Id" label-for="input-id">
-              <b-form-input id="input-id" v-model="deckMusic.id" disabled placeholder="Id"></b-form-input>
+              <b-form-input
+                id="input-id"
+                v-model="deckMusic.id"
+                disabled
+                placeholder="Id"
+              ></b-form-input>
             </b-form-group>
 
             <!-- 기존 music 있으면 표시 -->
             <b-card v-if="deckMusic.music">
-              <youtube :video-id="deckMusic.music.key" width="100%" height="120" ref="youtube"></youtube>
+              <youtube
+                :video-id="deckMusic.music.key"
+                width="100%"
+                height="120"
+                ref="youtube"
+              ></youtube>
               <br />
-              <p>{{deckMusic.music.title}}</p>
-              <p>{{deckMusic.music.artist}}</p>
+              <p>{{ deckMusic.music.title }}</p>
+              <p>{{ deckMusic.music.artist }}</p>
             </b-card>
 
             <!-- TODO : 수정 불가능 -->
-            <b-form-group label="title" label-for="input-title" v-if="!deckMusic.id">
+            <b-form-group
+              label="title"
+              label-for="input-title"
+              v-if="!deckMusic.id"
+            >
               <b-form-input
                 id="input-title"
                 v-model="deckMusic.title"
@@ -33,7 +53,11 @@
             </b-form-group>
 
             <!-- TODO : 수정 불가능 -->
-            <b-form-group label="artist" label-for="input-artist" v-if="!deckMusic.id">
+            <b-form-group
+              label="artist"
+              label-for="input-artist"
+              v-if="!deckMusic.id"
+            >
               <b-form-input
                 id="input-artist"
                 v-model="deckMusic.artist"
@@ -43,7 +67,11 @@
             </b-form-group>
 
             <!-- TODO : 수정 불가능 -->
-            <b-form-group label="link" label-for="input-link" v-if="!deckMusic.id">
+            <b-form-group
+              label="link"
+              label-for="input-link"
+              v-if="!deckMusic.id"
+            >
               <b-form-input
                 id="input-link"
                 v-model="deckMusic.link"
@@ -62,7 +90,11 @@
             </b-form-group>
 
             <b-form-group v-if="deckMusic.id">
-              <b-form-checkbox v-model="deckMusic.toDelete" name="input-is-delete" switch>
+              <b-form-checkbox
+                v-model="deckMusic.toDelete"
+                name="input-is-delete"
+                switch
+              >
                 <b>(Checked: {{ deckMusic.toDelete }})</b>
               </b-form-checkbox>
             </b-form-group>
@@ -90,7 +122,7 @@ export default {
   },
   methods: {
     async getDeck(id) {
-      const res = await this.$http.get("/decks/" + id);
+      const res = await this.$httpService.get("/decks/" + id);
       if (!res.data) {
         throw Error();
       }
@@ -107,7 +139,7 @@ export default {
       console.log(this.deckMusics);
       const formData = [...this.deckMusics];
       console.log(formData);
-      const res = await this.$http.post(
+      const res = await this.$httpService.post(
         "/decks/" + this.deck.id + "/musics",
         formData
       );
@@ -146,5 +178,4 @@ export default {
   mounted() {}
 };
 </script>
-<style lang="scss" scoped>
-</style>
+<style lang="scss" scoped></style>

@@ -22,14 +22,18 @@
       </b-thead>
 
       <b-tbody v-cloak>
-        <b-tr v-for="(user, index) in users" :key="index" @click="goDetail(user.id)">
-          <b-td>{{user.id}}</b-td>
-          <b-td>{{user.snsType}}</b-td>
-          <b-td>{{user.status}}</b-td>
-          <b-td>{{user.email}}</b-td>
-          <b-td>{{user.name}}</b-td>
-          <b-td>{{user.createdAt}}</b-td>
-          <b-td>{{user.updatedAt}}</b-td>
+        <b-tr
+          v-for="(user, index) in users"
+          :key="index"
+          @click="goDetail(user.id)"
+        >
+          <b-td>{{ user.id }}</b-td>
+          <b-td>{{ user.snsType }}</b-td>
+          <b-td>{{ user.status }}</b-td>
+          <b-td>{{ user.email }}</b-td>
+          <b-td>{{ user.name }}</b-td>
+          <b-td>{{ user.createdAt }}</b-td>
+          <b-td>{{ user.updatedAt }}</b-td>
           <b-td>
             <b-icon
               class="icon-delete"
@@ -68,14 +72,14 @@ export default {
   mounted() {},
   methods: {
     getUserList() {
-      return this.$http.get("/users").then(res => {
+      return this.$httpService.get("/users").then(res => {
         console.log(res.data.users);
         this.users = res.data.users;
       });
     },
     deleteUser(id) {
       if (confirm("realy want delete this user?")) {
-        return this.$http.delete("/users/" + id).then(res => {
+        return this.$httpService.delete("/users/" + id).then(res => {
           console.log(res);
           alert("delete success");
         });

@@ -1,16 +1,27 @@
 <template>
   <div>
     AdminDeckHashtagInlineForm2
-    <div>{{deck}}</div>
+    <div>{{ deck }}</div>
     <b-form @submit="onSubmit" class="inine-form" v-cloak>
       <b-row>
         <b-col cols="3" v-for="(hashtag, index) in hashtags" :key="index">
           <b-card>
             <b-card-sub-title align="right">
-              <div style="color:red" @click="deleteForm(index)" v-if="!hashtag.id">X</div>
+              <div
+                style="color:red"
+                @click="deleteForm(index)"
+                v-if="!hashtag.id"
+              >
+                X
+              </div>
             </b-card-sub-title>
             <b-form-group label="Id" label-for="input-id">
-              <b-form-input id="input-id" v-model="hashtag.id" disabled placeholder="Id"></b-form-input>
+              <b-form-input
+                id="input-id"
+                v-model="hashtag.id"
+                disabled
+                placeholder="Id"
+              ></b-form-input>
             </b-form-group>
 
             <b-form-group label="hashtag" label-for="input-hashtag">
@@ -23,7 +34,11 @@
             </b-form-group>
 
             <b-form-group v-if="hashtag.id">
-              <b-form-checkbox v-model="hashtag.toDelete" name="input-is-delete" switch>
+              <b-form-checkbox
+                v-model="hashtag.toDelete"
+                name="input-is-delete"
+                switch
+              >
                 <b>(Checked: {{ hashtag.toDelete }})</b>
               </b-form-checkbox>
             </b-form-group>
@@ -51,7 +66,7 @@ export default {
   },
   methods: {
     async getDeck(id) {
-      const res = await this.$http.get("/decks/" + id);
+      const res = await this.$httpService.get("/decks/" + id);
       if (!res.data) {
         throw Error();
       }
@@ -67,7 +82,7 @@ export default {
       console.log(this.hashtags);
       const formData = [...this.hashtags];
       console.log(formData);
-      const res = await this.$http.post(
+      const res = await this.$httpService.post(
         "/decks/" + this.deck.id + "/hashtags",
         formData
       );
@@ -100,5 +115,4 @@ export default {
   mounted() {}
 };
 </script>
-<style lang="scss" scoped>
-</style>
+<style lang="scss" scoped></style>

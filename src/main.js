@@ -9,13 +9,8 @@ import "bootstrap-vue/dist/bootstrap-vue.css";
 import VueYoutube from "vue-youtube";
 const moment = require("moment");
 require("moment/locale/ko");
-import axios from "axios";
-
-const baseURLs = {
-  // local: "/api",
-  development: "/api",
-  production: "http://www.kimjbstar.com"
-};
+import httpService from "@/utils/httpService";
+import { store } from "@/stores/index";
 
 Vue.use(BootstrapVue);
 Vue.use(BootstrapVueIcons);
@@ -24,17 +19,18 @@ Vue.use(require("vue-moment"), {
   moment
 });
 Vue.config.productionTip = false;
-Vue.use({
-  install(Vue) {
-    Vue.prototype.$http = axios.create({
-      baseURL: baseURLs[process.env.NODE_ENV]
-    });
+
+Vue.$httpService = httpService;
+Object.defineProperty(Vue.prototype, "$httpService", {
+  get() {
+    return httpService;
   }
 });
 
 /* eslint-disable no-new */
 new Vue({
   el: "#app",
+  store,
   router,
   components: { App },
   template: "<App/>"
