@@ -20,6 +20,7 @@
           placeholder="Enter"
         ></b-form-input>
       </b-form-group>
+      <b-button type="submit" variant="dark">로그인</b-button>
     </b-form>
     {{ loginFormData}}
   </div>
@@ -36,8 +37,17 @@ export default {
     };
   },
   methods: {
-    onSubmit(e) {
+    async onSubmit(e) {
       e.preventDefault();
+      const isSucceed = await this.$httpService.login(
+        this.loginFormData.email,
+        this.loginFormData.password
+      );
+      if (isSucceed === false) {
+        alert("로그인에 실패하였습니다.");
+        return;
+      }
+      this.$router.push({ name: "AdminHome" });
     }
   },
   created() {},

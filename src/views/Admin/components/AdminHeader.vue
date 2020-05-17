@@ -10,6 +10,13 @@
         <b-dropdown-item to="/admin/decks">덱 관리</b-dropdown-item>
       </b-nav-item-dropdown>
     </b-navbar-nav>
+    <b-navbar-nav>
+      <b-nav-item-dropdown text="접근권한" right>
+        <b-dropdown-item to="/admin/access_user">모든유저</b-dropdown-item>
+        <b-dropdown-item to="/admin/access_staff">모든관리자</b-dropdown-item>
+        <b-dropdown-item to="/admin/access_master">마스터</b-dropdown-item>
+      </b-nav-item-dropdown>
+    </b-navbar-nav>
     <!-- Right aligned nav items -->
     <b-navbar-nav class="ml-auto">
       <div v-if="currentUser">
@@ -31,13 +38,14 @@ export default {
     currentUser: {}
   },
   methods: {
-    async login() {
+    login() {
       // await this.$httpService.login("kimjbstar@gmail.com", "dummy");
       this.$router.push({ name: "AdminLoginForm" });
     },
     logout() {
       alert("로그아웃되었습니다.");
       this.$httpService.logout();
+      this.$router.push({ name: "AdminHome" });
     }
   },
   computed: mapState(["currentUser"])

@@ -35,16 +35,19 @@ class APIProvider {
       });
       store.commit("setAccessToken", res.data.access_token);
       store.commit("setCurrentUser", res.data.user);
+      localStorage.setItem("accessToken", res.data.access_token);
       this.loadAuthorizationTokenToHeader();
+      return true;
     } catch (e) {
       console.log(e);
-      console.log("failed to login");
+      return false;
     }
   }
 
   logout() {
     store.commit("setAccessToken", "");
     store.commit("setCurrentUser", undefined);
+    localStorage.setItem("accessToken", undefined);
     delete http.defaults.headers.common.Authorization;
   }
 
