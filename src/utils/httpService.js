@@ -4,7 +4,7 @@ import { store } from "@/stores/index";
 const baseURLs = {
   // local: "/api",
   development: "/api",
-  production: "http://www.kimjbstar.com"
+  production: "https://api.just1s.xyz"
 };
 
 let http = null; // not possible to create a private property in JavaScript, so we move it outside of the class, so that it's only accessible within this module

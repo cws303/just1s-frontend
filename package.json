@@ -16,7 +16,7 @@
     "docker:build": "docker build --no-cache -t kimjbstar/just1s-frontend .",
     "docker:push": "docker push kimjbstar/just1s-frontend",
     "aws:deploy": "aws ecs update-service --cluster=ecs-cluster-01 --service=service-front-1 --force-new-deployment",
-    "deploy:manual": "npm num docker:build && npm run docker:push && npm run aws:deploy"
+    "deploy:manual": "docker build --no-cache -t kimjbstar/just1s-frontend . && docker push kimjbstar/just1s-frontend && aws ecs update-service --cluster=ecs-cluster-01 --service=service-front-1 --force-new-deployment"
   },
   "dependencies": {
     "cors": "^2.8.5",
