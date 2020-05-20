@@ -20,7 +20,7 @@ Vue.use(require("vue-moment"), {
 });
 Vue.config.productionTip = false;
 
-Vue.$httpService = httpService;
+// Vue.$httpService = httpService;
 Object.defineProperty(Vue.prototype, "$httpService", {
   get() {
     return httpService;
@@ -36,18 +36,20 @@ new Vue({
   template: "<App/>",
   mounted() {
     const existToken = localStorage.getItem("accessToken");
-    this.$httpService
-      .get("/auth/whoami", {
-        headers: { Authorization: `Bearer ${existToken}` }
-      })
-      .then(res => {
-        const user = res.data;
-        if (user.id === undefined) {
-          localStorage.removeItem("accessToken");
-          return;
-        }
-        store.commit("setAccessToken", existToken);
-        store.commit("setCurrentUser", user);
-      });
+    if (existToken) {
+      this.$httpService
+        .get("/auth/whoami", {
+          headers: { Authorization: `Bearer ${existToken}` }
+        })
+        .then(res => {
+          const user = res.data;
+          if (user.id === undefined) {
+            localStorage.removeItem("accessToken");
+            return;
+          }
+          store.commit("setAccessToken", existToken);
+          store.commit("setCurrentUser", user);
+        });
+    }
   }
 });

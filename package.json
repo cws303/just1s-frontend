@@ -12,7 +12,11 @@
     "e2e": "node test/e2e/runner.js",
     "test": "npm run unit && npm run e2e",
     "lint": "eslint --ext .js,.vue src test/unit test/e2e/specs",
-    "build": "node build/build.js"
+    "build": "node build/build.js",
+    "docker:build": "docker build --no-cache -t kimjbstar/just1s-frontend .",
+    "docker:push": "docker push kimjbstar/just1s-frontend",
+    "aws:deploy": "aws ecs update-service --cluster=ecs-cluster-01 --service=service-front-1 --force-new-deployment",
+    "deploy:manual": "npm num docker:build && npm run docker:push && npm run aws:deploy"
   },
   "dependencies": {
     "cors": "^2.8.5",
