@@ -11,7 +11,9 @@
       @ended="ended"
       @buffering="buffering"
     ></youtube>
-    <div class="btn-play" v-if="currentState != 'playing'" @click="playVideo">play</div>
+    <div class="btn-play" v-if="currentState != 'playing'" @click="playVideo">
+      play
+    </div>
     <div>현재 : {{ currentState }}</div>
     <hr />
     <b-button @click="logInWithFacebook">Login with Facebook</b-button>
@@ -36,12 +38,9 @@ export default {
   created() {},
   methods: {
     loginWithInstagram() {
-      const redirectURL = "https://www.just1s.xyz/auth/instagram";
-      const url = `https://api.instagram.com/oauth/authorize
-  ?client_id=1146076062397676
-  &redirect_uri=${redirectURL}
-  &scope=user_profile,user_media
-  &response_type=code`;
+      const redirectURI = "https://www.just1s.xyz/auth/instagram";
+      const clientID = 1146076062397676;
+      const url = `https://api.instagram.com/oauth/authorize/?client_id=${clientID}&redirect_uri=${redirectURI}&scope=user_profile,user_media&response_type=code`;
       console.log(url);
       const popupForAuth = window.open(url);
       // this.$router.push(url);
@@ -53,7 +52,7 @@ export default {
         // event.source is popup
         // event.data is "hi there yourself!  the secret response is: rheeeeet!"
       }
-      window.addEventListener("instagram-login", receiveMessage, false);
+      window.addEventListener("message", receiveMessage, false);
     },
     async logInWithFacebook() {
       window.FB.login(function(response) {
