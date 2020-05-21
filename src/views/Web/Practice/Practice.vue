@@ -15,15 +15,15 @@
     <div>현재 : {{ currentState }}</div>
     <hr />
     <b-button @click="logInWithFacebook">Login with Facebook</b-button>
-    <b-button>Instagram으로 로그인</b-button>
+    <b-button @click="loginWithInstagram">Instagram으로 로그인</b-button>
     <b-button>Kakao으로 로그인</b-button>
-    <b-button>Naver으로 로그인</b-button>
     <b-button>Google으로 로그인</b-button>
-    <b-button>Apple으로 로그인</b-button>
+    <b-button>Apple으로 로그인</b-button>네이버
   </div>
 </template>
 
 <script>
+import * as axios from "axios";
 export default {
   name: "Practice",
   data() {
@@ -35,6 +35,26 @@ export default {
   },
   created() {},
   methods: {
+    loginWithInstagram() {
+      const redirectURL = "https://www.just1s.xyz/auth/instagram";
+      const url = `https://api.instagram.com/oauth/authorize
+  ?client_id=1146076062397676
+  &redirect_uri=${redirectURL}
+  &scope=user_profile,user_media
+  &response_type=code`;
+      console.log(url);
+      const popupForAuth = window.open(url);
+      // this.$router.push(url);
+      function receiveMessage(event) {
+        console.log("received !!!!!");
+        console.log(event);
+        if (event.origin !== "https://www.just1s.xyz") return;
+
+        // event.source is popup
+        // event.data is "hi there yourself!  the secret response is: rheeeeet!"
+      }
+      window.addEventListener("instagram-login", receiveMessage, false);
+    },
     async logInWithFacebook() {
       window.FB.login(function(response) {
         console.log(response);
