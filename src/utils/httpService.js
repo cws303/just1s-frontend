@@ -4,6 +4,7 @@ import { store } from "@/stores/index";
 const baseURLs = {
   // local: "/api",
   development: "/api",
+  // development: "https://api.just1s.xyz",
   production: "https://api.just1s.xyz"
 };
 
@@ -13,7 +14,15 @@ class APIProvider {
   constructor() {
     const options = {
       baseURL: baseURLs[process.env.NODE_ENV],
-      headers: {}
+      headers: {
+        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Allow-Methods": "GET, PUT, POST, DELETE, OPTIONS",
+        "Access-Control-Allow-Headers":
+          "Origin, Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers, Authorization",
+        "Content-Type": "application/json",
+        "Access-Control-Allow-Credentials": true,
+        "Access-Control-Max-Age": 86400
+      }
     };
 
     http = axios.create(options);

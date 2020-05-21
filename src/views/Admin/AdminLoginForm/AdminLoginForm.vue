@@ -22,6 +22,7 @@
       </b-form-group>
       <b-button type="submit" variant="dark">로그인</b-button>
     </b-form>
+    .vue
     {{ loginFormData}}
   </div>
 </template>

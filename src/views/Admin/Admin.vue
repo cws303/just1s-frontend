@@ -19,6 +19,9 @@ export default {
     return {
       // route: this.$route
     };
+  },
+  created() {
+    document.title = "just1s 백오피스";
   }
 };
 </script>
