@@ -1,7 +1,7 @@
 <template>
   <div class="web-root">
     <web-header></web-header>
-    <router-link to="/practice">Practice 이동</router-link>배포테스트33
+    <router-link to="/practice">Practice 이동</router-link>배포테스트23
     <div class="container-root">
       <router-view></router-view>
       <b-button @click="postMessageTest">postMessage TEst</b-button>
