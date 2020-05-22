@@ -16,7 +16,7 @@
     <hr />
     <b-button @click="logInWithFacebook">Login with Facebook</b-button>
     <b-button @click="loginWithInstagram">Instagram으로 로그인</b-button>
-    <b-button>Kakao으로 로그인</b-button>
+    <b-button @click="loginWithKakao">Kakao으로 로그인</b-button>
     <b-button>Google으로 로그인</b-button>
     <b-button>Apple으로 로그인</b-button>
   </div>
@@ -35,15 +35,17 @@ export default {
   },
   created() {},
   methods: {
-    loginWithInstagram() {
-      const redirectURI = "https://www.just1s.xyz/auth/instagram";
-      const clientID = 1146076062397676;
-      const scope = "user_profile,user_media";
-
-      const url = `https://api.instagram.com/oauth/authorize/?client_id=${clientID}&redirect_uri=${redirectURI}&scope=${scope}&response_type=code`;
+    loginWithKakao() {
+      const clientID = "69339eb8ca5e4e95fa9040ee4c8fea1a";
+      const redirectURI = "https://www.just1s.xyz/auth/kakao";
+      const url = `https://kauth.kakao.com/oauth/authorize?client_id=${clientID}&redirect_uri${redirectURI}&response_type=code`;
       location.href = url;
-      // const popupForAuth = window.open(url);
-      // this.$router.push(url);
+    },
+    loginWithInstagram() {
+      const clientID = 1146076062397676;
+      const redirectURI = "https://www.just1s.xyz/auth/instagram";
+      const url = `https://api.instagram.com/oauth/authorize/?client_id=${clientID}&redirect_uri=${redirectURI}&scope=user_profile,user_media&response_type=code`;
+      location.href = url;
     },
     async logInWithFacebook() {
       window.FB.login(function(response) {
