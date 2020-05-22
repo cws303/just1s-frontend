@@ -7,11 +7,16 @@ import Home from "@/views/Web/Home/Home";
 
 export default {
   path: "/",
-  name: "web",
+  // name: "web",
   component: Web,
   children: [
     {
       path: "",
+      name: "web",
+      component: Home
+    },
+    {
+      path: "home",
       name: "Home",
       component: Home
     },

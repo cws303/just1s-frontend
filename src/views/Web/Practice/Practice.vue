@@ -16,11 +16,8 @@
     </div>
     <div>현재 : {{ currentState }}</div>
     <hr />
-    <b-button @click="logInWithFacebook">Login with Facebook</b-button>
-    <b-button @click="loginWithInstagram">Instagram으로 로그인</b-button>
-    <b-button @click="loginWithKakao">Kakao으로 로그인</b-button>
-    <b-button>Google으로 로그인</b-button>
-    <b-button>Apple으로 로그인</b-button>
+    <b-button @click="logInWithFacebook">페이스북 로그인</b-button>
+    <b-button @click="loginWithKakao">카카오 로그인</b-button>
   </div>
 </template>
 
@@ -37,11 +34,53 @@ export default {
   },
   created() {},
   methods: {
+    initKakao() {
+      const clientID = "868ec1f6f25e37a7723addd94d4ef6b2";
+      const scriptId = "kakao_login";
+      const isExist = !!document.getElementById(scriptId);
+      if (!isExist) {
+        const script = document.createElement("script");
+        script.src = "https://developers.kakao.com/sdk/js/kakao.min.js";
+        script.onload = () => {
+          Kakao.init(clientID);
+        };
+        script.onerror = error => {
+          console.log("카카오 로드중 에러 발생");
+        };
+        script.id = scriptId;
+        document.body.appendChild(script);
+      } else {
+        if (Kakao.isInitialized() === false) {
+          Kakao.init(clientID);
+        }
+      }
+    },
     loginWithKakao() {
-      const clientID = "69339eb8ca5e4e95fa9040ee4c8fea1a";
-      const redirectURI = "https://www.just1s.xyz/auth/kakao";
-      const url = `https://kauth.kakao.com/oauth/authorize?client_id=${clientID}&redirect_uri=${redirectURI}&response_type=code`;
-      location.href = url;
+      if (Kakao.isInitialized() === false) {
+        console.log("카카오 모듈이 로드되지 않았습니다.");
+        return;
+      }
+      Kakao.Auth.login({
+        success: authObj => {
+          console.log(authObj);
+          Kakao.API.request({
+            url: "/v2/user/me",
+            success: function(response) {
+              console.log(response.id);
+              console.log(response.properties.nickname);
+              console.log(response.properties.profile_image);
+            },
+            fail: function(error) {
+              console.log(error);
+              alert("카카오 로그인에 실패했습니다.");
+            }
+          });
+        },
+        fail: err => {
+          console.log(err);
+          alert("카카오 로그인에 실패했습니다.");
+        }
+      });
     },
     loginWithInstagram() {
       const clientID = "1146076062397676";
@@ -60,8 +99,10 @@ export default {
               access_token: response.authResponse.accessToken
             },
             function(profile) {
-              console.log(profile);
               if (profile.id) {
+                console.log(profile.id);
+                console.log(profile.name);
+                console.log(profile.picture.data.url);
                 // /auth/facebook
                 // param = {
                 //   accessToken : response.authResponse.accessToken
@@ -109,7 +150,7 @@ export default {
       return this.$refs.youtube.player;
     }
   },
-  beforeCreate() {
+  mounted() {
     (function(d, s, id) {
       var js,
         fjs = d.getElementsByTagName(s)[0];
@@ -128,6 +169,7 @@ export default {
         version: "v7.0"
       });
     };
+    this.initKakao();
   }
 };
 </script>

@@ -9,36 +9,41 @@ import { AdminDecksRoutes } from "@/router/admin/decks";
 
 const routes = {
   path: "/admin",
-  name: "admin",
+  // name: "admin",
   component: Admin,
   children: [
     {
-      component: AdminHome,
+      path: "",
+      name: "admin",
+      component: AdminHome
+    },
+    {
+      path: "home",
       name: "AdminHome",
-      path: ""
+      component: AdminHome
     },
     {
-      component: AdminLoginForm,
+      path: "login",
       name: "AdminLoginForm",
-      path: "login"
+      component: AdminLoginForm
     },
     {
-      component: AdminAccessUser,
-      name: "AdminAccessUser",
       path: "access_user",
+      name: "AdminAccessUser",
+      component: AdminAccessUser,
       meta: { accessibleTo: ["NORMAL", "STAFF", "MASTER"] }
     },
     ,
     {
-      component: AdminAccessStaff,
-      name: "AdminAccessStaff",
       path: "access_staff",
+      name: "AdminAccessStaff",
+      component: AdminAccessStaff,
       meta: { accessibleTo: ["STAFF", "MASTER"] }
     },
     {
-      component: AdminAccessMaster,
-      name: "AdminAccessMaster",
       path: "access_master",
+      name: "AdminAccessMaster",
+      component: AdminAccessMaster,
       meta: { accessibleTo: ["MASTER"] }
     }
   ]
