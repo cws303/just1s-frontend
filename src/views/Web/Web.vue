@@ -4,6 +4,7 @@
     <router-link to="/practice">Practice 이동</router-link>배포테스트23
     <div class="container-root">
       <router-view></router-view>
+      <b-button @click="postMessageTest">postMessage TEst</b-button>
     </div>
     <web-footer></web-footer>
   </div>
@@ -19,6 +20,11 @@ export default {
     WebHeader,
     WebFooter,
     Decks
+  },
+  methods: {
+    postMessageTest() {
+      const popupWindow = window.open("https://localhost:8080/practice");
+    }
   }
 };
 </script>

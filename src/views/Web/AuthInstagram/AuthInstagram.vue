@@ -9,7 +9,7 @@ export default {
   data() {
     return {
       msg: "AuthInstagram",
-      code: ""
+      step: 0
     };
   },
   methods: {
@@ -18,51 +18,42 @@ export default {
         throw Error("코드없음");
       }
       const url = "https://api.instagram.com/oauth/access_token";
-      return axios.post(url, {
+      const fields = {
         client_id: "1146076062397676",
+        client_secret: "d4234fc4daf1b46c9d622b6c975a9779",
         grant_type: "authorization_code",
         redirect_uri: "https://www.just1s.xyz/auth/instagram",
         code: code.replace("#_", "")
-      });
-    },
-    async getUser(accessToken, userId) {
-      const url = "https://graph.instagram.com";
-      return axios.get(url, {
-        fields: "id,username,profile_pic",
-        access_token: accessToken
-      });
-    },
-    async init() {
-      const res = await this.getAccessTokenFromCode(this.$route.query.code);
-      const user = await this.getUser(res.access_token, res.user_id);
-      console.log(user);
-      return user;
+      };
+
+      let form = new FormData();
+      for (let [key, value] of Object.entries(fields)) {
+        form.append(key, value);
+      }
+
+      const res = await axios.post(url, form);
+      const getUserURL = `https://graph.instagram.com/me/media?fields=id,media_type,media_url,username,timestamp&access_token=${res.data.access_token}`;
+
+      const res2 = await axios.get(getUserURL);
+      console.log("인스타그램 앱 검수 필요 !!", res2);
     }
   },
   created() {
-    try {
-      this.init().then(res => {
-        console.log("드디어");
-        window.postMessage(user, window.opener);
-      });
-    } catch (error) {
-      console.log("try catch");
-      console.log(error);
+    if (this.$route.query.code === undefined) {
+      alert("잘못된 접근입니다.");
+      this.$router.push("/");
     }
+    this.getAccessTokenFromCode(this.$route.query.code)
+      .then(() => {})
+      .catch(e => {
+        console.log(e);
+      })
+      .finally(() => {
+        this.$router.push("/");
+      });
   }
 };
-function receiveMessage(event) {
-  console.log("received !!!!!");
-  console.log(event);
-  if (event.origin !== "https://www.just1s.xyz") return;
-
-  // event.source is popup
-  // event.data is "hi there yourself!  the secret response is: rheeeeet!"
-}
-window.addEventListener("message", receiveMessage, false);
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="scss" scoped></style>
-
-{ "id": "17841403488332647", "username": "kimjbstar" }
