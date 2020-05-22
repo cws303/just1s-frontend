@@ -31,3 +31,7 @@ jobs:
       run: |
         echo Add other actions to build,
         echo test, and deploy your project.
+    - name: Run a last script
+        run: |
+          echo last,
+          echo script
