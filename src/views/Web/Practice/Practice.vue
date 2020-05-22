@@ -11,7 +11,9 @@
       @ended="ended"
       @buffering="buffering"
     ></youtube>
-    <div class="btn-play" v-if="currentState != 'playing'" @click="playVideo">play</div>
+    <div class="btn-play" v-if="currentState != 'playing'" @click="playVideo">
+      play
+    </div>
     <div>현재 : {{ currentState }}</div>
     <hr />
     <b-button @click="logInWithFacebook">Login with Facebook</b-button>
@@ -42,7 +44,7 @@ export default {
       location.href = url;
     },
     loginWithInstagram() {
-      const clientID = 1146076062397676;
+      const clientID = "1146076062397676";
       const redirectURI = "https://www.just1s.xyz/auth/instagram";
       const url = `https://api.instagram.com/oauth/authorize/?client_id=${clientID}&redirect_uri=${redirectURI}&scope=user_profile,user_media&response_type=code`;
       location.href = url;

@@ -32,7 +32,9 @@ export default {
         form.append(key, value);
       }
 
-      const res = await axios.post(url, form);
+      const res = await axios.post(url, form, {
+        "Content-Type": "application/x-www-form-urlencoded"
+      });
       // access_token	사용자 액세스 토큰 값
       // token_type	토큰 타입, "bearer"로 고정
       // refresh_token	사용자 리프레시 토큰 값
@@ -60,7 +62,7 @@ export default {
         console.log(e);
       })
       .finally(() => {
-        this.$router.push("/");
+        // this.$router.push("/");
       });
   }
 };

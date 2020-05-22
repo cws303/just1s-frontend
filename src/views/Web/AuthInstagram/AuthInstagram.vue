@@ -31,7 +31,9 @@ export default {
         form.append(key, value);
       }
 
-      const res = await axios.post(url, form);
+      const res = await axios.post(url, form, {
+        "Content-Type": "application/x-www-form-urlencoded"
+      });
       const getUserURL = `https://graph.instagram.com/me/media?fields=id,media_type,media_url,username,timestamp&access_token=${res.data.access_token}`;
 
       const res2 = await axios.get(getUserURL);

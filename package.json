@@ -13,10 +13,9 @@
     "test": "npm run unit && npm run e2e",
     "lint": "eslint --ext .js,.vue src test/unit test/e2e/specs",
     "build": "node build/build.js",
-    "docker:build": "docker build -t kimjbstar/just1s-frontend .",
-    "docker:push": "docker push kimjbstar/just1s-frontend",
-    "aws:deploy": "aws ecs update-service --cluster=ecs-cluster-01 --service=service-front-1 --force-new-deployment",
-    "deploy:manual": "docker build --no-cache -t kimjbstar/just1s-frontend . && docker push kimjbstar/just1s-frontend && aws ecs update-service --cluster=ecs-cluster-01 --service=service-front-1 --force-new-deployment"
+    "docker:build": "docker build -t cws303/just1s-frontend .",
+    "docker:push": "docker push cws303/just1s-frontend",
+    "aws:deploy": "aws ecs update-service --cluster=ecs-cluster-01 --service=service-front-1 --force-new-deployment"
   },
   "dependencies": {
     "cors": "^2.8.5",
