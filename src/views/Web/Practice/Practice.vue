@@ -38,7 +38,7 @@ export default {
     loginWithKakao() {
       const clientID = "69339eb8ca5e4e95fa9040ee4c8fea1a";
       const redirectURI = "https://www.just1s.xyz/auth/kakao";
-      const url = `https://kauth.kakao.com/oauth/authorize?client_id=${clientID}&redirect_uri${redirectURI}&response_type=code`;
+      const url = `https://kauth.kakao.com/oauth/authorize?client_id=${clientID}&redirect_uri=${redirectURI}&response_type=code`;
       location.href = url;
     },
     loginWithInstagram() {
