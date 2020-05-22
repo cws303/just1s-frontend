@@ -46,6 +46,7 @@ export default {
         }
       });
       console.log("res2", res2);
+      alert(JSON.stringify(res2.data));
     }
   },
   created() {
