@@ -1,5 +1,30 @@
 <template>
-  <div id="view-home">메인</div>
+  <div id="view-home">
+    <b-card-group columns v-if="decks.length > 0">
+      <b-card
+        :title="deck.title"
+        img-src="https://placekitten.com/g/400/450"
+        img-alt="Image"
+        img-top
+        v-for="(deck, index) in decks"
+        :key="index"
+        @click="goDetail(deck.id)"
+      >
+        <b-card-text>
+          <b-badge
+            v-for="(hashtag, _index) in deck.hashtags"
+            :key="_index"
+            class="mr-2"
+          >{{hashtag.hashtag}}</b-badge>
+        </b-card-text>
+        <b-card-footer>
+          조회수 : {{ deck.hitsCount }}
+          <div v-if="deck.user">출제자 : {{deck.user.name}}</div>
+        </b-card-footer>
+      </b-card>
+    </b-card-group>
+    <div v-if="decks.length == 0">덱이 없습니다. :(</div>
+  </div>
 </template>
 
 <script>
@@ -7,12 +32,42 @@ export default {
   name: "Home",
   data() {
     return {
-      msg: "Home"
+      msg: "Home",
+      decks: []
     };
+  },
+  created() {
+    this.query = Object.assign(
+      {
+        orderby: "ID__DESC",
+        take: 5,
+        has_hashtag: 1
+      },
+      this.$route.query
+    );
+    this.getDeckList(this.query);
+  },
+  methods: {
+    getDeckList(query) {
+      Object.keys(query).forEach(key =>
+        query[key] === undefined || query[key] === "" ? delete query[key] : {}
+      );
+
+      return this.$httpService
+        .get("/decks", {
+          params: query
+        })
+        .then(res => {
+          this.decks = res.data.decks;
+          this.totalCount = res.data.totalCount;
+        });
+    },
+    goDetail(id) {
+      this.$router.push({ name: "DeckDetail", params: { id: id } });
+    }
   }
 };
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="scss" scoped>
 </style>

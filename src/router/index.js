@@ -10,9 +10,7 @@ const routes = [AdminRoutes, Web, { path: "*", component: PageNotFound }];
 
 const router = new Router({
   mode: "history",
-  // base: process.env.BASE_URL,
   routes
-  // scrollBehavior: () => ({ y: 0 })
 });
 
 router.beforeEach((to, from, next) => {

@@ -53,6 +53,20 @@ class APIProvider {
     }
   }
 
+  async snsLogin(profile) {
+    try {
+      const res = await this.post("auth/sns_login", profile);
+      store.commit("setAccessToken", res.data.access_token);
+      store.commit("setCurrentUser", res.data.user);
+      localStorage.setItem("accessToken", res.data.access_token);
+      this.loadAuthorizationTokenToHeader();
+      return true;
+    } catch (e) {
+      console.log(e);
+      return false;
+    }
+  }
+
   logout() {
     store.commit("setAccessToken", "");
     store.commit("setCurrentUser", undefined);

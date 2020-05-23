@@ -1,7 +1,7 @@
 <template>
   <div class="web-root">
     <web-header></web-header>
-    <router-link to="/practice">Practice 이동</router-link>배포테스트23
+
     <div class="container-root">
       <router-view></router-view>
     </div>
@@ -10,8 +10,8 @@
 </template>
 
 <script>
-import WebHeader from "./components/Header";
-import WebFooter from "./components/Footer";
+import WebHeader from "./components/WebHeader";
+import WebFooter from "./components/WebFooter";
 import Decks from "./Decks/Decks";
 export default {
   name: "Web",
