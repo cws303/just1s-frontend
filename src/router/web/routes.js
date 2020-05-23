@@ -40,7 +40,7 @@ export default {
       component: DeckDetail
     },
     {
-      path: "perform-from/:id",
+      path: "perform-form/:id",
       name: "PerformForm",
       component: PerformForm
     },
@@ -55,7 +55,7 @@ export default {
       component: ResultIndex
     },
     {
-      path: "deck-from",
+      path: "deck-form",
       name: "DeckForm",
       component: DeckForm
     },

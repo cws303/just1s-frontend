@@ -115,9 +115,12 @@ export default {
     async getOldOne(id) {
       const res = await this.$httpService.get("/decks/" + id);
       if (!res.data) {
-        throw Error();
+        throw Error("데이터 가져오는데 실패");
       }
       this.deck = res.data;
+      if (this.deck.deckMusics.length < 1) {
+        throw Error("문제가 없음");
+      }
       console.log(this.deck);
     }
   },

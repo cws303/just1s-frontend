@@ -22,8 +22,13 @@
           <div v-if="deck.user">출제자 : {{deck.user.name}}</div>
         </b-card-footer>
       </b-card>
+      <b-button to="/deck-form">나ㄹ</b-button>
     </b-card-group>
-    <div v-if="decks.length == 0">덱이 없습니다. :(</div>
+    <div v-if="decks.length == 0">
+      덱이 없습니다. :(
+      <br />
+      <b-button to="/deck-form">나만의 덱 만들기</b-button>
+    </div>
   </div>
 </template>
 
