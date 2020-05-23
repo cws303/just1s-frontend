@@ -19,10 +19,17 @@
       </b-col>
     </b-row>
     <b-row>
-      <b-col cols="12" align="center" align-self="end">
+      <b-col cols="12" align="center" align-self="end" v-if="state == 'ONGOING'">
         <b-form-input v-model="currentAnswer" placeholder="Enter your name"></b-form-input>
-        <b-button variant="primary" @click="goNext">제출!</b-button>
-        <b-button @click="pass">모르겠음..</b-button>
+        <b-button variant="primary" @click="submitOne">제출!</b-button>
+        <b-button @click="passOne">모르겠음..</b-button>
+      </b-col>
+      <b-col cols="12" align="center" align-self="end" v-if="state == 'RESULT'">
+        {{currentAnswerIsCorrect? '맞음': "틀림ㅠ"}}
+        <br />
+
+        <b-button v-if="currentIndex+1 < deck.deckMusics.length" @click="goNextStep">다음</b-button>
+        <b-button v-if="currentIndex+1 >= deck.deckMusics.length" @click="goResultIndex">결과보기</b-button>
       </b-col>
     </b-row>
     {{ performDto }}
@@ -37,12 +44,14 @@ export default {
   data() {
     return {
       msg: "PerformForm",
+      state: "ONGOING",
       // currentUser: {},
       deck: {
         deckMusics: []
       },
       currentIndex: 0,
       currentAnswer: "",
+      currentAnswerIsCorrect: null,
       performDto: {
         deckId: null,
         userId: null,
@@ -51,31 +60,57 @@ export default {
     };
   },
   methods: {
-    submit() {
-      console.log("submit");
+    goResultIndex() {
+      this.$router.push({ name: "ResultIndex" });
+    },
+    submitAll() {
+      console.log("submitAll");
       this.performDto.userId = this.currentUser.id;
       this.performDto.deckId = this.deck.id;
     },
-    pass() {
-      this._goNext("");
+    passOne() {
+      this._submitOne("");
     },
-    goNext() {
+    async submitOne() {
       if (this.currentAnswer === "") {
         alert("정답을 입력해주세요.");
+        return;
       }
-      this._goNext(this.currentAnswer);
+      await this._submitOne(this.currentAnswer);
     },
-    _goNext(answerText) {
+    async _submitOne(answerText) {
       if (this.currentIndex >= this.deck.deckMusics.length) {
-        this.submit();
+        this.submitAll();
         return;
       }
       this.performDto.answers.push({
         deckMusicId: this.deck.deckMusics[this.currentIndex].id,
         answer: answerText
       });
-      this.currentIndex++;
+
+      const isCorrect = await this.checkCorrect(this.currentAnswer);
+      this.currentAnswerIsCorrect = isCorrect;
       this.currentAnswer = "";
+      this.state = "RESULT";
+    },
+    goNextStep() {
+      if (this.currentIndex + 1 >= this.deck.deckMusics.length) {
+        this.submitAll();
+        return;
+      }
+      this.state = "ONGOING";
+      this.currentIndex++;
+    },
+    async checkCorrect(answer) {
+      const musicId = this.deck.deckMusics[this.currentIndex].music.id;
+      const res = await this.$httpService.post(
+        `/musics/${musicId}/check_correct`,
+        {
+          answer: this.currentAnswer
+        }
+      );
+      console.log(res);
+      return res.data.isCorrect;
     },
     async getOldOne(id) {
       const res = await this.$httpService.get("/decks/" + id);
@@ -88,7 +123,6 @@ export default {
   },
   created() {
     const deckId = this.$route.params.id;
-
     if (deckId) {
       this.getOldOne(deckId).catch(e => {
         alert("데이터를 가져오는데 실패했습니다");
@@ -100,5 +134,4 @@ export default {
 };
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="scss" scoped></style>
