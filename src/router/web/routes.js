@@ -55,11 +55,18 @@ export default {
       component: ResultIndex
     },
     {
-      path: "deck-form",
-      name: "DeckForm",
+      path: "deck-add",
+      name: "DeckAdd",
       component: DeckForm,
       meta: { accessibleTo: ["NORMAL"] }
     },
+    {
+      path: "deck-edit/:id",
+      name: "DeckEdit",
+      component: DeckForm,
+      meta: { accessibleTo: ["NORMAL"] }
+    },
+
     {
       path: "user-index",
       name: "UserIndex",

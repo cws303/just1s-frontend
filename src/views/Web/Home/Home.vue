@@ -20,14 +20,15 @@
         <b-card-footer>
           조회수 : {{ deck.hitsCount }}
           <div v-if="deck.user">출제자 : {{deck.user.name}}</div>
+          <b-button @click="goDeckEdit($event, deck.id)">edit_test</b-button>
         </b-card-footer>
       </b-card>
-      <b-button to="/deck-form">나ㄹ</b-button>
+      <b-button to="/deck-add">test</b-button>
     </b-card-group>
     <div v-if="decks.length == 0">
       덱이 없습니다. :(
       <br />
-      <b-button to="/deck-form">나만의 덱 만들기</b-button>
+      <b-button to="/deck-add">나만의 덱 만들기</b-button>
     </div>
   </div>
 </template>
@@ -53,6 +54,10 @@ export default {
     this.getDeckList(this.query);
   },
   methods: {
+    goDeckEdit(e, deckId) {
+      e.stopPropagation();
+      this.$router.push({ name: "DeckEdit", params: { id: deckId } });
+    },
     getDeckList(query) {
       Object.keys(query).forEach(key =>
         query[key] === undefined || query[key] === "" ? delete query[key] : {}

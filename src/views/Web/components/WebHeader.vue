@@ -13,7 +13,7 @@
           <b-navbar-brand @click="logout()">로그아웃</b-navbar-brand>
         </div>
         <div v-if="!currentUser">
-          <b-navbar-brand @click="login()">로그인</b-navbar-brand>
+          <b-navbar-brand style="cursor:pointer" @click="login()">로그인</b-navbar-brand>
         </div>
       </b-navbar-nav>
     </b-navbar>

@@ -99,6 +99,7 @@ export default {
     this.query = Object.assign(
       {
         orderby: "ID__DESC",
+        with_hashtag: true,
         take: 5
       },
       this.$route.query
