@@ -57,12 +57,14 @@ export default {
     {
       path: "deck-form",
       name: "DeckForm",
-      component: DeckForm
+      component: DeckForm,
+      meta: { accessibleTo: ["NORMAL"] }
     },
     {
       path: "user-index",
       name: "UserIndex",
-      component: UserIndex
+      component: UserIndex,
+      meta: { accessibleTo: ["NORMAL"] }
     }
   ]
 };

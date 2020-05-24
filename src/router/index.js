@@ -18,9 +18,9 @@ router.beforeEach((to, from, next) => {
     // You can use store variable here to access globalError or commit mutation
     const currentUser = store.getters.currentUser;
 
-    if (currentUser === undefined) {
+    if (currentUser === undefined || currentUser === null) {
       alert("로그인되어있지 않습니다.");
-      next(false);
+      next("/login-index");
       return;
     }
     if (to.meta.accessibleTo.includes(currentUser.role) === false) {

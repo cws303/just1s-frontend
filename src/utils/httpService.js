@@ -68,8 +68,8 @@ class APIProvider {
   }
 
   logout() {
-    store.commit("setAccessToken", "");
-    store.commit("setCurrentUser", undefined);
+    store.commit("setAccessToken", null);
+    store.commit("setCurrentUser", null);
     localStorage.setItem("accessToken", undefined);
     delete http.defaults.headers.common.Authorization;
   }

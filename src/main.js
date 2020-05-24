@@ -50,6 +50,9 @@ new Vue({
           store.commit("setAccessToken", existToken);
           store.commit("setCurrentUser", user);
         });
+    } else {
+      store.commit("setAccessToken", null);
+      store.commit("setCurrentUser", null);
     }
   }
 });

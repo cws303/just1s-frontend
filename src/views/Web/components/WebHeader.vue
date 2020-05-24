@@ -1,16 +1,15 @@
 <template>
   <header class="component-web-header">
     <b-navbar type="info" variant="info">
-      <b-navbar-nav class="ml-0" @click="goBack">
+      <!-- <b-navbar-nav class="ml-0" @click="goBack">
         <b-icon icon="arrow-left" variant="dark"></b-icon>
+      </b-navbar-nav>-->
+      <b-navbar-nav class="ml-auto" align="center" variant="light">
+        <b-navbar-brand to="/">듣고 맞춰보세요 - 단1초</b-navbar-brand>
       </b-navbar-nav>
-      <b-navbar-nav class="ml-auto" align="center" variant="light">듣고 맞춰보세요 - 단1초</b-navbar-nav>
       <b-navbar-nav class="ml-auto">
         <div v-if="currentUser">
-          <b-avatar :src="currentUser.imgUrl"></b-avatar>
-          <!-- <b-img width="24" height="24" style="border-radius:50%" :src="currentUser.imgUrl"></b-img> -->
-          <!-- <b-navbar-brand>{{ currentUser.name }}</b-navbar-brand> -->
-
+          <b-avatar to="/user-index" :src="currentUser.imgUrl"></b-avatar>
           <b-navbar-brand @click="logout()">로그아웃</b-navbar-brand>
         </div>
         <div v-if="!currentUser">
