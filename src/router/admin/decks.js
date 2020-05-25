@@ -1,5 +1,5 @@
 import AdminDeckList from "@/views/Admin/AdminDeckList/AdminDeckList";
-import AdminDeckDetail from "@/views/Admin/AdminDeckDetail/AdminDeckDetail";
+import AdminDeckForm from "@/views/Admin/AdminDeckForm/AdminDeckForm";
 import AdminDeckHashtagInlineForm from "@/views/Admin/AdminDeckHashtagInlineForm/AdminDeckHashtagInlineForm";
 import AdminDeckMusicInlineForm from "@/views/Admin/AdminDeckMusicInlineForm/AdminDeckMusicInlineForm";
 
@@ -13,12 +13,12 @@ const AdminDecksRoutes = [
   {
     path: "decks/add",
     name: "AdminDeckAdd",
-    component: AdminDeckDetail
+    component: AdminDeckForm
   },
   {
     path: "decks/edit/:id(\\d+)",
     name: "AdminDeckEdit",
-    component: AdminDeckDetail,
+    component: AdminDeckForm,
     meta: { tagview: "deck" }
   },
   {

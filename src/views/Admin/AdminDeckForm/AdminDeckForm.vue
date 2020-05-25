@@ -81,7 +81,7 @@
 </template>
 <script>
 export default {
-  name: "AdminDeckDetail",
+  name: "AdminDeckForm",
   data() {
     return {
       deck: {}

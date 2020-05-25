@@ -1,5 +1,5 @@
 import AdminUserList from "@/views/Admin/AdminUserList/AdminUserList";
-import AdminUserDetail from "@/views/Admin/AdminUserDetail/AdminUserDetail";
+import AdminUserForm from "@/views/Admin/AdminUserForm/AdminUserForm";
 
 const AdminUsersRoutes = [
   {
@@ -11,12 +11,12 @@ const AdminUsersRoutes = [
   {
     path: "users/add",
     name: "AdminUserAdd",
-    component: AdminUserDetail
+    component: AdminUserForm
   },
   {
     path: "users/edit/:id(\\d+)",
     name: "AdminUserEdit",
-    component: AdminUserDetail,
+    component: AdminUserForm,
     meta: { tagview: "user" }
   }
 ];

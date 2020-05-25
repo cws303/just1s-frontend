@@ -43,7 +43,7 @@
         <b-tr
           v-for="(deck, index) in decks"
           :key="index"
-          @click="goDetail(deck.id)"
+          @click="goForm(deck.id)"
           :style="{cursor:'pointer'}"
         >
           <b-td class="align-middle text-center">{{ deck.id }}</b-td>
@@ -60,7 +60,7 @@
               class="icon-delete align-middle text-center"
               icon="pencil"
               variant="success"
-              @click:stop="goDetail(deck.id)"
+              @click:stop="goForm(deck.id)"
             ></b-icon>
             <b-icon
               class="icon-delete align-middle text-center"
@@ -134,7 +134,7 @@ export default {
         });
       }
     },
-    goDetail(id) {
+    goForm(id) {
       this.$router.push({ name: "AdminDeckEdit", params: { id: id } });
     }
   }
