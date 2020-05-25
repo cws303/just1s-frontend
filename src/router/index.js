@@ -4,6 +4,7 @@ import AdminRoutes from "./admin";
 import Web from "./web/routes";
 import PageNotFound from "@/components/PageNotFound.vue";
 import { store } from "@/stores/index";
+import httpService from "@/utils/httpService";
 
 Vue.use(Router);
 const routes = [AdminRoutes, Web, { path: "*", component: PageNotFound }];
@@ -13,8 +14,10 @@ const router = new Router({
   routes
 });
 
-router.beforeEach((to, from, next) => {
+router.beforeEach(async (to, from, next) => {
   if (to.matched.some(record => record.meta.accessibleTo)) {
+    const existToken = localStorage.getItem("accessToken");
+    await httpService.checkToken(existToken);
     // You can use store variable here to access globalError or commit mutation
     const currentUser = store.getters.currentUser;
 

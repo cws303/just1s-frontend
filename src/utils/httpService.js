@@ -31,6 +31,43 @@ class APIProvider {
     }
   }
 
+  async checkToken(token) {
+    if (store.getters["isInitLoading"] === true) {
+      return Promise.resolve(null);
+    }
+
+    if (store.getters["currentUser"]) {
+      return Promise.resolve(true);
+    }
+    if (!token) {
+      store.commit("setAccessToken", null);
+      store.commit("setCurrentUser", null);
+      return Promise.resolve(false);
+    }
+    store.commit("setIsInitLoading", true);
+    let res;
+    try {
+      res = await this.get("/auth/whoami", {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      });
+    } finally {
+      store.commit("setIsInitLoading", false);
+    }
+
+    console.log("whoami end. set user");
+    const user = res.data;
+    if (user.id === undefined) {
+      localStorage.removeItem("accessToken");
+      // wrong token
+      return Promise.resolve(false);
+    }
+    store.commit("setAccessToken", token);
+    store.commit("setCurrentUser", user);
+    return Promise.resolve(true);
+  }
+
   async login(email, password) {
     try {
       const res = await this.post("auth/login", {

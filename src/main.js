@@ -34,27 +34,8 @@ new Vue({
   router,
   components: { App },
   template: "<App/>",
-  mounted() {
+  async beforeCreate() {
     const existToken = localStorage.getItem("accessToken");
-    if (existToken) {
-      this.$httpService
-        .get("/auth/whoami", {
-          headers: {
-            Authorization: `Bearer ${existToken}`
-          }
-        })
-        .then(res => {
-          const user = res.data;
-          if (user.id === undefined) {
-            localStorage.removeItem("accessToken");
-            return;
-          }
-          store.commit("setAccessToken", existToken);
-          store.commit("setCurrentUser", user);
-        });
-    } else {
-      store.commit("setAccessToken", null);
-      store.commit("setCurrentUser", null);
-    }
+    await this.$httpService.checkToken(existToken);
   }
 });
