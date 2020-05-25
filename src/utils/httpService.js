@@ -15,13 +15,12 @@ class APIProvider {
     const options = {
       baseURL: baseURLs[process.env.NODE_ENV],
       headers: {
-        "Access-Control-Allow-Origin": "*",
+        // "Access-Control-Allow-Origin": "*",
         "Access-Control-Allow-Methods": "GET, PUT, POST, DELETE, OPTIONS",
         "Access-Control-Allow-Headers":
           "Origin, Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers, Authorization",
-        "Content-Type": "application/json",
-        "Access-Control-Allow-Credentials": true,
-        "Access-Control-Max-Age": 86400
+        "Content-Type": "application/json"
+        // "Access-Control-Allow-Credentials": true,
       }
     };
 
