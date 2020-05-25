@@ -7,6 +7,10 @@ const baseURLs = {
   // development: "https://api.just1s.xyz",
   production: "https://api.just1s.xyz"
 };
+const allowHeaders = {
+  development: "https://localhost:8080",
+  production: "https://www.just1s.xyz"
+};
 
 let http = null; // not possible to create a private property in JavaScript, so we move it outside of the class, so that it's only accessible within this module
 
@@ -15,12 +19,12 @@ class APIProvider {
     const options = {
       baseURL: baseURLs[process.env.NODE_ENV],
       headers: {
-        // "Access-Control-Allow-Origin": "*",
+        "Access-Control-Allow-Origin": allowHeaders[process.env.NODE_ENV],
         "Access-Control-Allow-Methods": "GET, PUT, POST, DELETE, OPTIONS",
         "Access-Control-Allow-Headers":
           "Origin, Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers, Authorization",
-        "Content-Type": "application/json"
-        // "Access-Control-Allow-Credentials": true,
+        "Content-Type": "application/json",
+        "Access-Control-Allow-Credentials": true
       }
     };
 
