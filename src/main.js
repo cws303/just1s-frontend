@@ -39,7 +39,9 @@ new Vue({
     if (existToken) {
       this.$httpService
         .get("/auth/whoami", {
-          headers: { Authorization: `Bearer ${existToken}` }
+          headers: {
+            Authorization: `Bearer ${existToken}`
+          }
         })
         .then(res => {
           const user = res.data;

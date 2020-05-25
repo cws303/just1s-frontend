@@ -1,10 +1,11 @@
 import axios from "axios";
 import { store } from "@/stores/index";
+import * as querystring from "querystring";
 
 const baseURLs = {
   // local: "/api",
-  // development: "/api",
-  development: "https://api.just1s.xyz",
+  development: "/api",
+  // development: "https://api.just1s.xyz",
   production: "https://api.just1s.xyz"
 };
 
@@ -15,12 +16,7 @@ class APIProvider {
     const options = {
       baseURL: baseURLs[process.env.NODE_ENV],
       headers: {
-        // "Access-Control-Allow-Origin": "*",
-        // "Access-Control-Allow-Methods": "GET, PUT, POST, DELETE, OPTIONS",
-        // "Access-Control-Allow-Headers":
-        //   "Origin, Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers, Authorization",
         "Content-Type": "application/x-www-form-urlencoded"
-        // "Access-Control-Allow-Credentials": true
       }
     };
 
@@ -31,7 +27,7 @@ class APIProvider {
   loadAuthorizationTokenToHeader() {
     const accessToken = store.getters["accessToken"];
     if (accessToken != "") {
-      http.defaults.headers.common.Authorization = `Bearer ${accessToken}`;
+      // http.defaults.headers.common.Authorization = `Bearer ${accessToken}`;
     }
   }
 
@@ -54,7 +50,10 @@ class APIProvider {
 
   async snsLogin(profile) {
     try {
-      const res = await this.post("auth/sns_login", profile);
+      const res = await this.post(
+        "auth/sns_login",
+        querystring.stringify(profile)
+      );
       store.commit("setAccessToken", res.data.access_token);
       store.commit("setCurrentUser", res.data.user);
       localStorage.setItem("accessToken", res.data.access_token);
