@@ -59,16 +59,19 @@
           </b-col>
         </b-row>
       </b-card>
+      <b-card v-if="!deck.id || (deck.id && deck.deckMusics.length === 0)">새 음악 추가</b-card>
 
-      <b-card v-for="(deckMusic, index) in deck.deckMusics" :key="index">
-        {{ deckMusic.music.link }}
-        <br />
-        {{ deckMusic.music.artist }}
-        <br />
-        {{ deckMusic.music.title }}
-        <br />
-        {{ deckMusic.second }}
-      </b-card>
+      <b-card-group title="a">
+        <b-card v-for="(deckMusic, index) in deck.deckMusics" :key="index">
+          {{ deckMusic.music.link }}
+          <br />
+          {{ deckMusic.music.artist }}
+          <br />
+          {{ deckMusic.music.title }}
+          <br />
+          {{ deckMusic.second }}
+        </b-card>
+      </b-card-group>
       {{deck}}
       <b-row class="mt-3">
         <b-col cols="12">

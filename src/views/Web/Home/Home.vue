@@ -47,7 +47,7 @@ export default {
       {
         orderby: "ID__DESC",
         take: 5,
-        has_hashtag: 1
+        with_hashtag: 1
       },
       this.$route.query
     );
