@@ -1,6 +1,6 @@
 import axios from "axios";
 import { store } from "@/stores/index";
-import * as querystring from "querystring";
+import * as qs from "qs";
 
 const baseURLs = {
   // local: "/api",
@@ -50,10 +50,7 @@ class APIProvider {
 
   async snsLogin(profile) {
     try {
-      const res = await this.post(
-        "auth/sns_login",
-        querystring.stringify(profile)
-      );
+      const res = await this.post("auth/sns_login", qs.stringify(profile));
       store.commit("setAccessToken", res.data.access_token);
       store.commit("setCurrentUser", res.data.user);
       localStorage.setItem("accessToken", res.data.access_token);
@@ -77,11 +74,17 @@ class APIProvider {
   }
 
   post(url, params) {
-    return http.post(url, params);
+    return http.post(url, qs.stringify(params), {
+      headers: {
+        "Content-type": "application/x-www-form-urlencoded"
+      }
+    });
   }
 
   put(url, params) {
-    return http.put(url, params);
+    return http.put(url, qs.stringify(params), {
+      "Content-type": "application/x-www-form-urlencoded"
+    });
   }
 
   delete(url, params) {

@@ -7,8 +7,8 @@
         <b-form-input id="input-title" v-model="deck.title" required placeholder="Enter"></b-form-input>
       </b-form-group>
 
-      <b-form-group label="이미지 링크" label-for="input-img-url">
-        <b-form-input id="input-img-url" v-model="deck.imgUrl" placeholder="Enter"></b-form-input>
+      <b-form-group label="이미지 링크" label-for="input-rep-img-url">
+        <b-form-input id="input-rep-img-url" v-model="deck.repImgUrl" placeholder="Enter"></b-form-input>
       </b-form-group>
 
       <b-form-group label="문항 수" label-for="input-music-count">
@@ -18,24 +18,85 @@
         </b-button-group>
       </b-form-group>
 
-      <!-- <b-button @click="addMusic">음악 추가</b-button>
-      <b-card v-for="(music, index) in deck.musics" :key="index">
-        <b-form-group label="링크" label-for="input-music-link">
-          <b-form-input id="input-music-link" v-model="music.link" required placeholder="Enter"></b-form-input>
-        </b-form-group>
+      <b-button @click="addDeckMusic">음악 추가</b-button>
+      <!-- [{{deck.deckMusics}}] -->
+      <b-card v-for="(deckMusic, index) in deck.deckMusics" :key="index" title="음악" no-body>
+        <b-row>
+          <b-col md="6">
+            <b-card-body
+              :title="`Music #${index+1} [${deckMusic.music ? deckMusic.music.title+'-'+deckMusic.music.artist : '신규'}]`"
+            >
+              <div v-if="!deckMusic.id">
+                <b-form-group
+                  label="링크"
+                  label-for="input-deck-music-link"
+                  label-size="sm"
+                  label-align
+                >
+                  <b-form-input
+                    id="input-deck-music-link"
+                    v-model="deckMusic.link"
+                    required
+                    placeholder="Enter"
+                    size="sm"
+                  ></b-form-input>
+                </b-form-group>
 
-        <b-form-group label="아티스트" label-for="input-music-artist">
-          <b-form-input id="input-music-artist" v-model="music.artist" required placeholder="Enter"></b-form-input>
-        </b-form-group>
+                <b-form-group
+                  label="아티스트"
+                  label-for="input-deck-music-artist"
+                  label-size="sm"
+                  label-align
+                >
+                  <b-form-input
+                    id="input-deck-music-artist"
+                    v-model="deckMusic.artist"
+                    required
+                    placeholder="Enter"
+                    size="sm"
+                  ></b-form-input>
+                </b-form-group>
 
-        <b-form-group label="제목(정답)" label-for="input-music-title">
-          <b-form-input id="input-music-title" v-model="music.title" required placeholder="Enter"></b-form-input>
-        </b-form-group>
+                <b-form-group
+                  label="제목(정답)"
+                  label-for="input-deck-music-title"
+                  label-size="sm"
+                  label-align
+                >
+                  <b-form-input
+                    id="input-deck-music-title"
+                    v-model="deckMusic.title"
+                    required
+                    placeholder="Enter"
+                    size="sm"
+                  ></b-form-input>
+                </b-form-group>
+              </div>
 
-        <b-form-group label="시작(초)" label-for="input-music-second">
-          <b-form-input id="input-music-second" v-model="music.second" required placeholder="Enter"></b-form-input>
-        </b-form-group>
-      </b-card>-->
+              <div v-if="deckMusic.id">link : {{deckMusic.music.link}}</div>
+
+              <b-form-group
+                label="시작(초)"
+                label-for="input-deck-music-second"
+                label-size="sm"
+                label-align
+              >
+                <b-form-input
+                  id="input-deck-music-second"
+                  v-model="deckMusic.second"
+                  required
+                  placeholder="Enter"
+                  size="sm"
+                  type="number"
+                ></b-form-input>
+              </b-form-group>
+            </b-card-body>
+          </b-col>
+          <b-col md="6">
+            <!-- <b-card-img src="https://picsum.photos/400/400/?image=10" alt="Image" class="rounded-0"></b-card-img> -->
+          </b-col>
+        </b-row>
+      </b-card>
 
       <b-card title="해시태그">
         <b-card-text>클릭 시 삭제됩니다. 기존 해시태그는 저장해야 완전히 삭제됩니다.</b-card-text>
@@ -55,36 +116,25 @@
             <b-form-input v-model="newHashtag"></b-form-input>
           </b-col>
           <b-col cols="3">
-            <b-button variant="primary" @click="addNewHashtag()">추가</b-button>
+            <b-button variant="primary" @click="addHashtag()">추가</b-button>
           </b-col>
         </b-row>
       </b-card>
-      <b-card v-if="!deck.id || (deck.id && deck.deckMusics.length === 0)">새 음악 추가</b-card>
 
-      <b-card-group title="a">
-        <b-card v-for="(deckMusic, index) in deck.deckMusics" :key="index">
-          {{ deckMusic.music.link }}
-          <br />
-          {{ deckMusic.music.artist }}
-          <br />
-          {{ deckMusic.music.title }}
-          <br />
-          {{ deckMusic.second }}
-        </b-card>
-      </b-card-group>
-      {{deck}}
       <b-row class="mt-3">
         <b-col cols="12">
           <b-button type="submit" variant="primary">저장</b-button>
         </b-col>
       </b-row>
     </b-form>
+    {{deck}}
   </div>
 </template>
 
 <script>
 import * as axios from "axios";
 import { mapState } from "vuex";
+// import * as qs from "qs";
 export default {
   name: "DeckForm",
   data() {
@@ -92,8 +142,8 @@ export default {
       msg: "DeckForm",
       newHashtag: "",
       deck: {
-        // hashtags: [],
-        musics: []
+        hashtags: [],
+        deckMusics: []
       }
     };
   },
@@ -111,7 +161,7 @@ export default {
         this.deleteHashtag(index);
       }
     },
-    addNewHashtag() {
+    addHashtag() {
       const newHashtag = this.newHashtag;
       if (!newHashtag) {
         return;
@@ -131,6 +181,17 @@ export default {
     deleteHashtag(index) {
       this.deck.hashtags.splice(index, 1);
     },
+    addDeckMusic() {
+      this.deck.deckMusics.push({
+        link: "",
+        title: "",
+        artist: "",
+        second: 0
+      });
+    },
+    deleteDeckMusic(index) {
+      this.deck.deckMusics.splice(index, 1);
+    },
     async getOldOne(id) {
       const res = await this.$httpService.get("/decks/" + id);
       console.log(res);
@@ -148,18 +209,16 @@ export default {
 
       console.log(this.deck);
     },
-    addMusic() {
-      this.deck.musics.push({
-        link: "",
-        artist: "",
-        title: "",
-        second: 0
-      });
-    },
     async add() {
       this.deck.userId = this.currentUser.id;
 
-      const fieldsToAdd = ["title", "imgUrl", "hashtags", "musics"];
+      const fieldsToAdd = [
+        "userId",
+        "title",
+        "repImgUrl",
+        "hashtags",
+        "deckMusics"
+      ];
       const formData = Object.keys(this.deck).reduce((result, key) => {
         if (fieldsToAdd.includes(key)) {
           result[key] = this.deck[key];
@@ -168,12 +227,20 @@ export default {
       }, {});
       console.log("add");
       console.log(formData);
-      // const res = await this.$httpService.post("/decks", formData);
-      // alert("추가되었습니다.");
-      // this.$router.push({ name: "Home" });
+      // console.log(qs.stringify(formData));
+      const res = await this.$httpService.post("/decks", formData);
+      alert("추가되었습니다.");
+      this.$router.push({ name: "Home" });
     },
     async edit() {
-      const fieldsToEdit = ["id", "title", "imgUrl", "hashtags", "musics"];
+      const fieldsToEdit = [
+        "id",
+        "userId",
+        "title",
+        "repImgUrl",
+        "hashtags",
+        "deckMusics"
+      ];
       const formData = Object.keys(this.deck).reduce((result, key) => {
         if (fieldsToEdit.includes(key)) {
           result[key] = this.deck[key];
@@ -182,12 +249,12 @@ export default {
       }, {});
       console.log("edit");
       console.log(formData);
-      // const res = await this.$httpService.put(
-      //   "/decks/" + formData.id,
-      //   formData
-      // );
-      // alert("수정되었습니다.");
-      // this.$router.push({ name: "Home" });
+      const res = await this.$httpService.put(
+        "/decks/" + formData.id,
+        formData
+      );
+      alert("수정되었습니다.");
+      this.$router.push({ name: "Home" });
     },
     onSubmit(e) {
       e.preventDefault();
@@ -208,7 +275,7 @@ export default {
         // this.$router.push({ name: "DeckAdd" });
       });
     } else {
-      this.addMusic();
+      this.addDeckMusic();
     }
   },
   computed: mapState(["currentUser"])

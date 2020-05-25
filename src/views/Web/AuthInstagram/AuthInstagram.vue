@@ -26,12 +26,7 @@ export default {
         code: code.replace("#_", "")
       };
 
-      let form = new FormData();
-      for (let [key, value] of Object.entries(fields)) {
-        form.append(key, value);
-      }
-
-      const res = await axios.post(url, form, {
+      const res = await axios.post(url, fields, {
         "Content-Type": "application/x-www-form-urlencoded"
       });
       const getUserURL = `https://graph.instagram.com/me/media?fields=id,media_type,media_url,username,timestamp&access_token=${res.data.access_token}`;

@@ -2,10 +2,6 @@
   <div id="view-admin-deck-detail">
     <h1>덱 {{ deck.id ? `#${deck.id} 수정` : '추가'}}</h1>
     <b-form @submit="onSubmit" class="detail" v-cloak>
-      <!-- <b-form-group label="Id" label-for="input-id" v-if="deck.id">
-        <b-form-input id="input-id" v-model="deck.id" disabled placeholder="Id"></b-form-input>
-      </b-form-group>-->
-
       <b-form-group label="제목" label-for="input-title">
         <b-form-input id="input-title" v-model="deck.title" required placeholder="Enter"></b-form-input>
       </b-form-group>
@@ -61,18 +57,16 @@
       </b-row>
     </b-form>
 
-    <div v-if="deck.id">
-      <b-card class="mt-3" border-variant="dark">
-        <div slot="header">
-          <span>음악</span>
-          <b-button @click="goMusicInlineForm()" variant="danger" size="sm">관리</b-button>
-        </div>
-        <b-badge class="mr-2" v-for="(deckMusic, index) in deck.deckMusics" :key="index">
-          {{ deckMusic.music.title }} / {{ deckMusic.music.artist }} /
-          {{ deckMusic.second + "s" }}
-        </b-badge>
-      </b-card>
-    </div>
+    <b-card class="mt-3" border-variant="dark">
+      <div slot="header">
+        <span>음악</span>
+        <b-button @click="goMusicInlineForm()" variant="danger" size="sm">관리</b-button>
+      </div>
+      <b-badge class="mr-2" v-for="(deckMusic, index) in deck.deckMusics" :key="index">
+        {{ deckMusic.music.title }} / {{ deckMusic.music.artist }} /
+        {{ deckMusic.second + "s" }}
+      </b-badge>
+    </b-card>
 
     <b-card class="mt-3" header="debug">
       <pre style="font-size:9px" class="m-0">{{ deck }}</pre>
@@ -138,6 +132,14 @@ export default {
     },
     deleteHashtag(index) {
       this.deck.hashtags.splice(index, 1);
+    },
+    addDeckMusic() {
+      this.deck.deckMusics.push({
+        toDelete: false
+      });
+    },
+    deleteDeckMusic(index) {
+      this.deck.deckMusics.splice(index, 1);
     },
     goMusicInlineForm() {
       this.$router.push({
