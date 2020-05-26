@@ -1,7 +1,7 @@
 <template>
   <div id="view-deck-form">
     <h1>덱 {{ deck.id ? `#${deck.id} 수정` : '추가'}}</h1>
-    <h6>* 출제 후에는 문제를 수정할수 없어요. :(</h6>
+    <h6 style="color:#C60000">* 출제 후에는 문제를 수정할수 없어요. :(</h6>
     <b-form @submit="onSubmit" class="detail" v-cloak>
       <b-form-group label="제목" label-for="input-title">
         <b-form-input id="input-title" v-model="deck.title" required placeholder="Enter"></b-form-input>
@@ -38,13 +38,7 @@
                   </b-form-group>
 
                   <div v-if="deckMusic.key">
-                    <youtube
-                      :video-id="deckMusic.key"
-                      @ready="onReady(index, deckMusic.key)"
-                      width="240"
-                      height="160"
-                      ref="youtube"
-                    ></youtube>
+                    <youtube :video-id="deckMusic.key" width="240" height="160" ref="youtube"></youtube>
                     <b-button @click="captureSecond(index, deckMusic.key)">지금</b-button>
                   </div>
 
@@ -80,13 +74,7 @@
                 </div>
 
                 <div v-if="deckMusic.id">
-                  <youtube
-                    :video-id="deckMusic.music.key"
-                    @ready="onReady(index, deckMusic.music.key)"
-                    width="240"
-                    height="160"
-                    ref="youtube"
-                  ></youtube>
+                  <youtube :video-id="deckMusic.music.key" width="240" height="160" ref="youtube"></youtube>
                   <b-button @click="captureSecond(index, deckMusic.music.key)">지금</b-button>
                 </div>
 
@@ -175,7 +163,7 @@ export default {
       deckMusicCloned["key"] = key;
       this.$set(this.deck.deckMusics, index, deckMusicCloned);
     },
-    async onReady(index, videoId) {},
+
     async captureSecond(index, videoId) {
       const youtubeComponentByVideoId = this.$refs.youtube.find(
         youtubeComponent => {
