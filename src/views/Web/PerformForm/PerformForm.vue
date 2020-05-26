@@ -12,10 +12,32 @@
     </b-row>
     <b-row class="mt-3" v-if="deck.deckMusics && deck.deckMusics[currentIndex]">
       <b-col cols="12" align="center">
-        {{deck.deckMusics[currentIndex].music.link}}
+        정답 : {{deck.deckMusics[currentIndex].music.title}}
         <br />
-        {{deck.deckMusics[currentIndex].second}}초
-        {{deck.deckMusics[currentIndex].music.title}}/{{deck.deckMusics[currentIndex].music.artist}}
+        <youtube
+          :video-id="deck.deckMusics[currentIndex].music.key"
+          width="0"
+          height="0"
+          ref="youtube"
+          @playing="playing"
+          @paused="paused"
+          @ended="ended"
+          @buffering="buffering"
+        ></youtube>
+
+        <div style="height:30px">
+          <b-button variant="danger" v-show="currentMediaState != 'playing'" @click="playVideo">
+            <b-icon
+              class="icon-delete align-middle text-center"
+              :icon="currentMediaState == 'buffering' ? 'three-dots' : 'play-fill'"
+              variant="light"
+              @click:stop="goForm(deck.id)"
+            ></b-icon>
+          </b-button>
+        </div>
+
+        <!-- <div>현재 : {{ currentMediaState }}</div> -->
+        <br />
       </b-col>
     </b-row>
     <b-row>
@@ -43,6 +65,8 @@ export default {
   name: "PerformForm",
   data() {
     return {
+      videoId: "kxk8MOEmLEk",
+      currentMediaState: "",
       msg: "PerformForm",
       state: "ONGOING",
       // currentUser: {},
@@ -60,6 +84,40 @@ export default {
     };
   },
   methods: {
+    async playVideo() {
+      const deckMusic = this.deck.deckMusics[this.currentIndex];
+      console.log(deckMusic);
+      console.log(this.$refs.youtube.videoId);
+      console.log(this.$refs.youtube.player);
+      const player = this.$refs.youtube.player;
+
+      // TODO : second duration 비교 체크 후 이상하면 0으로
+      player.loadVideoById({
+        videoId: deckMusic.music.key,
+        startSeconds: deckMusic.second,
+        endSeconds: deckMusic.second + 1,
+        suggestedQuality: "small"
+      });
+      await player.unMute();
+      await player.setVolume(100);
+      await player.playVideo();
+    },
+    playing() {
+      console.log("playing", +new Date());
+      this.currentMediaState = "playing";
+    },
+    paused() {
+      console.log("paused", +new Date());
+      this.currentMediaState = "paused";
+    },
+    ended() {
+      console.log("ended", +new Date());
+      this.currentMediaState = "ended";
+    },
+    buffering() {
+      console.log("buffering", +new Date());
+      this.currentMediaState = "buffering";
+    },
     goResultIndex() {
       this.$router.push({ name: "ResultIndex" });
     },

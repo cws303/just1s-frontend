@@ -7,7 +7,16 @@
     </b-row>
     <b-row class="mt-3">
       <b-col cols="12" align="center">
-        <b-avatar src="https://placekitten.com/300/300" size="12rem"></b-avatar>
+        <b-img
+          :blank="deck.repImgUrl == ''"
+          height="200"
+          width="auto"
+          :center="true"
+          :src="deck.repImgUrl"
+          blank-color="gray"
+          alt="Image"
+          top
+        ></b-img>
       </b-col>
     </b-row>
     <b-row class="mt-3">
@@ -16,12 +25,17 @@
           v-for="(hashtag, _index) in deck.hashtags"
           :key="_index"
           class="mr-2"
-        >{{hashtag.hashtag}}</b-badge>
+        >#{{hashtag.hashtag}}</b-badge>
       </b-col>
     </b-row>
     <b-row class="mt-3">
       <b-col cols="12" align="center">
-        <b-button variant="primary" @click="goPerformForm">시작!</b-button>
+        <b-button
+          v-if="deck.deckMusics && deck.deckMusics.length > 0"
+          variant="primary"
+          @click="goPerformForm"
+        >시작!</b-button>
+        <span v-if="!deck.deckMusics || deck.deckMusics.length == 0">준비된 문제가 없습니다.</span>
       </b-col>
     </b-row>
     <b-row class="mt-3">

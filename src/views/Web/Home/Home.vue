@@ -3,33 +3,35 @@
     <b-card-group columns v-if="decks.length > 0">
       <b-card
         :title="deck.title"
-        img-src="https://placekitten.com/g/400/450"
-        img-alt="Image"
-        img-top
         v-for="(deck, index) in decks"
         :key="index"
         @click="goDetail(deck.id)"
       >
-        <b-card-text>
+        <b-img
+          :blank="deck.repImgUrl == ''"
+          height="200"
+          width="auto"
+          center="true"
+          :src="deck.repImgUrl"
+          blank-color="gray"
+          alt="Image"
+          top
+        ></b-img>
+        <b-card-text style="height:20px" class="mt-1">
           <b-badge
             v-for="(hashtag, _index) in deck.hashtags"
             :key="_index"
             class="mr-2"
-          >{{hashtag.hashtag}}</b-badge>
+          >#{{hashtag.hashtag}}</b-badge>
         </b-card-text>
         <b-card-footer>
           조회수 : {{ deck.hitsCount }}
           <div v-if="deck.user">출제자 : {{deck.user.name}}</div>
-          <b-button @click="goDeckEdit($event, deck.id)">edit_test</b-button>
+          <b-button @click="goDeckEdit($event, deck.id)">수정</b-button>
         </b-card-footer>
       </b-card>
-      <b-button to="/deck-add">test</b-button>
     </b-card-group>
-    <div v-if="decks.length == 0">
-      덱이 없습니다. :(
-      <br />
-      <b-button to="/deck-add">나만의 덱 만들기</b-button>
-    </div>
+    <div v-if="decks.length == 0">덱이 없습니다. :(</div>
   </div>
 </template>
 

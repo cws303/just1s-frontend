@@ -127,6 +127,16 @@ class APIProvider {
   delete(url, params) {
     return http.delete(url, params);
   }
+
+  imageUpload(file) {
+    const formData = new FormData();
+    formData.append("image", file);
+    return http.post("files/image?type=fake", formData, {
+      headers: {
+        "Content-Type": "multipart/form-data"
+      }
+    });
+  }
 }
 
 export default new APIProvider({});

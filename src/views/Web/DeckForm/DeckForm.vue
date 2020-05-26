@@ -7,8 +7,24 @@
         <b-form-input id="input-title" v-model="deck.title" required placeholder="Enter"></b-form-input>
       </b-form-group>
 
-      <b-form-group label="이미지 링크" label-for="input-rep-img-url">
-        <b-form-input id="input-rep-img-url" v-model="deck.repImgUrl" placeholder="Enter"></b-form-input>
+      <b-form-group label="대표 이미지">
+        <div class="ml-3 mr-3">
+          <b-row>
+            <b-col style="border:1px solid #ccc" class="p-3">
+              <b-form-file
+                v-model="tempFile"
+                placeholder="파일을 선택하거나 드래그앤드랍 해주세요"
+                drop-placeholder="여기 넣어주세요"
+                accept=".jpg, .png, .gif"
+              ></b-form-file>
+              <b-form-input id="input-temp-image" v-model="tempImage" placeholder="Enter"></b-form-input>
+            </b-col>
+            <b-col style="background-color:#ccc; position:relative" class="p-3">
+              <span style="font-size:9px; color:#555; position:absolute">{{deck.repImgUrl}}</span>
+              <b-img thumbnail height="100" width="100" :center="true" :src="deck.repImgUrl"></b-img>
+            </b-col>
+          </b-row>
+        </div>
       </b-form-group>
 
       <b-button @click="addDeckMusic" v-if="!deck.id">음악 추가</b-button>
@@ -115,7 +131,7 @@
           :variant="`${hashtag.id ? 'primary' : ''}`"
           @click="onClickHashtag(index)"
           v-bind:style="{ opacity: hashtag.toDelete ? '0.3' : '' }"
-        >{{hashtag.hashtag}}</b-badge>
+        >#{{hashtag.hashtag}}</b-badge>
         <br />
         <hr />
         <b-row>
@@ -134,7 +150,9 @@
         </b-col>
       </b-row>
     </b-form>
-    {{deck}}
+    <b-card class="mt-3" header="debug">
+      <pre style="font-size:9px" class="m-0">{{ deck }}</pre>
+    </b-card>
   </div>
 </template>
 
@@ -146,6 +164,8 @@ export default {
   data() {
     return {
       msg: "DeckForm",
+      tempFile: null,
+      tempImage: null,
       newHashtag: "",
       deck: {
         hashtags: [],
@@ -304,7 +324,6 @@ export default {
       }
     }
   },
-
   created() {
     const deckId = this.$route.params.id;
     if (deckId) {
@@ -317,7 +336,17 @@ export default {
       this.addDeckMusic();
     }
   },
-  computed: mapState(["currentUser"])
+  computed: mapState(["currentUser"]),
+  watch: {
+    async tempFile(file) {
+      const url = "www.google.com";
+      const result = await this.$httpService.imageUpload(file);
+      this.$set(this.deck, "repImgUrl", result.data.url);
+    },
+    tempImage(link) {
+      this.deck.repImgUrl = link;
+    }
+  }
 };
 </script>
 

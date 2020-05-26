@@ -9,6 +9,7 @@
       </b-navbar-nav>
       <b-navbar-nav class="ml-auto">
         <div v-if="currentUser">
+          <b-button to="/deck-add">새로운 덱</b-button>
           <b-avatar to="/user-index" :src="currentUser.imgUrl"></b-avatar>
           <b-navbar-brand @click="logout()">로그아웃</b-navbar-brand>
         </div>

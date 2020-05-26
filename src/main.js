@@ -20,7 +20,6 @@ Vue.use(require("vue-moment"), {
 });
 Vue.config.productionTip = false;
 
-// Vue.$httpService = httpService;
 Object.defineProperty(Vue.prototype, "$httpService", {
   get() {
     return httpService;
