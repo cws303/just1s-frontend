@@ -86,7 +86,8 @@ class APIProvider {
 
   async snsLogin(profile) {
     try {
-      const res = await this.post("auth/sns_login", qs.stringify(profile));
+      console.log(qs.stringify(profile));
+      const res = await this.post("auth/sns_login", profile);
       store.commit("setAccessToken", res.data.access_token);
       store.commit("setCurrentUser", res.data.user);
       localStorage.setItem("accessToken", res.data.access_token);

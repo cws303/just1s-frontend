@@ -62,10 +62,6 @@ export default {
           Kakao.API.request({
             url: "/v2/user/me",
             success: function(response) {
-              console.log(response.id);
-              console.log(response.properties.nickname);
-              console.log(response.properties.profile_image);
-
               const isSucceed = httpService
                 .snsLogin({
                   type: "KAKAO",
@@ -127,15 +123,6 @@ export default {
                     }
                     router.push({ name: "Home" });
                   });
-
-                console.log(profile.id);
-                console.log(profile.name);
-                console.log(profile.picture.data.url);
-                // /auth/facebook
-                // param = {
-                //   accessToken : response.authResponse.accessToken
-                //   profile: profile
-                // }
               }
             }
           );
