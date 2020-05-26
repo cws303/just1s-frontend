@@ -1,7 +1,7 @@
 <template>
   <div id="view-deck-form">
     <h1>덱 {{ deck.id ? `#${deck.id} 수정` : '추가'}}</h1>
-    <h6 style="color:#C60000">* 출제 후에는 문제를 수정할수 없어요. :(</h6>
+
     <b-form @submit="onSubmit" class="detail" v-cloak>
       <b-form-group label="제목" label-for="input-title">
         <b-form-input id="input-title" v-model="deck.title" required placeholder="Enter"></b-form-input>
@@ -11,11 +11,19 @@
         <b-form-input id="input-rep-img-url" v-model="deck.repImgUrl" placeholder="Enter"></b-form-input>
       </b-form-group>
 
-      <b-button @click="addDeckMusic">음악 추가</b-button>
-      <!-- [{{deck.deckMusics}}] -->
+      <b-button @click="addDeckMusic" v-if="!deck.id">음악 추가</b-button>
+      <h6 style="color:#C60000" v-if="deck.id">* 출제 후에는 문제를 추가/삭제할수 없어요. :(</h6>
       <b-row>
         <b-col lg="4" sm="6" v-for="(deckMusic, index) in deck.deckMusics" :key="index">
           <b-card title="음악" no-body class="mt-2">
+            <b-card-sub-title align="right" v-if="!deckMusic.id">
+              <b-icon
+                class="icon-delete align-middle text-center mt-3 mr-3"
+                icon="trash"
+                variant="danger"
+                @click="deleteDeckMusic(index)"
+              ></b-icon>
+            </b-card-sub-title>
             <b-row>
               <b-card-body
                 :title="`Music #${index+1} [${deckMusic.music ? deckMusic.music.title+'-'+deckMusic.music.artist : '신규'}]`"
@@ -97,7 +105,7 @@
         </b-col>
       </b-row>
 
-      <b-card title="해시태그">
+      <b-card title="해시태그" class="mt-3">
         <b-card-text>클릭 시 삭제됩니다. 기존 해시태그는 저장해야 완전히 삭제됩니다.</b-card-text>
         <b-badge
           class="ml-2"
@@ -112,7 +120,7 @@
         <hr />
         <b-row>
           <b-col cols="3">
-            <b-form-input v-model="newHashtag"></b-form-input>
+            <b-form-input v-model="newHashtag" v-on:keydown.enter.prevent="addHashtag()"></b-form-input>
           </b-col>
           <b-col cols="3">
             <b-button variant="primary" @click="addHashtag()">추가</b-button>
