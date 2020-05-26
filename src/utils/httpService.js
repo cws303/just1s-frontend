@@ -56,7 +56,6 @@ class APIProvider {
       store.commit("setIsInitLoading", false);
     }
 
-    console.log("whoami end. set user");
     const user = res.data;
     if (user.id === undefined) {
       localStorage.removeItem("accessToken");

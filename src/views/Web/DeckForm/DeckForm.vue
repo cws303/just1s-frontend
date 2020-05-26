@@ -11,92 +11,103 @@
         <b-form-input id="input-rep-img-url" v-model="deck.repImgUrl" placeholder="Enter"></b-form-input>
       </b-form-group>
 
-      <b-form-group label="문항 수" label-for="input-music-count">
-        <b-button-group size="sm">
-          <b-button>5</b-button>
-          <b-button>10</b-button>
-        </b-button-group>
-      </b-form-group>
-
       <b-button @click="addDeckMusic">음악 추가</b-button>
       <!-- [{{deck.deckMusics}}] -->
-      <b-card v-for="(deckMusic, index) in deck.deckMusics" :key="index" title="음악" no-body>
-        <b-row>
-          <b-col md="6">
-            <b-card-body
-              :title="`Music #${index+1} [${deckMusic.music ? deckMusic.music.title+'-'+deckMusic.music.artist : '신규'}]`"
-            >
-              <div v-if="!deckMusic.id">
-                <b-form-group
-                  label="링크"
-                  label-for="input-deck-music-link"
-                  label-size="sm"
-                  label-align
-                >
-                  <b-form-input
-                    id="input-deck-music-link"
-                    v-model="deckMusic.link"
-                    required
-                    placeholder="Enter"
-                    size="sm"
-                  ></b-form-input>
-                </b-form-group>
-
-                <b-form-group
-                  label="아티스트"
-                  label-for="input-deck-music-artist"
-                  label-size="sm"
-                  label-align
-                >
-                  <b-form-input
-                    id="input-deck-music-artist"
-                    v-model="deckMusic.artist"
-                    required
-                    placeholder="Enter"
-                    size="sm"
-                  ></b-form-input>
-                </b-form-group>
-
-                <b-form-group
-                  label="제목(정답)"
-                  label-for="input-deck-music-title"
-                  label-size="sm"
-                  label-align
-                >
-                  <b-form-input
-                    id="input-deck-music-title"
-                    v-model="deckMusic.title"
-                    required
-                    placeholder="Enter"
-                    size="sm"
-                  ></b-form-input>
-                </b-form-group>
-              </div>
-
-              <div v-if="deckMusic.id">link : {{deckMusic.music.link}}</div>
-
-              <b-form-group
-                label="시작(초)"
-                label-for="input-deck-music-second"
-                label-size="sm"
-                label-align
+      <b-row>
+        <b-col lg="4" sm="6" v-for="(deckMusic, index) in deck.deckMusics" :key="index">
+          <b-card title="음악" no-body class="mt-2">
+            <b-row>
+              <b-card-body
+                :title="`Music #${index+1} [${deckMusic.music ? deckMusic.music.title+'-'+deckMusic.music.artist : '신규'}]`"
               >
-                <b-form-input
-                  id="input-deck-music-second"
-                  v-model="deckMusic.second"
-                  required
-                  placeholder="Enter"
-                  size="sm"
-                  type="number"
-                ></b-form-input>
-              </b-form-group>
-            </b-card-body>
-          </b-col>
-          <b-col md="6">
-            <!-- <b-card-img src="https://picsum.photos/400/400/?image=10" alt="Image" class="rounded-0"></b-card-img> -->
-          </b-col>
-        </b-row>
-      </b-card>
+                <div v-if="!deckMusic.id">
+                  <b-form-group
+                    label="링크"
+                    label-for="input-deck-music-link"
+                    label-size="sm"
+                    label-align
+                  >
+                    <b-form-input
+                      id="input-deck-music-link"
+                      v-model="deckMusic.link"
+                      required
+                      placeholder="Enter"
+                      size="sm"
+                      @change="newMusicLinkChanged(index)"
+                    ></b-form-input>
+                  </b-form-group>
+
+                  <div v-if="deckMusic.key">
+                    <youtube
+                      :video-id="deckMusic.key"
+                      @ready="onReady(index, deckMusic.key)"
+                      width="240"
+                      height="160"
+                      ref="youtube"
+                    ></youtube>
+                    <b-button @click="captureSecond(index, deckMusic.key)">지금</b-button>
+                  </div>
+
+                  <b-form-group
+                    label="아티스트"
+                    label-for="input-deck-music-artist"
+                    label-size="sm"
+                    label-align
+                  >
+                    <b-form-input
+                      id="input-deck-music-artist"
+                      v-model="deckMusic.artist"
+                      required
+                      placeholder="Enter"
+                      size="sm"
+                    ></b-form-input>
+                  </b-form-group>
+
+                  <b-form-group
+                    label="제목(정답)"
+                    label-for="input-deck-music-title"
+                    label-size="sm"
+                    label-align
+                  >
+                    <b-form-input
+                      id="input-deck-music-title"
+                      v-model="deckMusic.title"
+                      required
+                      placeholder="Enter"
+                      size="sm"
+                    ></b-form-input>
+                  </b-form-group>
+                </div>
+
+                <div v-if="deckMusic.id">
+                  <youtube
+                    :video-id="deckMusic.music.key"
+                    @ready="onReady(index, deckMusic.music.key)"
+                    width="240"
+                    height="160"
+                    ref="youtube"
+                  ></youtube>
+                  <b-button @click="captureSecond(index, deckMusic.music.key)">지금</b-button>
+                </div>
+
+                <b-form-group
+                  label="시작(초)"
+                  label-for="input-deck-music-second"
+                  label-size="sm"
+                  label-align
+                >
+                  <b-form-spinbutton
+                    id="input-deck-music-second"
+                    v-model="deckMusic.second"
+                    min="0"
+                    max="1000"
+                  ></b-form-spinbutton>
+                </b-form-group>
+              </b-card-body>
+            </b-row>
+          </b-card>
+        </b-col>
+      </b-row>
 
       <b-card title="해시태그">
         <b-card-text>클릭 시 삭제됩니다. 기존 해시태그는 저장해야 완전히 삭제됩니다.</b-card-text>
@@ -134,7 +145,6 @@
 <script>
 import * as axios from "axios";
 import { mapState } from "vuex";
-// import * as qs from "qs";
 export default {
   name: "DeckForm",
   data() {
@@ -148,9 +158,44 @@ export default {
     };
   },
   methods: {
+    newMusicLinkChanged(index) {
+      const changedLink = this.deck.deckMusics[index].link;
+      console.log(changedLink);
+
+      const youtubeLinkRegex = /http(?:s?):\/\/(?:www\.)?youtu(?:be\.com\/watch\?v=|\.be\/)([\w\-\_]*)(&(amp;)?‌​[\w\?‌​=]*)?/;
+      if (!changedLink.match(youtubeLinkRegex)) {
+        console.log("잘못된 URL");
+        return;
+      }
+
+      const key = changedLink.match(youtubeLinkRegex)[1];
+      const deckMusicCloned = JSON.parse(
+        JSON.stringify(this.deck.deckMusics[index])
+      );
+      deckMusicCloned["key"] = key;
+      this.$set(this.deck.deckMusics, index, deckMusicCloned);
+    },
+    async onReady(index, videoId) {},
+    async captureSecond(index, videoId) {
+      const youtubeComponentByVideoId = this.$refs.youtube.find(
+        youtubeComponent => {
+          return youtubeComponent.videoId == videoId;
+        }
+      );
+      if (!youtubeComponentByVideoId) {
+        console.log("플레이어 찾을 수 없음");
+        return;
+      }
+      const player = youtubeComponentByVideoId.player;
+      const currentTime = await player.getCurrentTime();
+      const deckMusicCloned = JSON.parse(
+        JSON.stringify(this.deck.deckMusics[index])
+      );
+      deckMusicCloned.second = parseInt(currentTime);
+      this.$set(this.deck.deckMusics, index, deckMusicCloned);
+    },
     onClickHashtag(index) {
       const hashtag = this.deck.hashtags[index];
-
       if (hashtag.id) {
         this.$set(this.deck.hashtags, index, {
           id: this.deck.hashtags[index].id,
@@ -199,9 +244,7 @@ export default {
         throw Error();
       }
       this.deck = res.data;
-
       this.deck.userId = this.deck.user ? this.deck.user.id : undefined;
-
       this.deck.hashtags = this.deck.hashtags.map(hashtag => {
         hashtag.toDelete = false;
         return hashtag;
