@@ -51,10 +51,10 @@
         <br />
 
         <b-button v-if="currentIndex+1 < deck.deckMusics.length" @click="goNextStep">다음</b-button>
-        <b-button v-if="currentIndex+1 >= deck.deckMusics.length" @click="goResultIndex">결과보기</b-button>
+        <b-button v-if="currentIndex+1 >= deck.deckMusics.length" @click="submitAll">결과보기</b-button>
       </b-col>
     </b-row>
-    {{ performDto }}
+    <pre>{{ performDto }}</pre>
   </div>
 </template>
 
@@ -103,28 +103,36 @@ export default {
       await player.playVideo();
     },
     playing() {
-      console.log("playing", +new Date());
       this.currentMediaState = "playing";
     },
     paused() {
-      console.log("paused", +new Date());
       this.currentMediaState = "paused";
     },
     ended() {
-      console.log("ended", +new Date());
       this.currentMediaState = "ended";
     },
     buffering() {
-      console.log("buffering", +new Date());
       this.currentMediaState = "buffering";
     },
-    goResultIndex() {
-      this.$router.push({ name: "ResultIndex" });
-    },
-    submitAll() {
+    async submitAll() {
       console.log("submitAll");
-      this.performDto.userId = this.currentUser.id;
+      if (this.currentUser) {
+        this.performDto.userId = this.currentUser.id;
+      }
+
       this.performDto.deckId = this.deck.id;
+      const res = await this.$httpService.post(
+        "decks/perform",
+        this.performDto
+      );
+      console.log(res);
+      if (res.status != 201) {
+        alert("제출 과정에 문제가 있습니다.");
+        reutrn;
+      }
+
+      // perform's id
+      this.$router.push({ name: "PerformDetail", params: { id: res.data.id } });
     },
     passOne() {
       this._submitOne("");

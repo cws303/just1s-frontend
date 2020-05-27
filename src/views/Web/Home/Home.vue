@@ -11,7 +11,7 @@
           :blank="deck.repImgUrl == ''"
           height="200"
           width="auto"
-          center="true"
+          :center="true"
           :src="deck.repImgUrl"
           blank-color="gray"
           alt="Image"

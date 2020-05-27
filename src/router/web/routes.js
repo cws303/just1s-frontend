@@ -3,7 +3,7 @@ import LoginIndex from "@/views/Web/LoginIndex/LoginIndex";
 import DeckDetail from "@/views/Web/DeckDetail/DeckDetail";
 import PerformForm from "@/views/Web/PerformForm/PerformForm";
 import AnswerIndex from "@/views/Web/AnswerIndex/AnswerIndex";
-import ResultIndex from "@/views/Web/ResultIndex/ResultIndex";
+import PerformDetail from "@/views/Web/PerformDetail/PerformDetail";
 import DeckForm from "@/views/Web/DeckForm/DeckForm";
 import UserIndex from "@/views/Web/UserIndex/UserIndex";
 import Practice from "@/views/Web/Practice/Practice";
@@ -35,12 +35,12 @@ export default {
       component: LoginIndex
     },
     {
-      path: "deck-detail/:id",
+      path: "deck-detail/:id(\\d+)",
       name: "DeckDetail",
       component: DeckDetail
     },
     {
-      path: "perform-form/:id",
+      path: "perform-form/:id(\\d+)",
       name: "PerformForm",
       component: PerformForm
     },
@@ -50,9 +50,9 @@ export default {
       component: AnswerIndex
     },
     {
-      path: "result-index",
-      name: "ResultIndex",
-      component: ResultIndex
+      path: "perform-detail/:id(\\d+)",
+      name: "PerformDetail",
+      component: PerformDetail
     },
     {
       path: "deck-add",
@@ -61,7 +61,7 @@ export default {
       meta: { accessibleTo: ["NORMAL"] }
     },
     {
-      path: "deck-edit/:id",
+      path: "deck-edit/:id(\\d+)",
       name: "DeckEdit",
       component: DeckForm,
       meta: { accessibleTo: ["NORMAL"] }
