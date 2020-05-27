@@ -34,7 +34,6 @@ new Vue({
   components: { App },
   template: "<App/>",
   async beforeCreate() {
-    const existToken = localStorage.getItem("accessToken");
-    await this.$httpService.checkToken(existToken);
+    await this.$httpService.checkToken();
   }
 });
