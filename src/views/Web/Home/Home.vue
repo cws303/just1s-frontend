@@ -127,14 +127,10 @@ export default {
         query[key] === undefined || query[key] === "" ? delete query[key] : {}
       );
 
-      return this.$httpService
-        .get("/decks", {
-          params: query
-        })
-        .then(res => {
-          this.decks = res.data.decks;
-          this.totalCount = res.data.totalCount;
-        });
+      return this.$httpService.get("/decks", query).then(res => {
+        this.decks = res.data.decks;
+        this.totalCount = res.data.totalCount;
+      });
     },
     goDetail(id) {
       this.$router.push({ name: "DeckDetail", params: { id: id } });
