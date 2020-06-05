@@ -1,5 +1,5 @@
-import Vue from 'vue'
-import VueRouter, { RouteConfig } from 'vue-router'
+import Vue from "vue";
+import VueRouter, { RouteConfig } from "vue-router";
 import Admin from "./admin/index";
 import Web from "./web/routes";
 import PageNotFound from "@/components/PageNotFound.vue";
@@ -7,15 +7,18 @@ import { store } from "@/store/index";
 import httpService from "@/utils/httpService";
 // import httpServicePlugin from "@/utils/httpServicePlugin";
 
+Vue.use(VueRouter);
 
-Vue.use(VueRouter)
-
-const routes: Array<RouteConfig> = [Web, Admin, { path: "*", component: PageNotFound }];
+const routes: Array<RouteConfig> = [
+  Web,
+  Admin,
+  { path: "*", component: PageNotFound }
+];
 const router = new VueRouter({
-  mode: 'history',
+  mode: "history",
   base: process.env.BASE_URL,
   routes
-})
+});
 
 router.beforeEach(async (to, from, next) => {
   if (to.matched.some(record => record.meta.accessibleTo)) {
@@ -40,4 +43,4 @@ router.beforeEach(async (to, from, next) => {
   }
 });
 
-export default router
+export default router;

@@ -2,7 +2,9 @@
   <div id="view-perform-form">
     <b-row class="mt-3">
       <b-col cols="12" align="center">
-        <h1>맞춰보세요ㅎ ({{currentIndex+1}} / {{deck.deckMusics.length}})</h1>
+        <h1>
+          맞춰보세요ㅎ ({{ currentIndex + 1 }} / {{ deck.deckMusics.length }})
+        </h1>
       </b-col>
     </b-row>
     <b-row class="mt-3">
@@ -12,9 +14,9 @@
     </b-row>
     <b-row class="mt-3" v-if="deck.deckMusics && deck.deckMusics[currentIndex]">
       <b-col cols="12" align="center">
-        정답 : {{deck.deckMusics[currentIndex].music.title}}
+        정답 : {{ deck.deckMusics[currentIndex].music.title }}
         <br />
-        <youtube
+        <youtube-player
           :video-id="deck.deckMusics[currentIndex].music.key"
           width="0"
           height="0"
@@ -23,13 +25,19 @@
           @paused="paused"
           @ended="ended"
           @buffering="buffering"
-        ></youtube>
+        ></youtube-player>
 
         <div style="height:30px">
-          <b-button variant="danger" v-show="currentMediaState != 'playing'" @click="playVideo">
+          <b-button
+            variant="danger"
+            v-show="currentMediaState != 'playing'"
+            @click="playVideo"
+          >
             <b-icon
               class="icon-delete align-middle text-center"
-              :icon="currentMediaState == 'buffering' ? 'three-dots' : 'play-fill'"
+              :icon="
+                currentMediaState == 'buffering' ? 'three-dots' : 'play-fill'
+              "
               variant="light"
               @click:stop="goForm(deck.id)"
             ></b-icon>
@@ -41,17 +49,33 @@
       </b-col>
     </b-row>
     <b-row>
-      <b-col cols="12" align="center" align-self="end" v-if="state == 'ONGOING'">
-        <b-form-input v-model="currentAnswer" placeholder="Enter your name"></b-form-input>
+      <b-col
+        cols="12"
+        align="center"
+        align-self="end"
+        v-if="state == 'ONGOING'"
+      >
+        <b-form-input
+          v-model="currentAnswer"
+          placeholder="Enter your name"
+        ></b-form-input>
         <b-button variant="primary" @click="submitOne">제출!</b-button>
         <b-button @click="passOne">모르겠음..</b-button>
       </b-col>
       <b-col cols="12" align="center" align-self="end" v-if="state == 'RESULT'">
-        {{currentAnswerIsCorrect? '맞음': "틀림ㅠ"}}
+        {{ currentAnswerIsCorrect ? "맞음" : "틀림ㅠ" }}
         <br />
 
-        <b-button v-if="currentIndex+1 < deck.deckMusics.length" @click="goNextStep">다음</b-button>
-        <b-button v-if="currentIndex+1 >= deck.deckMusics.length" @click="submitAll">결과보기</b-button>
+        <b-button
+          v-if="currentIndex + 1 < deck.deckMusics.length"
+          @click="goNextStep"
+          >다음</b-button
+        >
+        <b-button
+          v-if="currentIndex + 1 >= deck.deckMusics.length"
+          @click="submitAll"
+          >결과보기</b-button
+        >
       </b-col>
     </b-row>
     <pre>{{ performDto }}</pre>
