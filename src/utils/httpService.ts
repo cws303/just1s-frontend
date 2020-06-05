@@ -4,7 +4,7 @@ import * as qs from "qs";
 
 const baseURLs:any = {
   // local: "/api",
-  local: "https://localhost:3000",
+  local: "/api",
   development: "https://api.just1s.xyz",
   production: "https://api.just1s.xyz"
 };

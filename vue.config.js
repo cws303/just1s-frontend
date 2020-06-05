@@ -22,5 +22,13 @@ module.exports = {
         }
       ])
     ]
+  },
+  devServer: {
+    proxy: {
+        '/api': {
+            target: 'https://localhost:3000' // 개발서버
+        }
+    },
+    https: true
   }
 }

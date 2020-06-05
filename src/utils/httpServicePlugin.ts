@@ -7,7 +7,7 @@ import _Vue from "vue";
 
 const baseURLs:any = {
   // local: "/api",
-  local: "http://localhost:3000",
+  local: "/api",
   development: "https://api.just1s.xyz",
   production: "https://api.just1s.xyz"
 };
