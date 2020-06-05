@@ -143,6 +143,7 @@ export default {
   #view-home {
     width: 100%;
     height: 100%;
+    
     .deck-list {
       margin-top: 150px;
       background-color:rgba( 255, 255, 255, 0 ) !important;

@@ -11,6 +11,7 @@
   },
   "dependencies": {
     "@types/qs": "^6.9.3",
+    "@vue/babel-helper-vue-jsx-merge-props": "^1.0.0",
     "bootstrap": "^4.5.0",
     "bootstrap-vue": "^2.15.0",
     "core-js": "^3.6.5",
@@ -36,6 +37,8 @@
     "geckodriver": "^1.19.1",
     "moment": "^2.26.0",
     "node-sass": "^4.12.0",
+    "postcss-import": "^12.0.1",
+    "postcss-url": "^8.0.0",
     "sass": "^1.19.0",
     "sass-loader": "^8.0.2",
     "typescript": "~3.9.3",
