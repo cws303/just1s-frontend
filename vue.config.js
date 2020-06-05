@@ -1,10 +1,8 @@
-const CopyWebpackPlugin = require('copy-webpack-plugin')
+const CopyWebpackPlugin = require("copy-webpack-plugin");
 const path = require("path");
 
 module.exports = {
-  "transpileDependencies": [
-    "vuetify"
-  ],
+  transpileDependencies: ["vuetify"],
   css: {
     loaderOptions: {
       scss: {
@@ -16,19 +14,23 @@ module.exports = {
     plugins: [
       new CopyWebpackPlugin([
         {
-          from: path.resolve(__dirname, './static'),
+          from: path.resolve(__dirname, "./static"),
           to: "static",
-          ignore: ['.*']
+          ignore: [".*"]
         }
       ])
     ]
   },
   devServer: {
     proxy: {
-        '/api': {
-            target: 'https://localhost:3000' // 개발서버
+      "/api/*": {
+        target: "http://localhost:3000",
+        changeOrigin: true,
+        pathRewrite: {
+          "^/api": "/"
         }
+      }
     },
     https: true
   }
-}
+};
