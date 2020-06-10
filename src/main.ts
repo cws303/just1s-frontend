@@ -25,6 +25,9 @@ Vue.use(require("vue-moment"), {
 import YoutubePlayerPlugin from "@/plugins/youtubePlayerPlugin";
 Vue.use(YoutubePlayerPlugin);
 
+import VueCookies from "vue-cookies";
+Vue.use(VueCookies);
+
 Vue.config.productionTip = false;
 
 declare module "vue/types/vue" {
@@ -45,7 +48,7 @@ new Vue({
   store,
   vuetify,
   async beforeCreate() {
-    const existToken = localStorage.getItem("accessToken");
+    const existToken = this.$cookies.get("accessToken");
     await this.$httpService.checkToken(existToken);
   },
   render: h => h(App)

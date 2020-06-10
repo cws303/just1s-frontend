@@ -1,56 +1,55 @@
 import axios from "axios";
-import {AxiosInstance} from "axios";
+import { AxiosInstance } from "axios";
 import { store } from "@/store";
 import * as qs from "qs";
 import _Vue from "vue";
 
-
-const baseURLs:any = {
+const baseURLs: any = {
   // local: "/api",
   local: "/api",
   development: "https://api.just1s.xyz",
   production: "https://api.just1s.xyz"
 };
 
-let http:AxiosInstance; // not possible to create a private property in JavaScript, so we move it outside of the class, so that it's only accessible within this module
+let http: AxiosInstance; // not possible to create a private property in JavaScript, so we move it outside of the class, so that it's only accessible within this module
 
 const httpService = {
   // The install method is all that needs to exist on the plugin object.
   // It takes the global Vue object as well as user-defined options.
   install(Vue: typeof _Vue, options?: any) {
     // We call Vue.mixin() here to inject functionality into all components.
-      Vue.mixin({
+    Vue.mixin({
       // Anything added to a mixin will be injected into all components.
       // In this case, the mounted() method runs when the component is added to the DOM.
-        mounted: function() {
-          // console.log('Mounted!');
-          const options = {
-            baseURL: baseURLs[process.env.NODE_ENV],
-            headers: {
-              "Content-Type": "application/x-www-form-urlencoded"
-            }
-          };      
-          http = axios.create(options);
-          // this.loadAuthorizationTokenToHeader();
-          const accessToken = store.getters["accessToken"];
-        },
+      mounted: function() {
+        // console.log('Mounted!');
+        const options = {
+          baseURL: baseURLs[process.env.NODE_ENV],
+          headers: {
+            "Content-Type": "application/x-www-form-urlencoded"
+          }
+        };
+        http = axios.create(options);
+        // this.loadAuthorizationTokenToHeader();
+        const accessToken = store.getters["accessToken"];
+      }
 
-        // methods: () => {
-        //   loadAuthorizationTokenToHeader() {
-        //     const accessToken = store.getters["accessToken"];
-        //     if (accessToken != "") {
-        //       // http.defaults.headers.common.Authorization = `Bearer ${accessToken}`;
-        //     }
-        //   }
-        // }
+      // methods: () => {
+      //   loadAuthorizationTokenToHeader() {
+      //     const accessToken = store.getters["accessToken"];
+      //     if (accessToken != "") {
+      //       // http.defaults.headers.common.Authorization = `Bearer ${accessToken}`;
+      //     }
+      //   }
+      // }
     });
 
     Vue.prototype.$httpService = {
-      async checkToken(token:any) {
+      async checkToken(token: any) {
         if (store.getters["isInitLoading"] === true) {
           return Promise.resolve(null);
         }
-    
+
         if (store.getters["currentUser"]) {
           return Promise.resolve(true);
         }
@@ -62,15 +61,40 @@ const httpService = {
         store.commit("setIsInitLoading", true);
         let res;
         try {
-          res = await this.get("/auth/whoami", {
+          res = await axios.get("/auth/whoami", {
+            baseURL: baseURLs[process.env.NODE_ENV],
             headers: {
               Authorization: `Bearer ${token}`
             }
           });
+        } catch (error) {
+          if (error.response?.status == 401) {
+            console.log("토큰 만료 refresh 요청 시작");
+            const refreshToken = this.$cookies.get("refreshToken");
+            console.log("ref", refreshToken);
+            if (refreshToken && refreshToken !== "") {
+              res = await axios.post("/auth/refresh", {
+                baseURL: baseURLs[process.env.NODE_ENV],
+                params: {
+                  token: localStorage.getItem("refreshToken")
+                }
+              });
+              console.log(res);
+            }
+          } else {
+            console.log("Error", error.message);
+
+            return Promise.resolve(false);
+          }
         } finally {
           store.commit("setIsInitLoading", false);
         }
-    
+
+        if (res === undefined) {
+          console.error("기존 유저 조회 실패");
+          return Promise.resolve(false);
+        }
+
         const user = res.data;
         if (user.id === undefined) {
           localStorage.removeItem("accessToken");
@@ -81,8 +105,8 @@ const httpService = {
         store.commit("setCurrentUser", user);
         return Promise.resolve(true);
       },
-    
-      async login(email:any, password:any) {
+
+      async login(email: any, password: any) {
         try {
           const res = await this.post("auth/login", {
             email: email,
@@ -98,8 +122,8 @@ const httpService = {
           return false;
         }
       },
-    
-      async snsLogin(profile:any) {
+
+      async snsLogin(profile: any) {
         try {
           console.log(qs.stringify(profile));
           const res = await this.post("auth/sns_login", profile);
@@ -113,15 +137,15 @@ const httpService = {
           return false;
         }
       },
-    
+
       logout() {
         store.commit("setAccessToken", null);
         store.commit("setCurrentUser", null);
-        localStorage.setItem("accessToken", '');
+        localStorage.setItem("accessToken", "");
         delete http.defaults.headers.common.Authorization;
       },
-    
-      get(url:any, params:any) {
+
+      get(url: any, params: any) {
         const options = {
           baseURL: baseURLs[process.env.NODE_ENV],
           headers: {
@@ -131,8 +155,8 @@ const httpService = {
         http = axios.create(options);
         return http.get(url, params);
       },
-    
-      post(url:any, params:any) {
+
+      post(url: any, params: any) {
         const options = {
           baseURL: baseURLs[process.env.NODE_ENV],
           headers: {
@@ -146,8 +170,8 @@ const httpService = {
           }
         });
       },
-    
-      put(url:any, params:any) {
+
+      put(url: any, params: any) {
         const options = {
           baseURL: baseURLs[process.env.NODE_ENV],
           headers: {
@@ -161,8 +185,8 @@ const httpService = {
           }
         });
       },
-    
-      delete(url:any, params:any) {
+
+      delete(url: any, params: any) {
         const options = {
           baseURL: baseURLs[process.env.NODE_ENV],
           headers: {
@@ -172,8 +196,8 @@ const httpService = {
         http = axios.create(options);
         return http.delete(url, params);
       },
-    
-      imageUpload(file:any) {
+
+      imageUpload(file: any) {
         const formData = new FormData();
         formData.append("image", file);
         const options = {
@@ -196,9 +220,7 @@ const httpService = {
         }
       }
     };
-  },
+  }
 };
 
 export default httpService;
-
-

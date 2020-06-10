@@ -5,9 +5,7 @@ import YoutubePlayer from "@/components/YoutubePlayer.vue";
 const youtubePlayer = {
   install(Vue: typeof _Vue, options?: any) {
     Vue.mixin({
-      mounted: function() {
-        console.log("moutned !!");
-      }
+      mounted: function() {}
     });
 
     Vue.prototype.$youtube = {

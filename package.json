@@ -18,6 +18,7 @@
     "get-youtube-id": "^1.0.1",
     "vue": "^2.6.11",
     "vue-class-component": "^7.2.3",
+    "vue-cookies": "^1.7.0",
     "vue-property-decorator": "^8.4.2",
     "vue-router": "^3.2.0",
     "vue-youtube": "^1.4.0",
