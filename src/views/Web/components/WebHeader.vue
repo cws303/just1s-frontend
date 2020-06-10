@@ -6,7 +6,7 @@
       <div v-if="currentUser">
         <v-btn to="/deck-add">새로운 덱</v-btn>
         <v-avatar to="/user-index">
-          <img :src="currentUser.imgUrl">
+          <img :src="currentUser.imgUrl" />
         </v-avatar>
         <v-btn @click="logout()">로그아웃</v-btn>
       </div>
@@ -31,10 +31,12 @@ export default {
     login() {
       this.$router.push({ name: "LoginIndex" });
     },
-    logout() {
-      alert("로그아웃되었습니다.");
-      this.$httpService.logout();
-      this.$router.push({ name: "Home" });
+    async logout() {
+      await this.$httpService.logout();
+      if (this.$router.currentRoute.name != "Home") {
+        this.$router.push({ name: "Home" });
+      }
+      window.alert("로그아웃되었습니다.");
     }
   },
   computed: mapState(["currentUser"])
@@ -42,7 +44,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-  .topbar {
-    background-color: rgba( 255, 255, 255, 0 ) !important;
-  }
+.topbar {
+  background-color: rgba(255, 255, 255, 0) !important;
+}
 </style>

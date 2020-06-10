@@ -4,8 +4,6 @@ import Admin from "./admin/index";
 import Web from "./web/routes";
 import PageNotFound from "@/components/PageNotFound.vue";
 import { store } from "@/store/index";
-// import httpService from "@/utils/httpService";
-// import httpServicePlugin from "@/utils/httpServicePlugin";
 
 Vue.use(VueRouter);
 
@@ -22,8 +20,7 @@ const router = new VueRouter({
 
 router.beforeEach(async (to, from, next) => {
   if (to.matched.some(record => record.meta.accessibleTo)) {
-    const existToken = router.app.$cookies.get("accessToken");
-    await router.app.$httpService.checkToken(existToken);
+    await router.app.$httpService.checkToken();
     // You can use store variable here to access globalError or commit mutation
     const currentUser = store.getters.currentUser;
 

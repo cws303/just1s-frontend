@@ -30,51 +30,31 @@
           <b-button @click="goDeckEdit($event, deck.id)">수정</b-button>
         </b-card-footer>
       </b-card>
-    </b-card-group> -->
-    <v-sheet
-      class="deck-list"
-      v-if="decks.length > 0"
-    >
-      <v-slide-group
-        v-model="decks"
-        class="deck-slide-group"
-      >
-        <v-slide-item
-          v-for="(deck,index) in decks"
-          :key="index"
-          class="deck-slide"
-        >
-          <v-card
-            class="ma-4"
-            height="450"
-            width="250"
-            elevation="8"
-            @click="goDetail(deck.id)"
-          >
-          <v-img
-            class="white--text align-end"
-            height="200px"
-            :src="deck.repImgUrl"
-          >
-          </v-img>
-          <v-card-subtitle class="pb-0">{{deck.title}}</v-card-subtitle>
+    </b-card-group>-->
+    <v-sheet class="deck-list" v-if="decks.length > 0">
+      <v-slide-group v-model="decks" class="deck-slide-group">
+        <v-slide-item v-for="(deck,index) in decks" :key="index" class="deck-slide">
+          <v-card class="ma-4" height="450" width="250" elevation="8" @click="goDetail(deck.id)">
+            <v-img class="white--text align-end" height="200px" :src="deck.repImgUrl"></v-img>
+            <v-card-subtitle class="pb-0">{{deck.title}}</v-card-subtitle>
 
-          <v-card-text class="text--primary">
-            <!-- <div>출제자 : {{ deck.user.name }}</div> -->
-            <div>조회수 : {{ deck.hitsCount }}</div>
-            <br><br>
-            <div>
-              <v-chip
-                v-for="(hashtag, _index) in deck.hashtags"
-                :key="_index"
-                x-small
-              > #{{hashtag.hashtag}} </v-chip>
-            </div>
-          </v-card-text>
-          <v-card-actions>
-            <v-spacer></v-spacer>
-            <v-btn @click="goDeckEdit($event, deck.id)">수정</v-btn>
-          </v-card-actions>
+            <v-card-text class="text--primary">
+              <!-- <div>출제자 : {{ deck.user.name }}</div> -->
+              <div>조회수 : {{ deck.hitsCount }}</div>
+              <br />
+              <br />
+              <div>
+                <v-chip
+                  v-for="(hashtag, _index) in deck.hashtags"
+                  :key="_index"
+                  x-small
+                >#{{hashtag.hashtag}}</v-chip>
+              </div>
+            </v-card-text>
+            <v-card-actions>
+              <v-spacer></v-spacer>
+              <v-btn v-if="deck.performs.length > 0" @click="goDeckEdit($event, deck.id)">수정</v-btn>
+            </v-card-actions>
             <!-- <v-row
               class="fill-height"
               align="center"
@@ -88,7 +68,7 @@
                   v-text="'mdi-close-circle-outline'"
                 ></v-icon>
               </v-scale-transition>
-            </v-row> -->
+            </v-row>-->
           </v-card>
         </v-slide-item>
       </v-slide-group>
@@ -140,17 +120,17 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-  #view-home {
-    width: 100%;
-    height: 100%;
-    
-    .deck-list {
-      margin-top: 150px;
-      background-color:rgba( 255, 255, 255, 0 ) !important;
-      
-      .deck-slide {
-        margin-right: 20px;
-      }
+#view-home {
+  width: 100%;
+  height: 100%;
+
+  .deck-list {
+    margin-top: 150px;
+    background-color: rgba(255, 255, 255, 0) !important;
+
+    .deck-slide {
+      margin-right: 20px;
     }
   }
+}
 </style>

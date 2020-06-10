@@ -58,7 +58,6 @@ export default {
       const router = this.$router;
       Kakao.Auth.login({
         success: authObj => {
-          console.log(authObj);
           Kakao.API.request({
             url: "/v2/user/me",
             success: function(response) {
