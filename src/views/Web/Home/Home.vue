@@ -53,7 +53,10 @@
             </v-card-text>
             <v-card-actions>
               <v-spacer></v-spacer>
-              <v-btn v-if="deck.performs.length > 0" @click="goDeckEdit($event, deck.id)">수정</v-btn>
+              <v-btn
+                v-if="deck.performs && deck.performs.length > 0"
+                @click="goDeckEdit($event, deck.id)"
+              >수정</v-btn>
             </v-card-actions>
             <!-- <v-row
               class="fill-height"
@@ -107,10 +110,15 @@ export default {
         query[key] === undefined || query[key] === "" ? delete query[key] : {}
       );
 
-      return this.$httpService.get("/decks", query).then(res => {
-        this.decks = res.data.decks;
-        this.totalCount = res.data.totalCount;
-      });
+      this.$httpService
+        .get("/decks", query)
+        .then(res => {
+          this.decks = res.data.decks;
+          this.totalCount = res.data.totalCount;
+        })
+        .catch(e => {
+          console.log(e);
+        });
     },
     goDetail(id) {
       this.$router.push({ name: "DeckDetail", params: { id: id } });

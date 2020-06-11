@@ -4,12 +4,7 @@
 
     <b-form @submit="onSubmit" class="detail" v-cloak>
       <b-form-group label="제목" label-for="input-title">
-        <b-form-input
-          id="input-title"
-          v-model="deck.title"
-          required
-          placeholder="Enter"
-        ></b-form-input>
+        <b-form-input id="input-title" v-model="deck.title" required placeholder="Enter"></b-form-input>
       </b-form-group>
 
       <b-form-group label="대표 이미지">
@@ -22,39 +17,24 @@
                 drop-placeholder="여기 넣어주세요"
                 accept=".jpg, .png, .gif"
               ></b-form-file>
-              <b-form-input
-                id="input-temp-image"
-                v-model="tempImage"
-                placeholder="Enter"
-              ></b-form-input>
+              <b-form-input id="input-temp-image" v-model="tempImage" placeholder="Enter"></b-form-input>
             </b-col>
             <b-col style="background-color:#ccc; position:relative" class="p-3">
-              <span style="font-size:9px; color:#555; position:absolute">{{
+              <span style="font-size:9px; color:#555; position:absolute">
+                {{
                 deck.repImgUrl
-              }}</span>
-              <b-img
-                thumbnail
-                height="100"
-                width="100"
-                :center="true"
-                :src="deck.repImgUrl"
-              ></b-img>
+                }}
+              </span>
+              <b-img thumbnail height="100" width="100" :center="true" :src="deck.repImgUrl"></b-img>
             </b-col>
           </b-row>
         </div>
       </b-form-group>
 
       <b-button @click="addDeckMusic" v-if="!deck.id">음악 추가</b-button>
-      <h6 style="color:#C60000" v-if="deck.id">
-        * 출제 후에는 문제를 추가/삭제할수 없어요. :(
-      </h6>
+      <h6 style="color:#C60000" v-if="deck.id">* 출제 후에는 문제를 추가/삭제할수 없어요. :(</h6>
       <b-row>
-        <b-col
-          lg="4"
-          sm="6"
-          v-for="(deckMusic, index) in deck.deckMusics"
-          :key="index"
-        >
+        <b-col lg="4" sm="6" v-for="(deckMusic, index) in deck.deckMusics" :key="index">
           <b-card title="음악" no-body class="mt-2">
             <b-card-sub-title align="right" v-if="!deckMusic.id">
               <b-icon
@@ -98,9 +78,7 @@
                       height="160"
                       ref="youtube"
                     ></youtube-player>
-                    <b-button @click="captureSecond(index, deckMusic.key)"
-                      >지금</b-button
-                    >
+                    <b-button @click="captureSecond(index, deckMusic.key)">지금</b-button>
                   </div>
 
                   <b-form-group
@@ -141,9 +119,7 @@
                     height="160"
                     ref="youtube"
                   ></youtube-player>
-                  <b-button @click="captureSecond(index, deckMusic.music.key)"
-                    >지금</b-button
-                  >
+                  <b-button @click="captureSecond(index, deckMusic.music.key)">지금</b-button>
                 </div>
 
                 <b-form-group
@@ -166,10 +142,10 @@
       </b-row>
 
       <b-card title="해시태그" class="mt-3">
-        <b-card-text
-          >클릭 시 삭제됩니다. 기존 해시태그는 저장해야 완전히
-          삭제됩니다.</b-card-text
-        >
+        <b-card-text>
+          클릭 시 삭제됩니다. 기존 해시태그는 저장해야 완전히
+          삭제됩니다.
+        </b-card-text>
         <b-badge
           class="ml-2"
           pill
@@ -178,16 +154,12 @@
           :variant="`${hashtag.id ? 'primary' : ''}`"
           @click="onClickHashtag(index)"
           v-bind:style="{ opacity: hashtag.toDelete ? '0.3' : '' }"
-          >#{{ hashtag.hashtag }}</b-badge
-        >
+        >#{{ hashtag.hashtag }}</b-badge>
         <br />
         <hr />
         <b-row>
           <b-col cols="3">
-            <b-form-input
-              v-model="newHashtag"
-              v-on:keydown.enter.prevent="addHashtag()"
-            ></b-form-input>
+            <b-form-input v-model="newHashtag" v-on:keydown.enter.prevent="addHashtag()"></b-form-input>
           </b-col>
           <b-col cols="3">
             <b-button variant="primary" @click="addHashtag()">추가</b-button>
@@ -240,7 +212,20 @@ export default {
         JSON.stringify(this.deck.deckMusics[index])
       );
       deckMusicCloned["key"] = key;
-      this.$set(this.deck.deckMusics, index, deckMusicCloned);
+
+      axios
+        .get("http://localhost:5678/parse?url=" + changedLink)
+        .then(res => {
+          console.log(res.data.musics[0]);
+          deckMusicCloned["artist"] = res.data.musics[0].artist;
+          deckMusicCloned["title"] = res.data.musics[0].song;
+        })
+        .catch(e => {
+          console.log("youtube parse fail. ignore...");
+        })
+        .finally(() => {
+          this.$set(this.deck.deckMusics, index, deckMusicCloned);
+        });
     },
 
     async captureSecond(index, videoId) {

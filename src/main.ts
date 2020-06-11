@@ -2,7 +2,7 @@ import Vue from "vue";
 import App from "./App.vue";
 import router from "./router";
 import vuetify from "./plugins/vuetify";
-import vueHttpService from "@/plugins/vueHttpServicePlugin";
+import VueHttpService from "@/plugins/vueHttpServicePlugin";
 import { BootstrapVue, BootstrapVueIcons } from "bootstrap-vue";
 
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -31,14 +31,16 @@ declare module "vue/types/vue" {
   // 3. Declare augmentation for Vue
   interface Vue {
     $httpService: any;
+    $youtube: any;
   }
 
   interface VueConstructure {
     $httpService: any;
+    $youtube: any;
   }
 }
 
-Vue.use(vueHttpService);
+Vue.use(VueHttpService);
 
 new Vue({
   router,
