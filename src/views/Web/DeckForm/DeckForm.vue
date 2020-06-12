@@ -31,7 +31,17 @@
         </div>
       </b-form-group>
 
-      <b-button @click="addDeckMusic" v-if="!deck.id">음악 추가</b-button>
+      <div v-if="!deck.id">
+        <!-- <b-button @click="addDeckMusic">음악 폼 추가</b-button>
+        <br />-->
+        <b-input
+          id="input-title"
+          v-model="newLink"
+          v-on:keydown.enter.stop.prevent="addDeckMusicByLink"
+          placeholder="예) https://www.youtube.com/watch?v=hrO-BgLjJ-Q"
+        ></b-input>
+        <b-button @click="addDeckMusicByLink">링크로 추가</b-button>
+      </div>
       <h6 style="color:#C60000" v-if="deck.id">* 출제 후에는 문제를 추가/삭제할수 없어요. :(</h6>
       <b-row>
         <b-col lg="4" sm="6" v-for="(deckMusic, index) in deck.deckMusics" :key="index">
@@ -189,6 +199,7 @@ export default {
       msg: "DeckForm",
       tempFile: null,
       tempImage: null,
+      newLink: "",
       newHashtag: "",
       deck: {
         hashtags: [],
@@ -198,6 +209,7 @@ export default {
   },
   methods: {
     newMusicLinkChanged(index) {
+      console.log("newMusicLinkChanged", index);
       const changedLink = this.deck.deckMusics[index].link;
       console.log(changedLink);
 
@@ -212,6 +224,8 @@ export default {
         JSON.stringify(this.deck.deckMusics[index])
       );
       deckMusicCloned["key"] = key;
+      console.log(deckMusicCloned);
+      this.$set(this.deck.deckMusics, index, deckMusicCloned);
 
       axios
         .get("http://localhost:5678/parse?url=" + changedLink)
@@ -219,13 +233,37 @@ export default {
           console.log(res.data.musics[0]);
           deckMusicCloned["artist"] = res.data.musics[0].artist;
           deckMusicCloned["title"] = res.data.musics[0].song;
+          console.log(deckMusicCloned);
+          this.$set(this.deck.deckMusics, index, deckMusicCloned);
         })
         .catch(e => {
           console.log("youtube parse fail. ignore...");
         })
-        .finally(() => {
-          this.$set(this.deck.deckMusics, index, deckMusicCloned);
-        });
+        .finally(() => {});
+    },
+    addDeckMusicByLink() {
+      if (this.newLink === "") {
+        return;
+      }
+      const links = this.deck.deckMusics.map(deckMusic => deckMusic.link);
+      console.log(links);
+      if (links.includes(this.newLink)) {
+        alert("이미 존재하는 링크입니다.");
+        this.newLink = "";
+        return;
+      }
+
+      const youtubeLinkRegex = /http(?:s?):\/\/(?:www\.)?youtu(?:be\.com\/watch\?v=|\.be\/)([\w\-\_]*)(&(amp;)?‌​[\w\?‌​=]*)?/;
+      if (!this.newLink.match(youtubeLinkRegex)) {
+        console.log("잘못된 URL");
+        return;
+      }
+      this.addDeckMusic();
+      console.log(this.deck.deckMusics);
+      const lastIndex = this.deck.deckMusics.length - 1;
+      this.deck.deckMusics[lastIndex].link = this.newLink;
+      this.newMusicLinkChanged(lastIndex);
+      this.newLink = "";
     },
 
     async captureSecond(index, videoId) {
@@ -246,6 +284,7 @@ export default {
       deckMusicCloned.second = parseInt(currentTime);
       this.$set(this.deck.deckMusics, index, deckMusicCloned);
     },
+
     onClickHashtag(index) {
       const hashtag = this.deck.hashtags[index];
       if (hashtag.id) {
@@ -258,6 +297,7 @@ export default {
         this.deleteHashtag(index);
       }
     },
+
     addHashtag() {
       const newHashtag = this.newHashtag;
       if (!newHashtag) {
@@ -369,7 +409,7 @@ export default {
         // this.$router.push({ name: "DeckAdd" });
       });
     } else {
-      this.addDeckMusic();
+      // this.addDeckMusic();
     }
   },
   computed: mapState(["currentUser"]),
