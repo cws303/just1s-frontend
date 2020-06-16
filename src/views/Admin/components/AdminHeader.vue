@@ -8,6 +8,8 @@
       <b-nav-item-dropdown text="관리" right>
         <b-dropdown-item to="/admin/users">유저 관리</b-dropdown-item>
         <b-dropdown-item to="/admin/decks">덱 관리</b-dropdown-item>
+        <b-dropdown-item to="/admin/musics">음악 관리</b-dropdown-item>
+        <b-dropdown-item to="/admin/performs">수행내역 관리</b-dropdown-item>
       </b-nav-item-dropdown>
     </b-navbar-nav>
     <b-navbar-nav>

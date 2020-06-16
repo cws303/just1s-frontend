@@ -6,9 +6,11 @@ import AdminAccessStaff from "@/views/Admin/AdminAccessStaff/AdminAccessStaff.vu
 import AdminAccessUser from "@/views/Admin/AdminAccessUser/AdminAccessUser.vue";
 import { AdminUsersRoutes } from "@/router/admin/users";
 import { AdminDecksRoutes } from "@/router/admin/decks";
-import { RouteConfig } from 'vue-router'
+import { AdminMusicsRoutes } from "@/router/admin/musics";
+import { AdminPerformsRoutes } from "@/router/admin/performs";
+import { RouteConfig } from "vue-router";
 
-const routes:RouteConfig = {
+const routes: RouteConfig = {
   path: "/admin",
   // name: "admin",
   component: Admin,
@@ -49,10 +51,15 @@ const routes:RouteConfig = {
   ]
 };
 
-const childrenRoutes = [AdminDecksRoutes, AdminUsersRoutes];
+const childrenRoutes = [
+  AdminDecksRoutes,
+  AdminUsersRoutes,
+  AdminMusicsRoutes,
+  AdminPerformsRoutes
+];
 childrenRoutes.forEach(childrenRoute => {
-  childrenRoute.forEach((route:any) => {
-    if( routes.children ) {
+  childrenRoute.forEach((route: any) => {
+    if (routes.children) {
       routes.children.push(route);
     }
   });
