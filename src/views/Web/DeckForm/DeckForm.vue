@@ -228,7 +228,9 @@ export default {
       this.$set(this.deck.deckMusics, index, deckMusicCloned);
 
       axios
-        .get("http://localhost:5678/parse?url=" + changedLink)
+        .get(
+          `https://u4zlh1xns8.execute-api.ap-northeast-2.amazonaws.com/dev/start/${key}`
+        )
         .then(res => {
           console.log(res.data.musics[0]);
           deckMusicCloned["artist"] = res.data.musics[0].artist;
