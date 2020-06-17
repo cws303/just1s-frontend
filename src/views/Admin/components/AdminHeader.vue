@@ -19,6 +19,11 @@
         <b-dropdown-item to="/admin/access_master">마스터</b-dropdown-item>
       </b-nav-item-dropdown>
     </b-navbar-nav>
+    <b-navbar-nav>
+      <b-nav-item-dropdown text="테스트" right>
+        <b-dropdown-item to="/admin/ui_test">UI</b-dropdown-item>
+      </b-nav-item-dropdown>
+    </b-navbar-nav>
     <!-- Right aligned nav items -->
     <b-navbar-nav class="ml-auto">
       <div v-if="currentUser">

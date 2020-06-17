@@ -4,6 +4,7 @@ import AdminLoginForm from "@/views/Admin/AdminLoginForm/AdminLoginForm.vue";
 import AdminAccessMaster from "@/views/Admin/AdminAccessMaster/AdminAccessMaster.vue";
 import AdminAccessStaff from "@/views/Admin/AdminAccessStaff/AdminAccessStaff.vue";
 import AdminAccessUser from "@/views/Admin/AdminAccessUser/AdminAccessUser.vue";
+import AdminUITest from "@/views/Admin/AdminUITest/AdminUITest.vue";
 import { AdminUsersRoutes } from "@/router/admin/users";
 import { AdminDecksRoutes } from "@/router/admin/decks";
 import { AdminMusicsRoutes } from "@/router/admin/musics";
@@ -47,6 +48,11 @@ const routes: RouteConfig = {
       name: "AdminAccessMaster",
       component: AdminAccessMaster,
       meta: { accessibleTo: ["MASTER"] }
+    },
+    {
+      path: "ui_test",
+      name: "AdminUITest",
+      component: AdminUITest
     }
   ]
 };
