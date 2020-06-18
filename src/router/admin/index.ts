@@ -5,6 +5,7 @@ import AdminAccessMaster from "@/views/Admin/AdminAccessMaster/AdminAccessMaster
 import AdminAccessStaff from "@/views/Admin/AdminAccessStaff/AdminAccessStaff.vue";
 import AdminAccessUser from "@/views/Admin/AdminAccessUser/AdminAccessUser.vue";
 import AdminUITest from "@/views/Admin/AdminUITest/AdminUITest.vue";
+import AdminUIDropdown from "@/views/Admin/AdminUIDropdown/AdminUIDropdown.vue";
 import { AdminUsersRoutes } from "@/router/admin/users";
 import { AdminDecksRoutes } from "@/router/admin/decks";
 import { AdminMusicsRoutes } from "@/router/admin/musics";
@@ -53,6 +54,11 @@ const routes: RouteConfig = {
       path: "ui_test",
       name: "AdminUITest",
       component: AdminUITest
+    },
+    {
+      path: "ui_dropdown",
+      name: "AdminUIDropdown",
+      component: AdminUIDropdown
     }
   ]
 };
