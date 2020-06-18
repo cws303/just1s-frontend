@@ -12,8 +12,9 @@ Vue.use(BootstrapVueIcons);
 
 import { store } from "./store";
 
-const moment = require("moment");
-require("moment/locale/ko");
+// const moment = require("moment");
+import moment from "moment-timezone";
+// require("moment/locale/ko");
 
 Vue.use(require("vue-moment"), {
   moment
