@@ -1,28 +1,49 @@
 <template>
   <div class="view-admin-deck-list">
-    <div class="d-flex flex-row justify-content-between bd-highlight mb-3">
-      <h1>덱 리스트</h1>
-      <b-button to="/admin/decks/add" variant="danger">추가</b-button>
-    </div>
-    <b-row class="mb-3">
-      <b-col cols="2">
-        <b-form-select v-model="query.orderby" :options="orderbys" @change="getDeckList(query)"></b-form-select>
+    <b-row>
+      <b-col cols="11">
+        <h1>덱 리스트</h1>
+      </b-col>
+      <b-col>
+        <b-button to="/admin/decks/add" variant="danger">추가</b-button>
+      </b-col>
+    </b-row>
+    <div class="mb-3"></div>
+    <b-row>
+      <b-col cols="3">
+        <b-form-select
+          v-model="query.orderby"
+          :options="orderbys"
+          @change="getDeckList()"
+          size="sm"
+        ></b-form-select>
+      </b-col>
+    </b-row>
+    <b-row v-if="search.fields">
+      <b-col cols="3">
+        <b-form-select
+          v-model="search.fieldName"
+          :options="search.fields"
+          text-field="text"
+          value-field="field"
+          size="sm"
+        ></b-form-select>
       </b-col>
 
-      <b-col cols="2">
+      <b-col cols="3">
         <b-form-input
-          v-model="query.title"
-          placeholder="title 입력"
-          v-on:keyup.enter="getDeckList(query)"
+          v-model="search.input"
+          :disabled="search.fieldName === null"
+          :placeholder="search.fieldName ? search.fieldName + ' 입력' : ''"
+          v-on:keyup.enter="applySearchQuery($event)"
+          size="sm"
         ></b-form-input>
       </b-col>
+    </b-row>
 
+    <b-row>
       <b-col cols="2">
-        <b-form-input
-          v-model="query.music_title"
-          placeholder="music_title 입력"
-          v-on:keyup.enter="getDeckList(query)"
-        ></b-form-input>
+        <b-form-select v-model="query.status" :options="statuses" @change="getDeckList()" size="sm"></b-form-select>
       </b-col>
     </b-row>
     <b-table-simple hover small caption-top responsive>
@@ -76,7 +97,7 @@
       v-model="currentPage"
       :total-rows="totalCount"
       :per-page="query.take"
-      @change="getDeckList(query)"
+      @change="getDeckList()"
     ></b-pagination>
   </div>
 </template>
@@ -85,14 +106,30 @@ export default {
   name: "AdminDeckList",
   data() {
     return {
-      currentPage: 1,
-      decks: [],
+      // common
       query: {},
+      currentPage: 1,
       orderbys: [
         { text: "ID내림차순", value: "ID__DESC" },
         { text: "ID오름차순", value: "ID__ASC" }
       ],
-      totalCount: -1
+      search: {
+        fieldName: null,
+        input: "",
+        fields: [
+          { text: "검색할 필드명을 선택해주세요", field: null, disabled: true },
+          { text: "제목", field: "title" },
+          { text: "음악제목", field: "music_title" }
+        ]
+      },
+      totalCount: -1,
+      // decks
+      decks: [],
+      statuses: [
+        { text: "status를 선택해주세요", field: null, disabled: true },
+        { text: "좋음", value: 10 },
+        { text: "나쁨", value: 20 }
+      ]
     };
   },
   created() {
@@ -100,19 +137,28 @@ export default {
       {
         orderby: "ID__DESC",
         with_hashtag: true,
-        take: 5
+        take: 10
       },
       this.$route.query
     );
-    this.getDeckList(this.query);
+    Object.entries(this.$route.query).map(([k, v]) => {
+      if (this.search.fields.find(fieldObj => fieldObj.field === k)) {
+        this.search = {
+          fieldName: k,
+          input: v
+        };
+      }
+    });
+    this.getDeckList();
   },
   watch: {
     currentPage() {
-      this.getDeckList(this.query);
+      this.getDeckList();
     }
   },
   methods: {
-    getDeckList(query) {
+    getDeckList() {
+      const query = this.query;
       Object.keys(query).forEach(key =>
         query[key] === undefined || query[key] === "" ? delete query[key] : {}
       );
@@ -125,17 +171,30 @@ export default {
         .then(res => {
           this.decks = res.data.decks;
           this.totalCount = res.data.totalCount;
+          const originURL = window.location.href.split("?")[0];
+          const qs = Object.entries(query)
+            .map(([k, v]) => `${k}=${v}`)
+            .join("&");
+          history.pushState({}, "", originURL + "?" + qs);
         });
     },
     deleteDeck(id) {
-      if (confirm("정말 삭제하시겠습니까?") !== false) {
-        this.$httpService.delete("/decks/" + id).then(res => {
-          this.getDeckList(this.query);
-        });
+      if (confirm("정말 삭제하시겠습니까?") === false) {
+        return;
       }
+      this.$httpService.delete("/decks/" + id).then(res => {
+        this.getDeckList();
+      });
     },
     goForm(id) {
       this.$router.push({ name: "AdminDeckEdit", params: { id: id } });
+    },
+    applySearchQuery() {
+      if (this.search.fieldName === null) {
+        return;
+      }
+      this.query[this.search.fieldName] = this.search.input;
+      this.getDeckList();
     }
   }
 };
