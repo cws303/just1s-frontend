@@ -18,7 +18,7 @@
 </template>
 <script>
 import moment from "moment";
-import NbaseDatetimepicker from "./components/NbaseDatetimepicker";
+import NbaseDatetimepicker from "../components/NbaseDatetimepicker";
 export default {
   name: "AdminUIDropdown",
   data() {

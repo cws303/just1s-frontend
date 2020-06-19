@@ -10,10 +10,8 @@
         <b-form-input id="input-user-id" v-model="deck.userId" required placeholder="Enter"></b-form-input>
       </b-form-group>
 
-      <b-form-group label="대표이미지" label-for="input-rep-img-url">
-        <b-form-input id="input-rep-img-url" v-model="deck.repImgUrl" required placeholder="Enter"></b-form-input>
-      </b-form-group>
-
+      <nbase-file-input v-model="deck.repImgUrl"></nbase-file-input>
+      [{{deck.repImgUrl}}]
       <b-card class="mt-3" border-variant="dark">
         <div slot="header">
           <span>해시태그 관리</span>
@@ -74,10 +72,13 @@
   </div>
 </template>
 <script>
+import NbaseFileInput from "../components/NbaseFileInput";
 export default {
   name: "AdminDeckForm",
+  components: { NbaseFileInput },
   data() {
     return {
+      foo: "bar!!!",
       deck: {}
     };
   },
@@ -164,6 +165,16 @@ export default {
         this.$router.push({ name: "AdminDeckAdd" });
       });
     }
+  },
+  watch: {
+    // async tempFile(file) {
+    //   const url = "www.google.com";
+    //   const result = await this.$httpService.imageUpload(file);
+    //   this.$set(this.deck, "repImgUrl", result.data.url);
+    // }
+    // tempImage(link) {
+    //   this.deck.repImgUrl = link;
+    // }
   },
   mounted() {}
 };
