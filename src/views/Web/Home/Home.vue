@@ -45,6 +45,7 @@
           <div class="section-hover">
             <div class="row-deck-btns" v-if="hover">
               <v-btn
+                v-if="currentUser.id == deck.user.id"
                 icon
                 @click="goDeckEdit($event, deck.id)"
               >
