@@ -45,16 +45,14 @@ class VueHttpService {
         }
 
         let token = "";
+        const tokenFromLocalStorage = localStorage.getItem("accessToken");
         if (
           store.getters["accessToken"] &&
           store.getters["accessToken"] !== ""
         ) {
           token = store.getters["accessToken"];
-        } else if (
-          this.app.$cookies.get("accessToken") &&
-          this.app.$cookies.get("accessToken") !== ""
-        ) {
-          token = this.app.$cookies.get("accessToken");
+        } else if (tokenFromLocalStorage && tokenFromLocalStorage !== "") {
+          token = tokenFromLocalStorage;
         }
 
         if (!token) {
@@ -74,7 +72,7 @@ class VueHttpService {
           });
         } catch (error) {
           if (error.response?.status == 401) {
-            const refreshToken = this.app.$cookies.get("refreshToken");
+            const refreshToken = localStorage.getItem("refreshToken");
             if (refreshToken && refreshToken !== "") {
               res = await axios.post(
                 "/auth/refresh",
@@ -119,7 +117,8 @@ class VueHttpService {
           });
           store.commit("setAccessToken", res.data.accessToken);
           store.commit("setCurrentUser", res.data.user);
-          localStorage.setItem("accessToken", res.data.access_token);
+          localStorage.setItem("accessToken", res.data.accessToken);
+          localStorage.setItem("refreshToken", res.data.refreshToken);
           this.loadAuthorizationTokenToHeader();
           return true;
         } catch (e) {
@@ -133,7 +132,8 @@ class VueHttpService {
           const res = await this.post("auth/sns_login", profile);
           store.commit("setAccessToken", res.data.accessToken);
           store.commit("setCurrentUser", res.data.user);
-          const accessToken = store.getters["accessToken"];
+          localStorage.setItem("accessToken", res.data.accessToken);
+          localStorage.setItem("refreshToken", res.data.refreshToken);
           this.loadAuthorizationTokenToHeader();
           return true;
         } catch (e) {
@@ -146,6 +146,8 @@ class VueHttpService {
         await this.post("auth/logout");
         store.commit("setAccessToken", null);
         store.commit("setCurrentUser", null);
+        localStorage.removeItem("accessToken");
+        localStorage.removeItem("refreshToken");
       },
 
       async get(url: any, params: any) {
@@ -159,7 +161,7 @@ class VueHttpService {
         }
 
         const http = axios.create(options);
-        return http.get(url, {params:params});
+        return http.get(url, { params: params });
       },
 
       async post(url: any, params: any) {
