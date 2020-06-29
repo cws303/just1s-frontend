@@ -32,15 +32,31 @@
       </b-form-group>
 
       <div v-if="!deck.id">
-        <!-- <b-button @click="addDeckMusic">음악 폼 추가</b-button>
-        <br />-->
-        <b-input
-          id="input-title"
-          v-model="newLink"
-          v-on:keydown.enter.stop.prevent="addDeckMusicByLink"
-          placeholder="예) https://www.youtube.com/watch?v=hrO-BgLjJ-Q"
-        ></b-input>
-        <b-button @click="addDeckMusicByLink">링크로 추가</b-button>
+        <b-row>
+          <b-col>
+            <b-form-textarea
+              style="font-size:9px"
+              id="input-title"
+              v-model="newLinks"
+              rows="10"
+              placeholder="엔터로 구분해서 입력하세요.
+예)
+윤하 혜성
+윤하 486"
+            ></b-form-textarea>
+            <b-button @click="getBulkMusics">검색어로 추가</b-button>
+          </b-col>
+          <b-col>
+            <b-input
+              style="font-size:9px"
+              id="input-title"
+              v-model="newLink"
+              v-on:keydown.enter.stop.prevent="addDeckMusicByLink"
+              placeholder="예) https://www.youtube.com/watch?v=hrO-BgLjJ-Q"
+            ></b-input>
+            <b-button @click="addDeckMusicByLink">링크로 직접 추가</b-button>
+          </b-col>
+        </b-row>
       </div>
       <h6 style="color:#C60000" v-if="deck.id">* 출제 후에는 문제를 추가/삭제할수 없어요. :(</h6>
       <b-row>
@@ -77,7 +93,6 @@
                       required
                       placeholder="Enter"
                       size="sm"
-                      @change="newMusicLinkChanged(index)"
                     ></b-form-input>
                   </b-form-group>
 
@@ -200,6 +215,7 @@ export default {
       tempFile: null,
       tempImage: null,
       newLink: "",
+      newLinks: "",
       newHashtag: "",
       deck: {
         hashtags: [],
@@ -208,6 +224,42 @@ export default {
     };
   },
   methods: {
+    getBulkMusics() {
+      if (this.newLinks === "") {
+        return;
+      }
+      // console.log(this.newLinks.split("\n"));
+      const keywords = this.newLinks.split("\n");
+      keywords.forEach(keyword => {
+        this.addDeckMusic();
+        const lastIndex = this.deck.deckMusics.length - 1;
+        this.getMusicInfoByKeyword(keyword, lastIndex);
+      });
+    },
+    getMusicInfoByKeyword(keyword, index) {
+      if (this.deck.deckMusics[index] === undefined) {
+        return;
+      }
+      axios
+        .get(
+          `https://u4zlh1xns8.execute-api.ap-northeast-2.amazonaws.com/dev/search/${encodeURI(
+            keyword
+          )}`
+        )
+        .then(res => {
+          this.$set(this.deck.deckMusics, index, {
+            artist: res.data.musics[0].artist,
+            title: res.data.musics[0].song,
+            link: res.data.url,
+            key: res.data.key,
+            second: 0
+          });
+        })
+        .catch(e => {
+          console.log(e);
+          console.log("youtube parse fail. ignore...");
+        });
+    },
     newMusicLinkChanged(index) {
       console.log("newMusicLinkChanged", index);
       const changedLink = this.deck.deckMusics[index].link;
@@ -261,7 +313,6 @@ export default {
         return;
       }
       this.addDeckMusic();
-      console.log(this.deck.deckMusics);
       const lastIndex = this.deck.deckMusics.length - 1;
       this.deck.deckMusics[lastIndex].link = this.newLink;
       this.newMusicLinkChanged(lastIndex);
