@@ -1,5 +1,5 @@
 import { DeviceTypeEnum, checkEnumEntry } from '@/utils/DeviceTypeEnum'
-import { Breakpoints, getRange } from '@/utils//BreakPoints'
+import { Breakpoints, getRange } from '@/utils/BreakPoints'
 import _Vue from "vue";
 
 // Define the breakpoint where to differ between mobile and desktop devices.

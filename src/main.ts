@@ -2,14 +2,9 @@ import Vue from "vue";
 import App from "./App.vue";
 import router from "./router";
 import vuetify from "./plugins/vuetify";
-<<<<<<< HEAD
 import vueHttpService from "@/plugins/vueHttpServicePlugin";
-import $ from "jquery";
 
 // import vueMasonry from "@/plugins/vueMasonryPlugin"
-=======
-import VueHttpService from "@/plugins/vueHttpServicePlugin";
->>>>>>> eb96412184536f3dbcfec9cababb34cb2ac7ab48
 import { BootstrapVue, BootstrapVueIcons } from "bootstrap-vue";
 
 import '@mdi/font/css/materialdesignicons.css' 
@@ -53,7 +48,6 @@ declare module "vue/types/vue" {
   }
 }
 
-<<<<<<< HEAD
 // Vue.use(vueMasonry);
 Vue.use(vueHttpService);
 Vue.use(vuetify, {
@@ -61,9 +55,6 @@ Vue.use(vuetify, {
     iconfont: 'fa', // default - only for display purposes
   },
 })
-=======
-Vue.use(VueHttpService);
->>>>>>> eb96412184536f3dbcfec9cababb34cb2ac7ab48
 
 new Vue({
   router,
