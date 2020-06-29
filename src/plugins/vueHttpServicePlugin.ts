@@ -13,11 +13,6 @@ const baseURLs: any = {
 
 class VueHttpService {
   static installed: boolean = false;
-  app: any;
-
-  constructor() {
-    this.app = null;
-  }
 
   static install(Vue: typeof _Vue) {
     if (VueHttpService.installed && _Vue === Vue) {

@@ -27,7 +27,14 @@
             </div>
             <v-card-actions>
               <v-spacer></v-spacer>
+<<<<<<< HEAD
               <v-btn @click="goDeckEdit($event, deck.id)">수정</v-btn>
+=======
+              <v-btn
+                v-if="deck.performs && deck.performs.length > 0"
+                @click="goDeckEdit($event, deck.id)"
+              >수정</v-btn>
+>>>>>>> eb96412184536f3dbcfec9cababb34cb2ac7ab48
             </v-card-actions>
           </v-card>
         </v-slide-item>
@@ -175,6 +182,7 @@ export default {
         query[key] === undefined || query[key] === "" ? delete query[key] : {}
       );
 
+<<<<<<< HEAD
       this.$httpService.get("/decks", query).then(res => {
         this.decks = res.data.decks;
         // this.decks = res.data.decks.concat(res.data.decks);
@@ -192,6 +200,17 @@ export default {
         // this.decks = res.data.decks.concat(res.data.decks);
         this.totalCount = res.data.totalCount;
       });
+=======
+      this.$httpService
+        .get("/decks", query)
+        .then(res => {
+          this.decks = res.data.decks;
+          this.totalCount = res.data.totalCount;
+        })
+        .catch(e => {
+          console.log(e);
+        });
+>>>>>>> eb96412184536f3dbcfec9cababb34cb2ac7ab48
     },
     goDetail(id) {
       this.$router.push({ name: "DeckDetail", params: { id: id } });

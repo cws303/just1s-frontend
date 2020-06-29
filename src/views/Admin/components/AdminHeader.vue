@@ -8,6 +8,8 @@
       <b-nav-item-dropdown text="관리" right>
         <b-dropdown-item to="/admin/users">유저 관리</b-dropdown-item>
         <b-dropdown-item to="/admin/decks">덱 관리</b-dropdown-item>
+        <b-dropdown-item to="/admin/musics">음악 관리</b-dropdown-item>
+        <b-dropdown-item to="/admin/performs">수행내역 관리</b-dropdown-item>
       </b-nav-item-dropdown>
     </b-navbar-nav>
     <b-navbar-nav>
@@ -15,6 +17,12 @@
         <b-dropdown-item to="/admin/access_user">모든유저</b-dropdown-item>
         <b-dropdown-item to="/admin/access_staff">모든관리자</b-dropdown-item>
         <b-dropdown-item to="/admin/access_master">마스터</b-dropdown-item>
+      </b-nav-item-dropdown>
+    </b-navbar-nav>
+    <b-navbar-nav>
+      <b-nav-item-dropdown text="테스트" right>
+        <b-dropdown-item to="/admin/ui_test">테스트</b-dropdown-item>
+        <b-dropdown-item to="/admin/ui_dropdown">드롭다운</b-dropdown-item>
       </b-nav-item-dropdown>
     </b-navbar-nav>
     <!-- Right aligned nav items -->

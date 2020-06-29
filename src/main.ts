@@ -2,10 +2,14 @@ import Vue from "vue";
 import App from "./App.vue";
 import router from "./router";
 import vuetify from "./plugins/vuetify";
+<<<<<<< HEAD
 import vueHttpService from "@/plugins/vueHttpServicePlugin";
 import $ from "jquery";
 
 // import vueMasonry from "@/plugins/vueMasonryPlugin"
+=======
+import VueHttpService from "@/plugins/vueHttpServicePlugin";
+>>>>>>> eb96412184536f3dbcfec9cababb34cb2ac7ab48
 import { BootstrapVue, BootstrapVueIcons } from "bootstrap-vue";
 
 import '@mdi/font/css/materialdesignicons.css' 
@@ -16,8 +20,9 @@ Vue.use(BootstrapVueIcons);
 
 import { store } from "./store";
 
-const moment = require("moment");
-require("moment/locale/ko");
+// const moment = require("moment");
+import moment from "moment-timezone";
+// require("moment/locale/ko");
 
 Vue.use(require("vue-moment"), {
   moment
@@ -39,13 +44,16 @@ declare module "vue/types/vue" {
   // 3. Declare augmentation for Vue
   interface Vue {
     $httpService: any;
+    $youtube: any;
   }
 
   interface VueConstructure {
     $httpService: any;
+    $youtube: any;
   }
 }
 
+<<<<<<< HEAD
 // Vue.use(vueMasonry);
 Vue.use(vueHttpService);
 Vue.use(vuetify, {
@@ -53,6 +61,9 @@ Vue.use(vuetify, {
     iconfont: 'fa', // default - only for display purposes
   },
 })
+=======
+Vue.use(VueHttpService);
+>>>>>>> eb96412184536f3dbcfec9cababb34cb2ac7ab48
 
 new Vue({
   router,

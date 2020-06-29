@@ -23,6 +23,9 @@ module.exports = {
   },
   runtimeCompiler: true,
   devServer: {
+    host: "0.0.0.0",
+    public: "0.0.0.0:8080",
+    disableHostCheck: true,
     proxy: {
       "/api/*": {
         target: "http://localhost:3000",
