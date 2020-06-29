@@ -7,9 +7,9 @@
       class="search"
     ></v-text-field>
 
-    <v-sheet class="best-deck-list" v-if="decks.length > 0">
-      <v-slide-group v-model="decks" class="deck-slide-group">
-        <v-slide-item v-for="(deck,index) in decks" :key="index" class="deck-slide">
+    <v-sheet class="best-deck-list" v-if="bestDecks.length > 0">
+      <v-slide-group v-model="bestDecks" class="deck-slide-group">
+        <v-slide-item v-for="(deck,index) in bestDecks" :key="index" class="deck-slide">
           <v-card class="ma-4" height="450" width="250" elevation="8" @click="goDetail(deck.id)">
             <v-img class="white--text align-end" :src="deck.repImgUrl"></v-img>
             <v-card-subtitle class="pb-0">{{deck.title}}</v-card-subtitle>
@@ -27,7 +27,7 @@
             </div>
             <v-card-actions>
               <v-spacer></v-spacer>
-              <v-btn @click="goDeckEdit($event, deck.id)">수정</v-btn>
+              <v-btn v-if="currentUser!==null && currentUser.id == deck.user.id" @click="goDeckEdit($event, deck.id)">수정</v-btn>
             </v-card-actions>
           </v-card>
         </v-slide-item>
@@ -45,7 +45,7 @@
           <div class="section-hover">
             <div class="row-deck-btns" v-if="hover">
               <v-btn
-                v-if="currentUser.id == deck.user.id"
+                v-if="currentUser!==null && currentUser.id == deck.user.id"
                 icon
                 @click="goDeckEdit($event, deck.id)"
               >
@@ -96,13 +96,12 @@
       </div>
     </div>
      <v-pagination
-      v-model="page"
+      :v-model="page"
       :length="totalPage"
       next-icon="mdi-chevron-right"
       prev-icon="mdi-chevron-left"
       :page="page"
       total-visible="10"
-      color="blue"
     ></v-pagination>
   </div>
 </template>
@@ -120,24 +119,40 @@ export default {
       msg: "Home",
       searchText: '',
       decks: [],
+      bestDecks:[],
       transparent: 'rgba(255, 255, 255, 0)',
       page: 1,
-      totalPage: 15,
+      totalPage: 0,
       icons: ['mdi-pencil', 'mdi-play-box-multiple-outline', 'mdi-share-variant']
     };
   },
   computed: mapState(["currentUser"]),
   created() {
+  },
+  mounted() {
+
     this.query = Object.assign(
       {
         orderby: "ID__DESC",
-        with_hashtag: 1
+        with_hashtag: 1,
+        page: this.page,
+        take: 12,
       },
       this.$route.query
     );
     this.getDeckList(this.query);
-  },
-  mounted() {
+
+    this.bestDeckQuery = Object.assign(
+      {
+        orderby: "ID__DESC",
+        with_hashtag: 1,
+        take:5,
+      },
+      this.$route.bestDeckQuery
+    );
+
+    this.getBestDeckList(this.bestDeckQuery);
+
     var grid = document.querySelector('.grid');
     var $grid = $('.masonry-grid')
     var msnry = new Masonry( grid, {
@@ -178,8 +193,10 @@ export default {
 
       this.$httpService.get("/decks", query).then(res => {
         this.decks = res.data.decks;
+        console.log(res.data)
         // this.decks = res.data.decks.concat(res.data.decks);
         this.totalCount = res.data.totalCount;
+        this.totalPage = Math.ceil(parseFloat(res.data.totalCount/12));
       });
     },
 
@@ -189,9 +206,8 @@ export default {
       );
 
       this.$httpService.get("/decks", query).then(res => {
-        this.decks = res.data.decks;
-        // this.decks = res.data.decks.concat(res.data.decks);
-        this.totalCount = res.data.totalCount;
+        this.bestDecks = res.data.decks;
+        console.log(res.data.decks)
       });
     },
     goDetail(id) {
