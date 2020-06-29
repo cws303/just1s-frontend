@@ -1,6 +1,27 @@
 <template>
   <div id="view-deck-detail">
-    <b-row class="mt-3">
+    <v-card class="deck" elevation="8">
+      <v-img class="deck-img">
+        <img :src="deck.repImgUrl" />
+      </v-img>
+      
+      <v-card-title>{{deck.title}}</v-card-title>
+      <div class="hashtags">
+        <v-chip
+          v-for="(hashtag, _index) in deck.hashtags"
+          :key="_index"
+          small
+        >#{{hashtag.hashtag}}</v-chip>
+      </div>
+      <b-button
+          v-if="deck.deckMusics && deck.deckMusics.length > 0"
+          variant="primary"
+          @click="goPerformForm"
+        >시작!</b-button>
+        <span v-if="!deck.deckMusics || deck.deckMusics.length == 0">준비된 문제가 없습니다.</span>
+      <b-button to="/">다른 문제</b-button>
+    </v-card>
+    <!-- <b-row class="mt-3">
       <b-col cols="12" align="center">
         <h1>{{deck.title}}</h1>
       </b-col>
@@ -42,8 +63,8 @@
       <b-col cols="12" align="center">
         <b-button to="/">다른 문제</b-button>
       </b-col>
-    </b-row>
-  </div>
+    </b-row> -->
+  </div> 
 </template>
 
 <script>
@@ -70,6 +91,9 @@ export default {
     }
   },
   created() {
+    
+  },
+  mounted () {
     const deckId = this.$route.params.id;
     if (deckId) {
       this.getOldOne(deckId).catch(e => {
@@ -78,7 +102,20 @@ export default {
       });
     }
   }
+
 };
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+  #view-deck-detail {
+    .deck {
+      margin-top: 40px;
+      // background: linear-gradient(white, $main-orange-light);
+      background-color: rgba(255, 255, 255, 0.4) !important;
+      .deck-img {
+        padding-top: 40px;
+        text-align: center;
+      }
+    }
+  }
+</style>

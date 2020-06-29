@@ -164,7 +164,7 @@ class VueHttpService {
         }
 
         const http = axios.create(options);
-        return http.get(url, params);
+        return http.get(url, {params:params});
       },
 
       async post(url: any, params: any) {

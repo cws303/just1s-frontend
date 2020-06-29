@@ -26,7 +26,6 @@
           @ended="ended"
           @buffering="buffering"
         ></youtube-player>
-
         <div style="height:30px">
           <b-button
             variant="danger"
@@ -48,6 +47,10 @@
         <br />
       </b-col>
     </b-row>
+    <v-progress-linear
+      indeterminate
+      color="yellow darken-2"
+    ></v-progress-linear>
     <b-row>
       <b-col
         cols="12"

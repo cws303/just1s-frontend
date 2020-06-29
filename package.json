@@ -10,15 +10,20 @@
     "test:e2e": "vue-cli-service test:e2e"
   },
   "dependencies": {
+    "@types/imagesloaded": "^4.1.2",
+    "@types/jquery": "^3.3.38",
+    "@types/masonry-layout": "^4.2.1",
     "@types/qs": "^6.9.3",
     "@vue/babel-helper-vue-jsx-merge-props": "^1.0.0",
     "bootstrap": "^4.5.0",
     "bootstrap-vue": "^2.15.0",
     "core-js": "^3.6.5",
     "get-youtube-id": "^1.0.1",
+    "jquery": "^3.5.1",
     "vue": "^2.6.11",
     "vue-class-component": "^7.2.3",
     "vue-cookies": "^1.7.0",
+    "vue-masonry": "^0.11.8",
     "vue-property-decorator": "^8.4.2",
     "vue-router": "^3.2.0",
     "vue-youtube": "^1.4.0",
@@ -26,6 +31,8 @@
     "vuex": "^3.4.0"
   },
   "devDependencies": {
+    "@fortawesome/fontawesome-free": "^5.13.0",
+    "@mdi/font": "^5.3.45",
     "@types/jest": "^24.0.19",
     "@types/youtube-player": "^5.5.3",
     "@vue/cli-plugin-babel": "~4.4.0",
@@ -46,6 +53,7 @@
     "sass-loader": "^8.0.2",
     "typescript": "~3.9.3",
     "vue-cli-plugin-vuetify": "~2.0.5",
+    "vue-device-detector": "github:weilbith/vue-device-detector",
     "vue-moment": "^4.1.0",
     "vue-template-compiler": "^2.6.11",
     "vuetify-loader": "^1.3.0"

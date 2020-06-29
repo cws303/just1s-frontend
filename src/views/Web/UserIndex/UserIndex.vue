@@ -1,5 +1,6 @@
 <template>
   <div id="view-user-index">
+    {{currentUser}}
     <div v-if="currentUser">
       <b-row class="mt-3">
         <b-col cols="12" align="center">

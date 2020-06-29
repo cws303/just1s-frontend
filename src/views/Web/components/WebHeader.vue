@@ -1,20 +1,45 @@
 <template>
-  <header class="component-web-header">
-    <v-app-bar flat dense class="topbar">
-      <v-toolbar-title>듣고 맞춰보세요 - 단1초</v-toolbar-title>
-      <v-spacer></v-spacer>
+  <v-app-bar 
+    :collapse="false"
+    :collapse-on-scroll="true"
+    flat 
+    fixed 
+    class="topbar"
+  >
+    <v-toolbar-title @click="goHome()">듣고 맞춰보세요 - 단1초</v-toolbar-title>
+    <v-spacer></v-spacer>
+    <div class="row-menu">
       <div v-if="currentUser">
-        <v-btn to="/deck-add">새로운 덱</v-btn>
-        <v-avatar to="/user-index">
-          <img :src="currentUser.imgUrl" />
-        </v-avatar>
-        <v-btn @click="logout()">로그아웃</v-btn>
+        <span class="row-user">
+          <v-avatar to="/user-index">
+            <img :src="currentUser.imgUrl" />
+          </v-avatar>
+          {{currentUser.name}}
+        </span>
+        <v-menu>
+          <template v-slot:activator="{ on, attrs }">
+            <v-btn icon
+              v-bind="attrs"
+              v-on="on"
+            >
+              <v-icon large>mdi-view-list</v-icon>
+            </v-btn>
+          </template>
+          <v-list>
+            <v-list-item @click="goDeckAdd()">
+              <v-list-item-title>퀴즈 만들기</v-list-item-title>
+            </v-list-item>
+            <v-list-item @click="logout()">
+              <v-list-item-title>로그아웃</v-list-item-title>
+            </v-list-item>
+          </v-list>
+        </v-menu>
       </div>
       <div v-if="!currentUser">
         <v-btn style="cursor:pointer" @click="login()">로그인</v-btn>
       </div>
-    </v-app-bar>
-  </header>
+    </div>
+  </v-app-bar>
 </template>
 
 <script>
@@ -37,14 +62,29 @@ export default {
         this.$router.push({ name: "Home" });
       }
       window.alert("로그아웃되었습니다.");
+    },
+    goDeckAdd() {
+      this.$router.push('deck-add');
+    },
+    goHome() {
+      this.$router.push('/');
     }
   },
-  computed: mapState(["currentUser"])
+  computed: mapState(["currentUser"]),
+  created() {
+    
+  }
 };
 </script>
 
 <style lang="scss" scoped>
 .topbar {
   background-color: rgba(255, 255, 255, 0) !important;
+
+  &.v-toolbar--collapsed {
+    .row-user {
+      display:none;
+    }
+  }
 }
 </style>
