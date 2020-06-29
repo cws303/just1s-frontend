@@ -20,11 +20,8 @@
     "bootstrap-vue": "^2.15.0",
     "core-js": "^3.6.5",
     "get-youtube-id": "^1.0.1",
-<<<<<<< HEAD
     "jquery": "^3.5.1",
-=======
     "moment-timezone": "^0.5.31",
->>>>>>> eb96412184536f3dbcfec9cababb34cb2ac7ab48
     "vue": "^2.6.11",
     "vue-class-component": "^7.2.3",
     "vue-cookies": "^1.7.0",
