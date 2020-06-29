@@ -1,7 +1,6 @@
 <template>
-  <div class="web-root">
+  <div class="web-root" data-app>
     <web-header></web-header>
-
     <div class="container-root">
       <router-view></router-view>
     </div>
@@ -66,8 +65,8 @@ export default {
   background: linear-gradient(white, $main-mint-light, $main-mint-dark);
   position: relative;
   .container-root {
-    padding: 0 15%;
-    height: 100%;
+    padding: 64px 15% 0;
+    min-height: calc(100vh - 52px);
   }
 }
 </style>

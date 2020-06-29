@@ -1,10 +1,10 @@
 <template>
-  <footer class="component-web-footer">
-    <v-footer flat class="footerbar" absolute>
+  <v-footer flat class="footerbar">
+    <p class="title">2020 All Right Reserved</p>
+    <div class="test">
       <router-link to="/practice">Practice 이동</router-link>
-      <p class="title">2020 All Right Reserved</p>
-    </v-footer>
-  </footer>
+    </div>
+  </v-footer>
 </template>
 
 <script>
@@ -16,5 +16,7 @@ export default {
 <style lang="scss" scoped>
   .footerbar {
     background-color: rgba( 255, 255, 255, 0 ) !important;
+    display: flex;
+    justify-content: space-between;
   }
 </style>

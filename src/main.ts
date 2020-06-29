@@ -2,9 +2,12 @@ import Vue from "vue";
 import App from "./App.vue";
 import router from "./router";
 import vuetify from "./plugins/vuetify";
-import VueHttpService from "@/plugins/vueHttpServicePlugin";
+import vueHttpService from "@/plugins/vueHttpServicePlugin";
+
+// import vueMasonry from "@/plugins/vueMasonryPlugin"
 import { BootstrapVue, BootstrapVueIcons } from "bootstrap-vue";
 
+import '@mdi/font/css/materialdesignicons.css' 
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap-vue/dist/bootstrap-vue.css";
 Vue.use(BootstrapVue);
@@ -22,6 +25,10 @@ Vue.use(require("vue-moment"), {
 
 import YoutubePlayerPlugin from "@/plugins/youtubePlayerPlugin";
 Vue.use(YoutubePlayerPlugin);
+
+import DeviceDetector from "@/plugins/deviceDetector";
+Vue.use(DeviceDetector);
+
 
 import VueCookies from "vue-cookies";
 Vue.use(VueCookies);
@@ -41,7 +48,13 @@ declare module "vue/types/vue" {
   }
 }
 
-Vue.use(VueHttpService);
+// Vue.use(vueMasonry);
+Vue.use(vueHttpService);
+Vue.use(vuetify, {
+  icons: {
+    iconfont: 'fa', // default - only for display purposes
+  },
+})
 
 new Vue({
   router,
