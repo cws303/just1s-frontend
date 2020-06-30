@@ -96,7 +96,7 @@
       </div>
     </div>
      <v-pagination
-      :v-model="page"
+      v-model="page"
       :length="totalPage"
       next-icon="mdi-chevron-right"
       prev-icon="mdi-chevron-left"
@@ -129,29 +129,28 @@ export default {
   computed: mapState(["currentUser"]),
   created() {
   },
+
+  watch: {
+    page : function (newPage) {
+      this.query.offset = newPage-1;
+      this.getDeckList(this.query);
+    }
+  },
   mounted() {
 
     this.query = Object.assign(
       {
         orderby: "ID__DESC",
         with_hashtag: 1,
-        page: this.page,
-        take: 12,
+        offset: this.page-1,
+        take: 5,
       },
       this.$route.query
     );
     this.getDeckList(this.query);
 
-    this.bestDeckQuery = Object.assign(
-      {
-        orderby: "ID__DESC",
-        with_hashtag: 1,
-        take:5,
-      },
-      this.$route.bestDeckQuery
-    );
 
-    this.getBestDeckList(this.bestDeckQuery);
+    this.getBestDeckList();
 
     var grid = document.querySelector('.grid');
     var $grid = $('.masonry-grid')
@@ -196,11 +195,18 @@ export default {
         console.log(res.data)
         // this.decks = res.data.decks.concat(res.data.decks);
         this.totalCount = res.data.totalCount;
-        this.totalPage = Math.ceil(parseFloat(res.data.totalCount/12));
+        this.totalPage = Math.ceil(parseFloat(res.data.totalCount/this.query.take));
       });
     },
 
-    getBestDeckList(query) {
+    getBestDeckList() {
+      let query = Object.assign(
+        {
+          orderby: "ID__DESC",
+          with_hashtag: 1,
+          take:5,
+        },
+      );
       Object.keys(query).forEach(key =>
         query[key] === undefined || query[key] === "" ? delete query[key] : {}
       );
@@ -210,6 +216,7 @@ export default {
         console.log(res.data.decks)
       });
     },
+
     goDetail(id) {
       this.$router.push({ name: "DeckDetail", params: { id: id } });
     },
