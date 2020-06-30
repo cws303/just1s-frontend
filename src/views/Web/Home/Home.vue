@@ -200,6 +200,12 @@ export default {
     },
 
     getBestDeckList() {
+      if(this.$isDesktop()) {
+        console.log("desktop")
+      }
+      if(this.$isMobile()) {
+        console.log("mobile")
+      }
       let query = Object.assign(
         {
           orderby: "ID__DESC",
@@ -249,17 +255,21 @@ export default {
   
 
   .deck-list {
-    display:block;
-    height: 1000px !important;
-    width: 1100px !important;
-    margin: 0 auto;
+    @include desktop {
+      display:block;
+      height: 1000px !important;
+      width: 1100px !important;
+      margin: 0 auto;
+    }
     .grid-item {
-      float: left;
-      width: 32%;
-      margin-right: 1%;
-      margin-bottom: 20px;
-      height: auto;
-      
+      @include desktop {
+        float: left;
+        width: 32%;
+        margin-right: 1%;
+        margin-bottom: 20px;
+        height: auto;
+      }
+    
       .deck:not(.on-hover) {
         opacity: 1.0;
       }

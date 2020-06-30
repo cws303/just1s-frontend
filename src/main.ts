@@ -26,8 +26,9 @@ Vue.use(require("vue-moment"), {
 import YoutubePlayerPlugin from "@/plugins/youtubePlayerPlugin";
 Vue.use(YoutubePlayerPlugin);
 
+import DeviceTypEnum from "@/utils/DeviceTypeEnum"
 import DeviceDetector from "@/plugins/deviceDetector";
-Vue.use(DeviceDetector);
+Vue.use(DeviceDetector, { breaker: DeviceTypEnum.desktop });
 
 
 import VueCookies from "vue-cookies";
