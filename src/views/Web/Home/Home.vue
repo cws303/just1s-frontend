@@ -2,7 +2,6 @@
   <div id="view-home">
      <v-text-field
       v-model="searchText"
-      :counter="20"
       label="검색"
       class="search"
     ></v-text-field>
@@ -34,13 +33,9 @@
       </v-slide-group>
     </v-sheet>
     <div v-if="decks.length == 0">덱이 없습니다. :(</div>
-    <div class="grid deck-list">
-      <div 
-        class="grid-item"
-        v-for="(deck,index) in decks" 
-        width="200"
-        :key="index" 
-      >
+    
+    <div v-masonry transition-duration="0.3s" item-selector=".grid-item" class="grid deck-list">
+      <div v-masonry-tile class="grid-item" v-for="(deck, index) in decks" :key="index">
         <v-hover v-slot:default="{ hover }">
           <div class="section-hover">
             <div class="row-deck-btns" v-if="hover">
@@ -95,6 +90,7 @@
         </v-hover>
       </div>
     </div>
+
      <v-pagination
       v-model="page"
       :length="totalPage"
@@ -108,9 +104,6 @@
 
 <script>
 import { mapState } from "vuex";
-import Masonry from "masonry-layout";
-import $ from "jquery";
-import ImageLoaded from 'imagesloaded'
 
 export default {
   name: "Home",
@@ -143,7 +136,7 @@ export default {
         orderby: "ID__DESC",
         with_hashtag: 1,
         offset: this.page-1,
-        take: 5,
+        take: 12,
       },
       this.$route.query
     );
@@ -151,34 +144,6 @@ export default {
 
 
     this.getBestDeckList();
-
-    var grid = document.querySelector('.grid');
-    var $grid = $('.masonry-grid')
-    var msnry = new Masonry( grid, {
-        // options...
-        columnWidth: '.grid-item',
-        itemSelector: '.grid-item',
-        // horizontalOrder: true,
-        fitWidth: true,
-        // percentPosition: true,
-        gutter:0,
-    });
-
-    // $grid.imagesLoaded().progress(function() {
-    //   $grid.masonry('layout');
-    // });
-
-    // // var grid = document.querySelector('.masonry-grid');
-    // // var $grid = $('.masonry-grid').masonry({
-    // // // options...
-    // //   columnWidth: '.masonry-grid-sizer',
-    // //   itemSelector: '.masonry-grid-item',
-    // //   percentPosition: true
-    // // });
-    // // // layout Masonry after each image loads
-    // // $grid.imagesLoaded().progress( function() {
-    // //   $grid.masonry('layout');
-    // // });
   },
   methods: {
     goDeckEdit(e, deckId) {
@@ -255,19 +220,27 @@ export default {
   
 
   .deck-list {
-    @include desktop {
-      display:block;
-      height: 1000px !important;
-      width: 1100px !important;
-      margin: 0 auto;
-    }
+    display:block;
+    margin: 0 auto;
+
     .grid-item {
       @include desktop {
-        float: left;
         width: 32%;
         margin-right: 1%;
         margin-bottom: 20px;
         height: auto;
+        &:nth-child( 3n) {
+          margin-right: 0;
+        }
+      }
+      @include mobile {
+        width: 49%;
+        margin-bottom: 20px;
+        height: auto;
+
+        &:nth-child( 2n-1) {
+          margin-right: 1%;
+        }
       }
     
       .deck:not(.on-hover) {

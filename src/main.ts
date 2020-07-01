@@ -2,6 +2,7 @@ import Vue from "vue";
 import App from "./App.vue";
 import router from "./router";
 import vuetify from "./plugins/vuetify";
+import {VueMasonryPlugin} from "@/plugins/vueMasonryPlugin"
 import vueHttpService from "@/plugins/vueHttpServicePlugin";
 
 // import vueMasonry from "@/plugins/vueMasonryPlugin"
@@ -49,7 +50,7 @@ declare module "vue/types/vue" {
   }
 }
 
-// Vue.use(vueMasonry);
+Vue.use(VueMasonryPlugin);
 Vue.use(vueHttpService);
 Vue.use(vuetify, {
   icons: {
