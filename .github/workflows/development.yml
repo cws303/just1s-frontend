@@ -11,21 +11,13 @@ jobs:
     steps:
       - name: Check inputs
         run: echo "##[set-output name=branch;]$(echo ${GITHUB_REF#refs/heads/})"
-# jobs:
-#   always_run:
-#     name: Always Run
-#     runs-on: ubuntu-latest
-#     steps:
-#       - name: checkout
-#         run: echo 1
 
-#   build_vue:
-#     name: Build Vue
-#     runs-on: ubuntu-latest
-#     steps:
-#       - name: checkout
-#         uses: actions/checkout@master
-
+  build_vue:
+    name: Build Vue
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout
+        uses: actions/checkout@master
 #       - name: setup node
 #         uses: actions/setup-node@v1
 #         with:
