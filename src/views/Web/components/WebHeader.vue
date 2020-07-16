@@ -1,12 +1,6 @@
 <template>
-  <v-app-bar 
-    :collapse="false"
-    :collapse-on-scroll="true"
-    flat 
-    fixed 
-    class="topbar"
-  >
-    <v-toolbar-title @click="goHome()">듣고 맞춰보세요 - 단1초</v-toolbar-title>
+  <v-app-bar :collapse="false" :collapse-on-scroll="true" flat fixed class="topbar">
+    <v-toolbar-title @click="goHome()">듣고 맞춰보세요 - 단1초..</v-toolbar-title>
     <v-spacer></v-spacer>
     <div class="row-menu">
       <div v-if="currentUser">
@@ -18,10 +12,7 @@
         </span>
         <v-menu>
           <template v-slot:activator="{ on, attrs }">
-            <v-btn icon
-              v-bind="attrs"
-              v-on="on"
-            >
+            <v-btn icon v-bind="attrs" v-on="on">
               <v-icon large>mdi-view-list</v-icon>
             </v-btn>
           </template>
@@ -64,16 +55,14 @@ export default {
       window.alert("로그아웃되었습니다.");
     },
     goDeckAdd() {
-      this.$router.push('deck-add');
+      this.$router.push("deck-add");
     },
     goHome() {
-      this.$router.push('/');
+      this.$router.push("/");
     }
   },
   computed: mapState(["currentUser"]),
-  created() {
-    
-  }
+  created() {}
 };
 </script>
 
@@ -83,7 +72,7 @@ export default {
 
   &.v-toolbar--collapsed {
     .row-user {
-      display:none;
+      display: none;
     }
   }
 }
