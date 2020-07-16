@@ -3,6 +3,8 @@ on:
   push:
     branches:
       - development
+      - action-test
+
 jobs:
   always_run:
     name: Always Run
