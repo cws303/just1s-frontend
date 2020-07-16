@@ -2,7 +2,7 @@ name: Deploy to Development
 on:
   push:
     branches:
-      - notexistbranch
+      - development
 
 jobs:
   always_run:
