@@ -1,4 +1,6 @@
 name: Common
+on: push
+
 steps:
   - name: Check inputs
     run: |
