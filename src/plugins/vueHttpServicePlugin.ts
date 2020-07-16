@@ -5,9 +5,8 @@ import { store } from "@/store";
 
 // let http: AxiosInstance; // not possible to create a private property in JavaScript, so we move it outside of the class, so that it's only accessible within this module
 const baseURLs: any = {
-  // local: "/api",
   local: "/api",
-  development: "https://api.just1s.xyz",
+  development: "https://dev-api.just1s.xyz",
   production: "https://api.just1s.xyz"
 };
 
