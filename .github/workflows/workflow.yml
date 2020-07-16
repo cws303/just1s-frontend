@@ -1,8 +1,12 @@
 name: Common
 on: push
 
-steps:
-  - name: Check inputs
-    run: |
-      echo github.ref is: ${{ github.ref }}
-      echo github.event_name is: ${{ github.event_name }}
+jobs:
+  always_run:
+    name: Always Run
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check inputs
+        run: |
+        echo github.ref is: ${{ github.ref }}
+        echo github.event_name is: ${{ github.event_name }}
