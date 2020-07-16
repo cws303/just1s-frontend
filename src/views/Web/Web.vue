@@ -65,8 +65,13 @@ export default {
   background: linear-gradient(white, $main-mint-light, $main-mint-dark);
   position: relative;
   .container-root {
-    padding: 64px 15% 0;
-    min-height: calc(100vh - 52px);
+    @include desktop {
+      padding: 64px 15% 0;
+      min-height: calc(100vh - 52px);
+    }
+    @include mobile {
+      padding: 50px 3% 0;
+    }
   }
 }
 </style>
