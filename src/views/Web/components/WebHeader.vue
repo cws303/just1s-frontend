@@ -1,6 +1,14 @@
 <template>
-  <v-app-bar :collapse="false" :collapse-on-scroll="true" flat fixed class="topbar">
-    <v-toolbar-title @click="goHome()">듣고 맞춰보세요 - 단1초..</v-toolbar-title>
+  <v-app-bar
+    :collapse="false"
+    :collapse-on-scroll="true"
+    flat
+    fixed
+    class="topbar"
+  >
+    <v-toolbar-title @click="goHome()"
+      >듣고 맞춰보세요 - 단1초..!</v-toolbar-title
+    >
     <v-spacer></v-spacer>
     <div class="row-menu">
       <div v-if="currentUser">
@@ -8,7 +16,7 @@
           <v-avatar to="/user-index">
             <img :src="currentUser.imgUrl" />
           </v-avatar>
-          {{currentUser.name}}
+          {{ currentUser.name }}
         </span>
         <v-menu>
           <template v-slot:activator="{ on, attrs }">
