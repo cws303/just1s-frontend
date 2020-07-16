@@ -1,5 +1,8 @@
-name: Deploy
-on: [push]
+name: Deploy to Production
+on:
+  push:
+    branches:
+      - master
 jobs:
   build_docker:
     name: Build Docker Image
