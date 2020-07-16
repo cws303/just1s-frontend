@@ -2,7 +2,6 @@
   <div id="view-home">
      <v-text-field
       v-model="searchText"
-      :counter="20"
       label="검색"
       class="search"
     ></v-text-field>
@@ -34,13 +33,9 @@
       </v-slide-group>
     </v-sheet>
     <div v-if="decks.length == 0">덱이 없습니다. :(</div>
-    <div class="grid deck-list">
-      <div 
-        class="grid-item"
-        v-for="(deck,index) in decks" 
-        width="200"
-        :key="index" 
-      >
+    
+    <div v-masonry transition-duration="0.3s" item-selector=".grid-item" class="grid deck-list">
+      <div v-masonry-tile class="grid-item" v-for="(deck, index) in decks" :key="index">
         <v-hover v-slot:default="{ hover }">
           <div class="section-hover">
             <div class="row-deck-btns" v-if="hover">
@@ -95,8 +90,9 @@
         </v-hover>
       </div>
     </div>
+
      <v-pagination
-      :v-model="page"
+      v-model="page"
       :length="totalPage"
       next-icon="mdi-chevron-right"
       prev-icon="mdi-chevron-left"
@@ -108,9 +104,6 @@
 
 <script>
 import { mapState } from "vuex";
-import Masonry from "masonry-layout";
-import $ from "jquery";
-import ImageLoaded from 'imagesloaded'
 
 export default {
   name: "Home",
@@ -129,57 +122,28 @@ export default {
   computed: mapState(["currentUser"]),
   created() {
   },
+
+  watch: {
+    page : function (newPage) {
+      this.query.offset = newPage-1;
+      this.getDeckList(this.query);
+    }
+  },
   mounted() {
 
     this.query = Object.assign(
       {
         orderby: "ID__DESC",
         with_hashtag: 1,
-        page: this.page,
+        offset: this.page-1,
         take: 12,
       },
       this.$route.query
     );
     this.getDeckList(this.query);
 
-    this.bestDeckQuery = Object.assign(
-      {
-        orderby: "ID__DESC",
-        with_hashtag: 1,
-        take:5,
-      },
-      this.$route.bestDeckQuery
-    );
 
-    this.getBestDeckList(this.bestDeckQuery);
-
-    var grid = document.querySelector('.grid');
-    var $grid = $('.masonry-grid')
-    var msnry = new Masonry( grid, {
-        // options...
-        columnWidth: '.grid-item',
-        itemSelector: '.grid-item',
-        // horizontalOrder: true,
-        fitWidth: true,
-        // percentPosition: true,
-        gutter:0,
-    });
-
-    // $grid.imagesLoaded().progress(function() {
-    //   $grid.masonry('layout');
-    // });
-
-    // // var grid = document.querySelector('.masonry-grid');
-    // // var $grid = $('.masonry-grid').masonry({
-    // // // options...
-    // //   columnWidth: '.masonry-grid-sizer',
-    // //   itemSelector: '.masonry-grid-item',
-    // //   percentPosition: true
-    // // });
-    // // // layout Masonry after each image loads
-    // // $grid.imagesLoaded().progress( function() {
-    // //   $grid.masonry('layout');
-    // // });
+    this.getBestDeckList();
   },
   methods: {
     goDeckEdit(e, deckId) {
@@ -196,11 +160,24 @@ export default {
         console.log(res.data)
         // this.decks = res.data.decks.concat(res.data.decks);
         this.totalCount = res.data.totalCount;
-        this.totalPage = Math.ceil(parseFloat(res.data.totalCount/12));
+        this.totalPage = Math.ceil(parseFloat(res.data.totalCount/this.query.take));
       });
     },
 
-    getBestDeckList(query) {
+    getBestDeckList() {
+      if(this.$isDesktop()) {
+        console.log("desktop")
+      }
+      if(this.$isMobile()) {
+        console.log("mobile")
+      }
+      let query = Object.assign(
+        {
+          orderby: "ID__DESC",
+          with_hashtag: 1,
+          take:5,
+        },
+      );
       Object.keys(query).forEach(key =>
         query[key] === undefined || query[key] === "" ? delete query[key] : {}
       );
@@ -210,6 +187,7 @@ export default {
         console.log(res.data.decks)
       });
     },
+
     goDetail(id) {
       this.$router.push({ name: "DeckDetail", params: { id: id } });
     },
@@ -243,16 +221,28 @@ export default {
 
   .deck-list {
     display:block;
-    height: 1000px !important;
-    width: 1100px !important;
     margin: 0 auto;
+
     .grid-item {
-      float: left;
-      width: 32%;
-      margin-right: 1%;
-      margin-bottom: 20px;
-      height: auto;
-      
+      @include desktop {
+        width: 32%;
+        margin-right: 1%;
+        margin-bottom: 20px;
+        height: auto;
+        &:nth-child( 3n) {
+          margin-right: 0;
+        }
+      }
+      @include mobile {
+        width: 49%;
+        margin-bottom: 20px;
+        height: auto;
+
+        &:nth-child( 2n-1) {
+          margin-right: 1%;
+        }
+      }
+    
       .deck:not(.on-hover) {
         opacity: 1.0;
       }

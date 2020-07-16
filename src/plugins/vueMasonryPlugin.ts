@@ -1,6 +1,6 @@
+import _Vue from 'vue';
 import Masonry from 'masonry-layout'
 import ImageLoaded from 'imagesloaded'
-import _Vue from "vue";
 
 const attributesMap:any = {
   'column-width': 'columnWidth',
@@ -26,12 +26,12 @@ const stringToBool = function (val:any) { return (val + '').toLowerCase() === 't
 const numberOrSelector = function (val:any) { return isNaN(val) ? val : parseInt(val) }
 
 const collectOptions = function (attrs:any) {
-  const res:any = {}
-  const attributesArray:any = Array.prototype.slice.call(attrs)
+  const res:any= {}
+  const attributesArray:Array<string> = Array.prototype.slice.call(attrs)
   attributesArray.forEach(function (attr:any) {
     if (Object.keys(attributesMap).indexOf(attr.name) > -1) {
       if (attr.name.indexOf('origin') > -1) {
-        res[attributesMap[attr.name]]= stringToBool(attr.value)
+        res[attributesMap[attr.name]] = stringToBool(attr.value)
       } else if (attr.name === 'column-width' || attr.name === 'gutter') {
         res[attributesMap[attr.name]] = numberOrSelector(attr.value)
       } else {
@@ -44,19 +44,19 @@ const collectOptions = function (attrs:any) {
 
 export const VueMasonryPlugin = function () {}
 
-VueMasonryPlugin.install = function (Vue: typeof _Vue, options?: any) {
+VueMasonryPlugin.install = function (Vue:any, options:any) {
   const Events = new Vue({})
   const defaultId = 'VueMasonry'
 
   Vue.directive('masonry', {
-    // props: ['transitionDuration', ' itemSelector', 'destroyDelay'],
+    props: ['transitionDuration', ' itemSelector', 'destroyDelay'],
 
-    inserted: function (el, binding) {
+    inserted: function (el:any, binding:any) {
       if (!Masonry) {
         throw new Error('Masonry plugin is not defined. Please check it\'s connected and parsed correctly.')
       }
       const options = collectOptions(el.attributes)
-      const masonry:any= new Masonry(el, options)
+      const masonry:any = new Masonry(el, options)
       const masonryId = binding.value || defaultId
       const destroyDelay = options['destroyDelay'] ? parseInt(options['destroyDelay'], 10) : undefined
       const masonryDraw = function () {
@@ -87,7 +87,7 @@ VueMasonryPlugin.install = function (Vue: typeof _Vue, options?: any) {
       Events.$on(`${EVENT_IMAGE_LOADED}__${masonryId}`, masonryRedrawHandler)
       Events.$on(`${EVENT_DESTROY}__${masonryId}`, masonryDestroyHandler)
     },
-    unbind: function (el, binding) {
+    unbind: function (el:any, binding:any) {
       const masonryId = binding.value || defaultId
       Events.$emit(`${EVENT_DESTROY}__${masonryId}`)
     }
@@ -95,19 +95,19 @@ VueMasonryPlugin.install = function (Vue: typeof _Vue, options?: any) {
 
   Vue.directive('masonryTile', {
 
-    inserted: function (el, binding) {
+    inserted: function (el:any, binding:any) {
       const masonryId = binding.value || defaultId
       Events.$emit(`${EVENT_ADD}__${masonryId}`, {
         'element': el
       })
       // eslint-disable-next-line
-      new (ImageLoaded as any)(el, function () {
-        Events.$emit(`${EVENT_IMAGE_LOADED}__${masonryId}`, {
-          'element': el
-        })
-      })
+      // new ImageLoaded(el, function () {
+      //   Events.$emit(`${EVENT_IMAGE_LOADED}__${masonryId}`, {
+      //     'element': el
+      //   })
+      // })
     },
-    unbind: function (el, binding) {
+    unbind: function (el:any, binding:any) {
       const masonryId = binding.value || defaultId
       Events.$emit(`${EVENT_REMOVE}__${masonryId}`, {
         'element': el
@@ -120,5 +120,3 @@ VueMasonryPlugin.install = function (Vue: typeof _Vue, options?: any) {
     Events.$emit(`${EVENT_ADD}__${masonryId}`)
   }
 }
-
-export default VueMasonryPlugin;
