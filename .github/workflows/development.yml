@@ -8,6 +8,8 @@ jobs:
   build_vue:
     name: Build Vue
     runs-on: ubuntu-latest
+    env:
+      NODE_ENV: "development"
     steps:
       - name: checkout
         uses: actions/checkout@master
