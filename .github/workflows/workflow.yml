@@ -1,0 +1,6 @@
+name: Common
+steps:
+  - name: Check inputs
+    run: |
+      echo github.ref is: ${{ github.ref }}
+      echo github.event_name is: ${{ github.event_name }}
