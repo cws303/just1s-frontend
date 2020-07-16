@@ -4,7 +4,14 @@ on:
     branches:
       - development
 jobs:
-  build:
+  always_run:
+    name: Always Run
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout
+        run: echo 1
+
+  build_vue:
     name: Build Vue
     runs-on: ubuntu-latest
     steps:
