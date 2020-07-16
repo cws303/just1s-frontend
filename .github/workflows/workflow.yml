@@ -7,6 +7,4 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Check inputs
-        run: |
-        echo 'github.ref is:' ${{ github.ref }}
-        echo 'github.event_name is:' ${{ github.event_name }}
+        run: echo "##[set-output name=branch;]$(echo ${GITHUB_REF#refs/heads/})"
