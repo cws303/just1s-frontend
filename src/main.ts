@@ -8,7 +8,7 @@ import vueHttpService from "@/plugins/vueHttpServicePlugin";
 // import vueMasonry from "@/plugins/vueMasonryPlugin"
 import { BootstrapVue, BootstrapVueIcons } from "bootstrap-vue";
 
-import "@mdi/font/css/materialdesignicons.css";
+// import "@mdi/font/css/materialdesignicons.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap-vue/dist/bootstrap-vue.css";
 Vue.use(BootstrapVue);
