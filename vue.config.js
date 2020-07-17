@@ -1,4 +1,5 @@
 const CopyWebpackPlugin = require("copy-webpack-plugin");
+const CompressionPlugin = require("compression-webpack-plugin");
 const path = require("path");
 
 module.exports = {
@@ -18,7 +19,8 @@ module.exports = {
           to: "static",
           ignore: [".*"]
         }
-      ])
+      ]),
+      new CompressionPlugin()
     ]
   },
   runtimeCompiler: true,
@@ -28,7 +30,7 @@ module.exports = {
     disableHostCheck: true,
     proxy: {
       "/api/*": {
-        target: "http://localhost:3000/development",
+        target: "http://localhost:3000/local",
         changeOrigin: true,
         pathRewrite: {
           "^/api": "/"

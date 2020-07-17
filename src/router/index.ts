@@ -17,6 +17,7 @@ const router = new VueRouter({
   base: process.env.BASE_URL,
   routes
 });
+const DEFAULT_TITLE = "단1초";
 
 router.beforeEach(async (to, from, next) => {
   if (to.matched.some(record => record.meta.accessibleTo)) {
@@ -38,6 +39,16 @@ router.beforeEach(async (to, from, next) => {
   } else {
     next();
   }
+});
+
+router.afterEach((to, from) => {
+  Vue.nextTick(() => {
+    let title = to.meta.title || DEFAULT_TITLE;
+    if (process.env.NODE_ENV != "production") {
+      title += " - " + process.env.NODE_ENV;
+    }
+    document.title = title;
+  });
 });
 
 export default router;

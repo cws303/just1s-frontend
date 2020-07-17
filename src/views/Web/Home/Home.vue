@@ -1,6 +1,6 @@
 <template>
   <div id="view-home">
-     <v-text-field
+    <v-text-field
       v-model="searchText"
       label="검색"
       class="search"
@@ -8,10 +8,20 @@
 
     <v-sheet class="best-deck-list" v-if="bestDecks.length > 0">
       <v-slide-group v-model="bestDecks" class="deck-slide-group">
-        <v-slide-item v-for="(deck,index) in bestDecks" :key="index" class="deck-slide">
-          <v-card class="ma-4" height="450" width="250" elevation="8" @click="goDetail(deck.id)">
+        <v-slide-item
+          v-for="(deck, index) in bestDecks"
+          :key="index"
+          class="deck-slide"
+        >
+          <v-card
+            class="ma-4"
+            height="450"
+            width="250"
+            elevation="8"
+            @click="goDetail(deck.id)"
+          >
             <v-img class="white--text align-end" :src="deck.repImgUrl"></v-img>
-            <v-card-subtitle class="pb-0">{{deck.title}}</v-card-subtitle>
+            <v-card-subtitle class="pb-0">{{ deck.title }}</v-card-subtitle>
 
             <v-card-text class="text--primary">
               <!-- <div>출제자 : {{ deck.user.name }}</div> -->
@@ -22,68 +32,69 @@
                 v-for="(hashtag, _index) in deck.hashtags"
                 :key="_index"
                 x-small
-              >#{{hashtag.hashtag}}</v-chip>
+                >#{{ hashtag.hashtag }}</v-chip
+              >
             </div>
             <v-card-actions>
               <v-spacer></v-spacer>
-              <v-btn v-if="currentUser!==null && currentUser.id == deck.user.id" @click="goDeckEdit($event, deck.id)">수정</v-btn>
+              <v-btn
+                v-if="currentUser !== null && currentUser.id == deck.user.id"
+                @click="goDeckEdit($event, deck.id)"
+                >수정</v-btn
+              >
             </v-card-actions>
           </v-card>
         </v-slide-item>
       </v-slide-group>
     </v-sheet>
     <div v-if="decks.length == 0">덱이 없습니다. :(</div>
-    
-    <div v-masonry transition-duration="0.3s" item-selector=".grid-item" class="grid deck-list">
-      <div v-masonry-tile class="grid-item" v-for="(deck, index) in decks" :key="index">
+
+    <div
+      v-masonry
+      transition-duration="0.3s"
+      item-selector=".grid-item"
+      class="grid deck-list"
+    >
+      <div
+        v-masonry-tile
+        class="grid-item"
+        v-for="(deck, index) in decks"
+        :key="index"
+      >
         <v-hover v-slot:default="{ hover }">
           <div class="section-hover">
             <div class="row-deck-btns" v-if="hover">
               <v-btn
-                v-if="currentUser!==null && currentUser.id == deck.user.id"
+                v-if="currentUser !== null && currentUser.id == deck.user.id"
                 icon
                 @click="goDeckEdit($event, deck.id)"
               >
-                <v-icon
-                  class="deck-btn"
-                  large
-                >mdi-pencil</v-icon>
+                <v-icon class="deck-btn" large>mdi-pencil</v-icon>
               </v-btn>
-              <v-btn
-                icon
-                @click="goDetail(deck.id)"
-              >
-                <v-icon
-                  class="deck-btn"
-                  large
-                >mdi-play-box-multiple-outline</v-icon>
+              <v-btn icon @click="goDetail(deck.id)">
+                <v-icon class="deck-btn" large
+                  >mdi-play-box-multiple-outline</v-icon
+                >
               </v-btn>
-              <v-btn
-                icon
-              >
-                <v-icon
-                  large
-                  class="deck-btn"
-                >mdi-share-variant</v-icon>
+              <v-btn icon>
+                <v-icon large class="deck-btn">mdi-share-variant</v-icon>
               </v-btn>
             </div>
-            <v-card  
+            <v-card
               class="deck"
               :elevation="hover ? 12 : 2"
               :class="{ 'on-hover': hover }"
             >
-              <v-img 
-                class="deck-img"
-                :src="deck.repImgUrl"
-              >
-                <v-card-title class="deck-title">{{deck.title}}</v-card-title>
+              <v-img class="deck-img" :src="deck.repImgUrl">
+                <v-card-title class="deck-title">{{ deck.title }}</v-card-title>
               </v-img>
               <div class="hashtags">
                 <v-chip
                   v-for="(hashtag, _index) in deck.hashtags"
                   :key="_index"
                   x-small
-                >#{{hashtag.hashtag}}</v-chip>
+                  >#{{ hashtag.hashtag }}</v-chip
+                >
               </div>
             </v-card>
           </div>
@@ -91,7 +102,7 @@
       </div>
     </div>
 
-     <v-pagination
+    <v-pagination
       v-model="page"
       :length="totalPage"
       next-icon="mdi-chevron-right"
@@ -110,38 +121,39 @@ export default {
   data() {
     return {
       msg: "Home",
-      searchText: '',
+      searchText: "",
       decks: [],
-      bestDecks:[],
-      transparent: 'rgba(255, 255, 255, 0)',
+      bestDecks: [],
+      transparent: "rgba(255, 255, 255, 0)",
       page: 1,
       totalPage: 0,
-      icons: ['mdi-pencil', 'mdi-play-box-multiple-outline', 'mdi-share-variant']
+      icons: [
+        "mdi-pencil",
+        "mdi-play-box-multiple-outline",
+        "mdi-share-variant"
+      ]
     };
   },
   computed: mapState(["currentUser"]),
-  created() {
-  },
+  created() {},
 
   watch: {
-    page : function (newPage) {
-      this.query.offset = newPage-1;
+    page: function(newPage) {
+      this.query.offset = newPage - 1;
       this.getDeckList(this.query);
     }
   },
   mounted() {
-
     this.query = Object.assign(
       {
         orderby: "ID__DESC",
         with_hashtag: 1,
-        offset: this.page-1,
-        take: 12,
+        offset: this.page - 1,
+        take: 12
       },
       this.$route.query
     );
     this.getDeckList(this.query);
-
 
     this.getBestDeckList();
   },
@@ -157,41 +169,40 @@ export default {
 
       this.$httpService.get("/decks", query).then(res => {
         this.decks = res.data.decks;
-        console.log(res.data)
+        console.log(res.data);
         // this.decks = res.data.decks.concat(res.data.decks);
         this.totalCount = res.data.totalCount;
-        this.totalPage = Math.ceil(parseFloat(res.data.totalCount/this.query.take));
+        this.totalPage = Math.ceil(
+          parseFloat(res.data.totalCount / this.query.take)
+        );
       });
     },
 
     getBestDeckList() {
-      if(this.$isDesktop()) {
-        console.log("desktop")
+      if (this.$isDesktop()) {
+        console.log("desktop");
       }
-      if(this.$isMobile()) {
-        console.log("mobile")
+      if (this.$isMobile()) {
+        console.log("mobile");
       }
-      let query = Object.assign(
-        {
-          orderby: "ID__DESC",
-          with_hashtag: 1,
-          take:5,
-        },
-      );
+      let query = Object.assign({
+        orderby: "ID__DESC",
+        with_hashtag: 1,
+        take: 5
+      });
       Object.keys(query).forEach(key =>
         query[key] === undefined || query[key] === "" ? delete query[key] : {}
       );
 
       this.$httpService.get("/decks", query).then(res => {
         this.bestDecks = res.data.decks;
-        console.log(res.data.decks)
+        console.log(res.data.decks);
       });
     },
 
     goDetail(id) {
       this.$router.push({ name: "DeckDetail", params: { id: id } });
-    },
-    
+    }
   }
 };
 </script>
@@ -217,10 +228,8 @@ export default {
     }
   }
 
-  
-
   .deck-list {
-    display:block;
+    display: block;
     margin: 0 auto;
 
     .grid-item {
@@ -229,7 +238,7 @@ export default {
         margin-right: 1%;
         margin-bottom: 20px;
         height: auto;
-        &:nth-child( 3n) {
+        &:nth-child(3n) {
           margin-right: 0;
         }
       }
@@ -238,19 +247,19 @@ export default {
         margin-bottom: 20px;
         height: auto;
 
-        &:nth-child( 2n-1) {
+        &:nth-child(2n-1) {
           margin-right: 1%;
         }
       }
-    
+
       .deck:not(.on-hover) {
-        opacity: 1.0;
+        opacity: 1;
       }
 
       .show-btns {
         color: $main-orange-dark;
       }
-      
+
       .section-hover {
         position: relative;
       }
@@ -258,12 +267,12 @@ export default {
       .row-deck-btns {
         position: absolute;
         width: 150px;
-        display:flex;
+        display: flex;
         justify-content: space-between;
         z-index: 100;
-        top:35%;
+        top: 35%;
         left: 30%;
-        
+
         .deck-btn {
           color: $main-orange-dark;
         }
@@ -273,7 +282,7 @@ export default {
         border-radius: 12%;
         background-color: rgba(255, 255, 255, 0.7) !important;
         opacity: 0.6;
-        transition: opacity .4s ease-in-out;
+        transition: opacity 0.4s ease-in-out;
 
         .deck-img {
           height: 200px;

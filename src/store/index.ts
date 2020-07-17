@@ -11,14 +11,14 @@ export const store = new Vuex.Store({
   },
   mutations: {
     setAccessToken(state, token) {
-      console.log("[vuex:setAccessToken]", token);
+      console.debug("[vuex:setAccessToken]", token);
       state.accessToken = token;
     },
     setCurrentUser(state, user) {
       state.currentUser = user;
     },
     setIsInitLoading(state, boolean) {
-      console.log("[vuex:setIsInitLoading]", boolean);
+      console.debug("[vuex:setIsInitLoading]", boolean);
       state.isInitLoading = boolean;
     }
   },
