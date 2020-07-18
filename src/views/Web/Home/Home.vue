@@ -39,14 +39,6 @@
                 >#{{ hashtag.hashtag }}</v-chip
               >
             </div>
-            <v-card-actions>
-              <v-spacer></v-spacer>
-              <v-btn
-                v-if="currentUser !== null && currentUser.id == deck.user.id"
-                @click="goDeckEdit($event, deck.id)"
-                >수정</v-btn
-              >
-            </v-card-actions>
           </v-card>
         </v-slide-item>
       </v-slide-group>
@@ -71,13 +63,6 @@
           <v-hover v-slot:default="{ hover }">
             <div class="section-hover">
               <div class="row-deck-btns" v-if="hover">
-                <v-btn
-                  v-if="currentUser !== null && currentUser.id == deck.user.id"
-                  icon
-                  @click="goDeckEdit($event, deck.id)"
-                >
-                  <v-icon class="deck-btn" large>mdi-pencil</v-icon>
-                </v-btn>
                 <v-btn icon @click="goPerformForm(deck.id)">
                   <v-icon class="deck-btn" large
                     >mdi-play-box-multiple-outline</v-icon
@@ -172,10 +157,6 @@ export default {
     this.getBestDeckList();
   },
   methods: {
-    goDeckEdit(e, deckId) {
-      e.stopPropagation();
-      this.$router.push({ name: "DeckEdit", params: { id: deckId } });
-    },
     getDeckList(query) {
       Object.keys(query).forEach(key =>
         query[key] === undefined || query[key] === "" ? delete query[key] : {}

@@ -23,9 +23,6 @@
             </v-btn>
           </template>
           <v-list>
-            <v-list-item @click="goDeckAdd()">
-              <v-list-item-title>퀴즈 만들기</v-list-item-title>
-            </v-list-item>
             <v-list-item @click="logout()">
               <v-list-item-title>로그아웃</v-list-item-title>
             </v-list-item>
