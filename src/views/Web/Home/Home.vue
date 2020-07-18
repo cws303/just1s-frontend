@@ -1,30 +1,20 @@
 <template>
   <div id="view-home">
-    <v-text-field
-      v-model="searchText"
-      label="검색"
-      class="search"
-    ></v-text-field>
+    <v-text-field v-model="searchText" label="검색" class="search"></v-text-field>
 
     <v-sheet class="best-deck-list" v-if="bestDecks.length > 0">
       <v-slide-group v-model="bestDecks" class="deck-slide-group">
-        <v-slide-item
-          v-for="(deck, index) in bestDecks"
-          :key="index"
-          class="deck-slide"
-        >
-          <v-card
-            class="ma-4"
-            height="450"
-            width="250"
-            elevation="8"
-            @click="goDetail(deck.id)"
-          >
-            <v-img class="white--text align-end" :src="deck.repImgUrl"></v-img>
+        <v-slide-item v-for="(deck, index) in bestDecks" :key="index" class="deck-slide">
+          <v-card class="ma-4" height="450" width="250" elevation="8" @click="goDetail(deck.id)">
+            <v-img
+              class="white--text align-end"
+              :src="deck.repImgUrl"
+              lazy-src="/static/assets/images/placeholder.png"
+              height="300"
+            ></v-img>
             <v-card-subtitle class="pb-0">{{ deck.title }}</v-card-subtitle>
 
             <v-card-text class="text--primary">
-              <!-- <div>출제자 : {{ deck.user.name }}</div> -->
               <div>조회수 : {{ deck.hitsCount }}</div>
             </v-card-text>
             <div class="hashtags">
@@ -32,16 +22,14 @@
                 v-for="(hashtag, _index) in deck.hashtags"
                 :key="_index"
                 x-small
-                >#{{ hashtag.hashtag }}</v-chip
-              >
+              >#{{ hashtag.hashtag }}</v-chip>
             </div>
             <v-card-actions>
               <v-spacer></v-spacer>
               <v-btn
                 v-if="currentUser !== null && currentUser.id == deck.user.id"
                 @click="goDeckEdit($event, deck.id)"
-                >수정</v-btn
-              >
+              >수정</v-btn>
             </v-card-actions>
           </v-card>
         </v-slide-item>
@@ -49,56 +37,54 @@
     </v-sheet>
     <div v-if="decks.length == 0">덱이 없습니다. :(</div>
 
-    <div
-      v-masonry
-      transition-duration="0.3s"
-      item-selector=".grid-item"
-      class="grid deck-list"
-    >
+    <div class="masonry-wrapper">
       <div
-        v-masonry-tile
-        class="grid-item"
-        v-for="(deck, index) in decks"
-        :key="index"
+        v-masonry
+        transition-duration="0.2s"
+        item-selector=".grid-item"
+        class="grid deck-list"
+        :column-width="80"
+        :fit-width="true"
       >
-        <v-hover v-slot:default="{ hover }">
-          <div class="section-hover">
-            <div class="row-deck-btns" v-if="hover">
-              <v-btn
-                v-if="currentUser !== null && currentUser.id == deck.user.id"
-                icon
-                @click="goDeckEdit($event, deck.id)"
-              >
-                <v-icon class="deck-btn" large>mdi-pencil</v-icon>
-              </v-btn>
-              <v-btn icon @click="goDetail(deck.id)">
-                <v-icon class="deck-btn" large
-                  >mdi-play-box-multiple-outline</v-icon
+        <div v-masonry-tile class="grid-item" v-for="(deck, index) in decks" :key="index">
+          <v-hover v-slot:default="{ hover }">
+            <div class="section-hover">
+              <div class="row-deck-btns" v-if="hover">
+                <v-btn
+                  v-if="currentUser !== null && currentUser.id == deck.user.id"
+                  icon
+                  @click="goDeckEdit($event, deck.id)"
                 >
-              </v-btn>
-              <v-btn icon>
-                <v-icon large class="deck-btn">mdi-share-variant</v-icon>
-              </v-btn>
-            </div>
-            <v-card
-              class="deck"
-              :elevation="hover ? 12 : 2"
-              :class="{ 'on-hover': hover }"
-            >
-              <v-img class="deck-img" :src="deck.repImgUrl">
-                <v-card-title class="deck-title">{{ deck.title }}</v-card-title>
-              </v-img>
-              <div class="hashtags">
-                <v-chip
-                  v-for="(hashtag, _index) in deck.hashtags"
-                  :key="_index"
-                  x-small
-                  >#{{ hashtag.hashtag }}</v-chip
-                >
+                  <v-icon class="deck-btn" large>mdi-pencil</v-icon>
+                </v-btn>
+                <v-btn icon @click="goDetail(deck.id)">
+                  <v-icon class="deck-btn" large>mdi-play-box-multiple-outline</v-icon>
+                </v-btn>
+                <v-btn icon>
+                  <v-icon large class="deck-btn">mdi-share-variant</v-icon>
+                </v-btn>
               </div>
-            </v-card>
-          </div>
-        </v-hover>
+              <v-card class="deck" :elevation="hover ? 12 : 2" :class="{ 'on-hover': hover }">
+                <v-img
+                  class="deck-img"
+                  :src="deck.repImgUrl"
+                  lazy-src="/static/assets/images/placeholder.png"
+                >
+                  <template v-slot:placeholder>
+                    <p class="deck-title">{{ deck.title }}</p>
+                  </template>
+                </v-img>
+                <div class="hashtags">
+                  <v-chip
+                    v-for="(hashtag, _index) in deck.hashtags"
+                    :key="_index"
+                    x-small
+                  >#{{ hashtag.hashtag }}</v-chip>
+                </div>
+              </v-card>
+            </div>
+          </v-hover>
+        </div>
       </div>
     </div>
 
@@ -234,7 +220,7 @@ export default {
 
     .grid-item {
       @include desktop {
-        width: 32%;
+        width: 300px;
         margin-right: 1%;
         margin-bottom: 20px;
         height: auto;
@@ -242,8 +228,19 @@ export default {
           margin-right: 0;
         }
       }
+
+      @include tablet {
+        width: 300px;
+        margin-right: 1%;
+        margin-bottom: 20px;
+        height: auto;
+        &:nth-child(3n) {
+          margin-right: 0;
+        }
+      }
+
       @include mobile {
-        width: 49%;
+        width: 100%;
         margin-bottom: 20px;
         height: auto;
 
