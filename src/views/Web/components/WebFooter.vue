@@ -1,9 +1,6 @@
 <template>
-  <v-footer flat class="footerbar">
+  <v-footer flat class="footer-bar">
     <p class="title">2020 All Right Reserved</p>
-    <div class="test">
-      <router-link to="/practice">Practice 이동</router-link>
-    </div>
   </v-footer>
 </template>
 
@@ -14,9 +11,9 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-  .footerbar {
-    background-color: rgba( 255, 255, 255, 0 ) !important;
-    display: flex;
-    justify-content: space-between;
-  }
+.footer-bar {
+  background-color: rgba(255, 255, 255, 0) !important;
+  display: flex;
+  justify-content: space-between;
+}
 </style>

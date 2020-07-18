@@ -1,87 +1,100 @@
 <template>
   <div id="view-perform-form">
-    <b-row class="mt-3">
-      <b-col cols="12" align="center">
+    <v-row class="mt-3">
+      <v-col cols="12" align="center">
         <h1>
-          맞춰보세요ㅎ ({{ currentIndex + 1 }} / {{ deck.deckMusics.length }})
+          {{ deck.title }}
         </h1>
-      </b-col>
-    </b-row>
-    <b-row class="mt-3">
-      <b-col cols="12" align="center">
-        <b-avatar src="https://placekitten.com/300/300" size="12rem"></b-avatar>
-      </b-col>
-    </b-row>
-    <b-row class="mt-3" v-if="deck.deckMusics && deck.deckMusics[currentIndex]">
-      <b-col cols="12" align="center">
-        정답 : {{ deck.deckMusics[currentIndex].music.title }}
-        <br />
+        ({{ currentIndex + 1 }} / {{ deck.deckMusics.length }})
+      </v-col>
+    </v-row>
+    <v-row class="mt-3">
+      <v-col cols="12" align="center">
+        <div style="position:relative; width:200px">
+          <v-avatar
+            :size="200"
+            class="deck-music-player"
+            v-bind:class="{ 'is-playing': currentMediaState === 'playing' }"
+          >
+            <v-img
+              :src="deck.repImgUrl"
+              lazy-src="/static/assets/images/placeholder.png"
+            />
+          </v-avatar>
+          <div
+            style="position:absolute; height:100%; width:100%; top:0; left:0; display:flex; justify-content:center; align-items:center"
+          >
+            <v-btn
+              variant="danger"
+              v-show="currentMediaState != 'playing'"
+              @click="playVideo"
+              :ripple="false"
+              >재생</v-btn
+            >
+          </div>
+        </div>
+      </v-col>
+    </v-row>
+    <v-row class="mt-3" v-if="deck.deckMusics && deck.deckMusics[currentIndex]">
+      <v-col cols="12" align="center" style="height:0">
         <youtube-player
           :video-id="deck.deckMusics[currentIndex].music.key"
-          width="0"
-          height="0"
+          width="1"
+          height="1"
           ref="youtube"
           @playing="playing"
           @paused="paused"
           @ended="ended"
           @buffering="buffering"
         ></youtube-player>
-        <div style="height:30px">
-          <b-button
-            variant="danger"
-            v-show="currentMediaState != 'playing'"
-            @click="playVideo"
-          >
-            <b-icon
-              class="icon-delete align-middle text-center"
-              :icon="
-                currentMediaState == 'buffering' ? 'three-dots' : 'play-fill'
-              "
-              variant="light"
-              @click:stop="goForm(deck.id)"
-            ></b-icon>
-          </b-button>
-        </div>
-
-        <!-- <div>현재 : {{ currentMediaState }}</div> -->
         <br />
-      </b-col>
-    </b-row>
+      </v-col>
+    </v-row>
     <v-progress-linear
       indeterminate
       color="yellow darken-2"
     ></v-progress-linear>
-    <b-row>
-      <b-col
+    <v-row>
+      <v-col
         cols="12"
         align="center"
         align-self="end"
         v-if="state == 'ONGOING'"
       >
-        <b-form-input
+        <v-text-field
           v-model="currentAnswer"
-          placeholder="Enter your name"
-        ></b-form-input>
-        <b-button variant="primary" @click="submitOne">제출!</b-button>
-        <b-button @click="passOne">모르겠음..</b-button>
-      </b-col>
-      <b-col cols="12" align="center" align-self="end" v-if="state == 'RESULT'">
+          placeholder="정답 입력"
+          style="max-width:300px"
+        ></v-text-field>
+        <v-btn class="mr-3" @click="submitOne">정답!</v-btn>
+        <v-btn @click="passOne">PASS</v-btn>
+      </v-col>
+
+      <v-col cols="12" align="center" align-self="end" v-if="state == 'RESULT'">
         {{ currentAnswerIsCorrect ? "맞음" : "틀림ㅠ" }}
         <br />
 
-        <b-button
+        <v-btn
           v-if="currentIndex + 1 < deck.deckMusics.length"
           @click="goNextStep"
-          >다음</b-button
+          >다음</v-btn
         >
-        <b-button
+        <v-btn
           v-if="currentIndex + 1 >= deck.deckMusics.length"
           @click="submitAll"
-          >결과보기</b-button
+          >결과보기</v-btn
         >
-      </b-col>
-    </b-row>
-    <pre>{{ performDto }}</pre>
+      </v-col>
+    </v-row>
+    <div
+      class="debug-modal"
+      style="border:1px dashed red; position:absolute; bottom:0; right:0; font-size:9px"
+    >
+      <div v-if="deck.deckMusics && deck.deckMusics[currentIndex]">
+        정답 : {{ deck.deckMusics[currentIndex].music.title }}
+      </div>
+      <pre>{{ performDto }}</pre>
+    </div>
   </div>
 </template>
 
@@ -113,9 +126,6 @@ export default {
   methods: {
     async playVideo() {
       const deckMusic = this.deck.deckMusics[this.currentIndex];
-      console.log(deckMusic);
-      console.log(this.$refs.youtube.videoId);
-      console.log(this.$refs.youtube.player);
       const player = this.$refs.youtube.player;
 
       // TODO : second duration 비교 체크 후 이상하면 0으로
@@ -183,8 +193,13 @@ export default {
 
       const isCorrect = await this.checkCorrect(this.currentAnswer);
       this.currentAnswerIsCorrect = isCorrect;
-      this.currentAnswer = "";
-      this.state = "RESULT";
+
+      if (this.currentAnswer !== "") {
+        this.currentAnswer = "";
+        this.state = "RESULT";
+      } else {
+        this.goNextStep();
+      }
     },
     goNextStep() {
       if (this.currentIndex + 1 >= this.deck.deckMusics.length) {
@@ -230,4 +245,11 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.deck-music-player {
+  border: 4px solid gray;
+}
+.deck-music-player.is-playing {
+  border-color: rgb(25, 192, 44);
+}
+</style>
