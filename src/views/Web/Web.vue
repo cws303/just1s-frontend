@@ -41,7 +41,7 @@ export default {
   height: 100%;
   min-height: 100vh;
   font-family: "CookieRun", "Avenir", Helvetica, Arial, sans-serif;
-  background: linear-gradient(white, $main-mint-light, $main-mint-dark);
+  background: linear-gradient($main-mint-dark, $main-mint-light, white);
   position: relative;
   .container-root {
     @include desktop {

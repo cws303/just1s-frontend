@@ -2,9 +2,7 @@
   <div id="view-perform-form">
     <v-row class="mt-3">
       <v-col cols="12" align="center">
-        <h1>
-          {{ deck.title }}
-        </h1>
+        <h1>{{ deck.title }}</h1>
         ({{ currentIndex + 1 }} / {{ deck.deckMusics.length }})
       </v-col>
     </v-row>
@@ -16,10 +14,7 @@
             class="deck-music-player"
             v-bind:class="{ 'is-playing': currentMediaState === 'playing' }"
           >
-            <v-img
-              :src="deck.repImgUrl"
-              lazy-src="/static/assets/images/placeholder.png"
-            />
+            <v-img :src="deck.repImgUrl" lazy-src="/static/assets/images/placeholder.png" />
           </v-avatar>
           <div
             style="position:absolute; height:100%; width:100%; top:0; left:0; display:flex; justify-content:center; align-items:center"
@@ -29,8 +24,7 @@
               v-show="currentMediaState != 'playing'"
               @click="playVideo"
               :ripple="false"
-              >재생</v-btn
-            >
+            >재생</v-btn>
           </div>
         </div>
       </v-col>
@@ -50,22 +44,10 @@
         <br />
       </v-col>
     </v-row>
-    <v-progress-linear
-      indeterminate
-      color="yellow darken-2"
-    ></v-progress-linear>
+    <v-progress-linear indeterminate color="yellow darken-2"></v-progress-linear>
     <v-row>
-      <v-col
-        cols="12"
-        align="center"
-        align-self="end"
-        v-if="state == 'ONGOING'"
-      >
-        <v-text-field
-          v-model="currentAnswer"
-          placeholder="정답 입력"
-          style="max-width:300px"
-        ></v-text-field>
+      <v-col cols="12" align="center" align-self="end" v-if="state == 'ONGOING'">
+        <v-text-field v-model="currentAnswer" placeholder="정답 입력" style="max-width:300px"></v-text-field>
         <v-btn class="mr-3" @click="submitOne">정답!</v-btn>
         <v-btn @click="passOne">PASS</v-btn>
       </v-col>
@@ -74,25 +56,17 @@
         {{ currentAnswerIsCorrect ? "맞음" : "틀림ㅠ" }}
         <br />
 
-        <v-btn
-          v-if="currentIndex + 1 < deck.deckMusics.length"
-          @click="goNextStep"
-          >다음</v-btn
-        >
-        <v-btn
-          v-if="currentIndex + 1 >= deck.deckMusics.length"
-          @click="submitAll"
-          >결과보기</v-btn
-        >
+        <v-btn v-if="currentIndex + 1 < deck.deckMusics.length" @click="goNextStep">다음</v-btn>
+        <v-btn v-if="currentIndex + 1 >= deck.deckMusics.length" @click="submitAll">결과보기</v-btn>
       </v-col>
     </v-row>
     <div
       class="debug-modal"
       style="border:1px dashed red; position:absolute; bottom:0; right:0; font-size:9px"
     >
-      <div v-if="deck.deckMusics && deck.deckMusics[currentIndex]">
-        정답 : {{ deck.deckMusics[currentIndex].music.title }}
-      </div>
+      <div
+        v-if="deck.deckMusics && deck.deckMusics[currentIndex]"
+      >정답 : {{ deck.deckMusics[currentIndex].music.title }}</div>
       <pre>{{ performDto }}</pre>
     </div>
   </div>
@@ -169,6 +143,7 @@ export default {
       }
 
       // perform's id
+      console.log({ id: res.data.id });
       this.$router.push({ name: "PerformDetail", params: { id: res.data.id } });
     },
     passOne() {
@@ -210,6 +185,9 @@ export default {
       this.currentIndex++;
     },
     async checkCorrect(answer) {
+      if (!answer || answer === "") {
+        return Promise.resolve(false);
+      }
       const musicId = this.deck.deckMusics[this.currentIndex].music.id;
       const res = await this.$httpService.post(
         `/musics/${musicId}/check_correct`,

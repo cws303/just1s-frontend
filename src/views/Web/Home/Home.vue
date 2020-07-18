@@ -1,25 +1,20 @@
 <template>
   <div id="view-home">
-    <v-text-field
-      v-model="searchText"
-      label="검색"
-      class="search"
-    ></v-text-field>
+    <v-form
+      @submit.prevent="onSearchFormSubmit"
+      ref="searchForm"
+      style="margin:auto; max-width:1130px; display:flex; justify-content:flex-end"
+    >
+      <div style="width:240px">
+        <v-text-field v-model="searchText" label="검색" class="search"></v-text-field>
+      </div>
+    </v-form>
 
     <v-sheet class="best-deck-list" v-if="bestDecks.length > 0">
+      <h3>#TOP 5</h3>
       <v-slide-group v-model="bestDecks" class="deck-slide-group">
-        <v-slide-item
-          v-for="(deck, index) in bestDecks"
-          :key="index"
-          class="deck-slide"
-        >
-          <v-card
-            class="ma-4"
-            height="450"
-            width="250"
-            elevation="8"
-            @click="goPerformForm(deck.id)"
-          >
+        <v-slide-item v-for="(deck, index) in bestDecks" :key="index" class="deck-slide">
+          <v-card class="ma-4 deck" width="250" elevation="8" @click="goPerformForm(deck.id)">
             <v-img
               class="white--text align-end"
               :src="deck.repImgUrl"
@@ -33,11 +28,11 @@
             </v-card-text>
             <div class="hashtags">
               <v-chip
+                class="hashtag mr-1"
                 v-for="(hashtag, _index) in deck.hashtags"
                 :key="_index"
                 x-small
-                >#{{ hashtag.hashtag }}</v-chip
-              >
+              >#{{ hashtag.hashtag }}</v-chip>
             </div>
           </v-card>
         </v-slide-item>
@@ -46,6 +41,7 @@
     <div v-if="decks.length == 0">덱이 없습니다. :(</div>
 
     <div class="masonry-wrapper">
+      <h3>#최근 추가</h3>
       <div
         v-masonry
         transition-duration="0.2s"
@@ -54,19 +50,12 @@
         :column-width="80"
         :fit-width="true"
       >
-        <div
-          v-masonry-tile
-          class="grid-item"
-          v-for="(deck, index) in decks"
-          :key="index"
-        >
+        <div v-masonry-tile class="grid-item" v-for="(deck, index) in decks" :key="index">
           <v-hover v-slot:default="{ hover }">
             <div class="section-hover">
               <div class="row-deck-btns" v-if="hover">
                 <v-btn icon @click="goPerformForm(deck.id)">
-                  <v-icon class="deck-btn" large
-                    >mdi-play-box-multiple-outline</v-icon
-                  >
+                  <v-icon class="deck-btn" large>mdi-play-box-multiple-outline</v-icon>
                 </v-btn>
                 <v-btn icon>
                   <v-icon large class="deck-btn">mdi-share-variant</v-icon>
@@ -76,6 +65,7 @@
                 class="deck"
                 :elevation="hover ? 12 : 2"
                 :class="{ 'on-hover': hover }"
+                style="margin-bottom:5px"
               >
                 <v-img
                   class="deck-img"
@@ -83,16 +73,18 @@
                   lazy-src="/static/assets/images/placeholder.png"
                 >
                   <template v-slot:placeholder>
-                    <p class="deck-title">{{ deck.title }}</p>
+                    <div style="padding:10px" class="deck-title">
+                      <p>{{ deck.title }}</p>
+                    </div>
                   </template>
                 </v-img>
-                <div class="hashtags">
+                <div class="hashtags" v-if="deck.hashtags.length > 0">
                   <v-chip
+                    class="hashtag mr-1"
                     v-for="(hashtag, _index) in deck.hashtags"
                     :key="_index"
                     x-small
-                    >#{{ hashtag.hashtag }}</v-chip
-                  >
+                  >#{{ hashtag.hashtag }}</v-chip>
                 </div>
               </v-card>
             </div>
@@ -148,6 +140,7 @@ export default {
         orderby: "ID__DESC",
         with_hashtag: 1,
         offset: this.page - 1,
+        has_music: 1,
         take: 12
       },
       this.$route.query
@@ -157,6 +150,9 @@ export default {
     this.getBestDeckList();
   },
   methods: {
+    onSearchFormSubmit() {
+      console.log(this.searchText);
+    },
     getDeckList(query) {
       Object.keys(query).forEach(key =>
         query[key] === undefined || query[key] === "" ? delete query[key] : {}
@@ -214,14 +210,20 @@ export default {
     .deck-slide {
       margin-right: 20px;
     }
-  }
 
-  .search {
-    @include desktop {
-      min-width: 1100px;
-      color: $main-orange;
+    .deck {
+      .hashtags {
+        padding: 10px;
+      }
     }
   }
+
+  // .search {
+  //   @include desktop {
+  //     min-width: 1100px;
+  //     color: $main-orange;
+  //   }
+  // }
 
   .deck-list {
     display: block;
@@ -229,7 +231,7 @@ export default {
 
     .grid-item {
       @include desktop {
-        width: 300px;
+        width: 250px;
         margin-right: 1%;
         margin-bottom: 20px;
         height: auto;
@@ -239,7 +241,7 @@ export default {
       }
 
       @include tablet {
-        width: 300px;
+        width: 250px;
         margin-right: 1%;
         margin-bottom: 20px;
         height: auto;
@@ -301,7 +303,7 @@ export default {
         }
 
         .hashtags {
-          padding: 0 7%;
+          padding: 10px;
         }
       }
     }

@@ -1,8 +1,8 @@
 import Web from "@/views/Web/Web.vue";
 import LoginIndex from "@/views/Web/LoginIndex/LoginIndex.vue";
 import PerformForm from "@/views/Web/PerformForm/PerformForm.vue";
+import PerformDetail from "@/views/Web/PerformDetail/PerformDetail.vue";
 import AnswerIndex from "@/views/Web/AnswerIndex/AnswerIndex.vue";
-import ResultIndex from "@/views/Web/ResultIndex/ResultIndex.vue";
 import DeckForm from "@/views/Web/DeckForm/DeckForm.vue";
 import UserIndex from "@/views/Web/UserIndex/UserIndex.vue";
 import Practice from "@/views/Web/Practice/Practice.vue";
@@ -40,28 +40,15 @@ const routes: RouteConfig = {
       component: PerformForm
     },
     {
+      path: "perform-detail/:id",
+      name: "PerformDetail",
+      component: PerformDetail
+    },
+    {
       path: "answer-index",
       name: "AnswerIndex",
       component: AnswerIndex
     },
-    {
-      path: "result-index",
-      name: "ResultIndex",
-      component: ResultIndex
-    },
-    {
-      path: "deck-add",
-      name: "DeckAdd",
-      component: DeckForm,
-      meta: { accessibleTo: ["NORMAL"] }
-    },
-    {
-      path: "deck-edit/:id",
-      name: "DeckEdit",
-      component: DeckForm,
-      meta: { accessibleTo: ["NORMAL"] }
-    },
-
     {
       path: "user-index",
       name: "UserIndex",
