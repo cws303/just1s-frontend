@@ -36,4 +36,4 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ap-northeast-2
       - name: sync to s3
-        run: aws s3 sync ./dist s3://dev.just1s.xyz
+        run: aws s3 sync ./dist s3://dev.just1s.xyz --delete
