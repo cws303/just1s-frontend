@@ -1,6 +1,5 @@
 import Web from "@/views/Web/Web.vue";
 import LoginIndex from "@/views/Web/LoginIndex/LoginIndex.vue";
-import DeckDetail from "@/views/Web/DeckDetail/DeckDetail.vue";
 import PerformForm from "@/views/Web/PerformForm/PerformForm.vue";
 import AnswerIndex from "@/views/Web/AnswerIndex/AnswerIndex.vue";
 import ResultIndex from "@/views/Web/ResultIndex/ResultIndex.vue";
@@ -8,9 +7,9 @@ import DeckForm from "@/views/Web/DeckForm/DeckForm.vue";
 import UserIndex from "@/views/Web/UserIndex/UserIndex.vue";
 import Practice from "@/views/Web/Practice/Practice.vue";
 import Home from "@/views/Web/Home/Home.vue";
-import { RouteConfig } from 'vue-router'
+import { RouteConfig } from "vue-router";
 
-const routes:RouteConfig = {
+const routes: RouteConfig = {
   path: "/",
   // name: "web",
   component: Web,
@@ -34,11 +33,6 @@ const routes:RouteConfig = {
       path: "login-index",
       name: "LoginIndex",
       component: LoginIndex
-    },
-    {
-      path: "deck-detail/:id",
-      name: "DeckDetail",
-      component: DeckDetail
     },
     {
       path: "perform-form/:id",
@@ -78,7 +72,6 @@ const routes:RouteConfig = {
 };
 
 export default routes;
-
 
 // {
 //   path: "auth/instagram",

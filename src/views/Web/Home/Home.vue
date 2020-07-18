@@ -1,11 +1,25 @@
 <template>
   <div id="view-home">
-    <v-text-field v-model="searchText" label="검색" class="search"></v-text-field>
+    <v-text-field
+      v-model="searchText"
+      label="검색"
+      class="search"
+    ></v-text-field>
 
     <v-sheet class="best-deck-list" v-if="bestDecks.length > 0">
       <v-slide-group v-model="bestDecks" class="deck-slide-group">
-        <v-slide-item v-for="(deck, index) in bestDecks" :key="index" class="deck-slide">
-          <v-card class="ma-4" height="450" width="250" elevation="8" @click="goDetail(deck.id)">
+        <v-slide-item
+          v-for="(deck, index) in bestDecks"
+          :key="index"
+          class="deck-slide"
+        >
+          <v-card
+            class="ma-4"
+            height="450"
+            width="250"
+            elevation="8"
+            @click="goPerformForm(deck.id)"
+          >
             <v-img
               class="white--text align-end"
               :src="deck.repImgUrl"
@@ -22,14 +36,16 @@
                 v-for="(hashtag, _index) in deck.hashtags"
                 :key="_index"
                 x-small
-              >#{{ hashtag.hashtag }}</v-chip>
+                >#{{ hashtag.hashtag }}</v-chip
+              >
             </div>
             <v-card-actions>
               <v-spacer></v-spacer>
               <v-btn
                 v-if="currentUser !== null && currentUser.id == deck.user.id"
                 @click="goDeckEdit($event, deck.id)"
-              >수정</v-btn>
+                >수정</v-btn
+              >
             </v-card-actions>
           </v-card>
         </v-slide-item>
@@ -46,7 +62,12 @@
         :column-width="80"
         :fit-width="true"
       >
-        <div v-masonry-tile class="grid-item" v-for="(deck, index) in decks" :key="index">
+        <div
+          v-masonry-tile
+          class="grid-item"
+          v-for="(deck, index) in decks"
+          :key="index"
+        >
           <v-hover v-slot:default="{ hover }">
             <div class="section-hover">
               <div class="row-deck-btns" v-if="hover">
@@ -57,14 +78,20 @@
                 >
                   <v-icon class="deck-btn" large>mdi-pencil</v-icon>
                 </v-btn>
-                <v-btn icon @click="goDetail(deck.id)">
-                  <v-icon class="deck-btn" large>mdi-play-box-multiple-outline</v-icon>
+                <v-btn icon @click="goPerformForm(deck.id)">
+                  <v-icon class="deck-btn" large
+                    >mdi-play-box-multiple-outline</v-icon
+                  >
                 </v-btn>
                 <v-btn icon>
                   <v-icon large class="deck-btn">mdi-share-variant</v-icon>
                 </v-btn>
               </div>
-              <v-card class="deck" :elevation="hover ? 12 : 2" :class="{ 'on-hover': hover }">
+              <v-card
+                class="deck"
+                :elevation="hover ? 12 : 2"
+                :class="{ 'on-hover': hover }"
+              >
                 <v-img
                   class="deck-img"
                   :src="deck.repImgUrl"
@@ -79,7 +106,8 @@
                     v-for="(hashtag, _index) in deck.hashtags"
                     :key="_index"
                     x-small
-                  >#{{ hashtag.hashtag }}</v-chip>
+                    >#{{ hashtag.hashtag }}</v-chip
+                  >
                 </div>
               </v-card>
             </div>
@@ -174,6 +202,7 @@ export default {
       let query = Object.assign({
         orderby: "ID__DESC",
         with_hashtag: 1,
+        has_music: 1,
         take: 5
       });
       Object.keys(query).forEach(key =>
@@ -185,9 +214,8 @@ export default {
         console.log(res.data.decks);
       });
     },
-
-    goDetail(id) {
-      this.$router.push({ name: "DeckDetail", params: { id: id } });
+    goPerformForm(id) {
+      this.$router.push({ name: "PerformForm", params: { id: id } });
     }
   }
 };
