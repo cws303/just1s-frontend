@@ -1,20 +1,20 @@
 <template>
   <div id="view-login-index">
-    <b-row>
-      <b-col cols="12" align="center">
+    <v-row>
+      <v-col cols="12" align="center">
         <h1>10초만에 가입하세요.</h1>
-      </b-col>
-    </b-row>
-    <b-row class="mt-5">
-      <b-col cols="12" align="center">
-        <b-button @click="logInWithFacebook">페이스북 로그인</b-button>
-      </b-col>
-    </b-row>
-    <b-row class="mt-5">
-      <b-col cols="12" align="center">
-        <b-button @click="loginWithKakao">카카오 로그인</b-button>
-      </b-col>
-    </b-row>
+      </v-col>
+    </v-row>
+    <v-row class="mt-5">
+      <v-col cols="12" align="center">
+        <v-btn @click="logInWithFacebook">페이스북 로그인</v-btn>
+      </v-col>
+    </v-row>
+    <v-row class="mt-5">
+      <v-col cols="12" align="center">
+        <v-btn @click="loginWithKakao">카카오 로그인</v-btn>
+      </v-col>
+    </v-row>
   </div>
 </template>
 
