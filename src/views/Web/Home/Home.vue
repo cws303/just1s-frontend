@@ -218,13 +218,6 @@ export default {
     }
   }
 
-  // .search {
-  //   @include desktop {
-  //     min-width: 1100px;
-  //     color: $main-orange;
-  //   }
-  // }
-
   .deck-list {
     display: block;
     margin: 0 auto;

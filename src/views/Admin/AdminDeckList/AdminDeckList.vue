@@ -164,19 +164,17 @@ export default {
       );
       query.offset = this.currentPage - 1;
 
-      return this.$httpService
-        .get("/decks", {
-          params: query
-        })
-        .then(res => {
-          this.decks = res.data.decks;
-          this.totalCount = res.data.totalCount;
-          const originURL = window.location.href.split("?")[0];
-          const qs = Object.entries(query)
-            .map(([k, v]) => `${k}=${v}`)
-            .join("&");
-          history.pushState({}, "", originURL + "?" + qs);
-        });
+      return this.$httpService.get("/decks", query).then(res => {
+        this.decks = res.data.decks;
+        this.totalCount = res.data.totalCount;
+
+        // TODO
+        const originURL = window.location.href.split("?")[0];
+        const qs = Object.entries(query)
+          .map(([k, v]) => `${k}=${v}`)
+          .join("&");
+        history.pushState({}, "", originURL + "?" + qs);
+      });
     },
     deleteDeck(id) {
       if (confirm("정말 삭제하시겠습니까?") === false) {

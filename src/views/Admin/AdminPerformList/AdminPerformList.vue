@@ -96,14 +96,17 @@ export default {
       );
       query.offset = this.currentPage - 1;
 
-      return this.$httpService
-        .get("/performs", {
-          params: query
-        })
-        .then(res => {
-          this.performs = res.data.performs;
-          this.totalCount = res.data.totalCount;
-        });
+      return this.$httpService.get("/performs", query).then(res => {
+        this.performs = res.data.performs;
+        this.totalCount = res.data.totalCount;
+
+        // TODO
+        const originURL = window.location.href.split("?")[0];
+        const qs = Object.entries(query)
+          .map(([k, v]) => `${k}=${v}`)
+          .join("&");
+        history.pushState({}, "", originURL + "?" + qs);
+      });
     },
     goDetail(id) {
       this.$router.push({ name: "AdminPerformEdit", params: { id: id } });
