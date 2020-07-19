@@ -46,6 +46,41 @@
         <b-form-select v-model="query.status" :options="statuses" @change="getDeckList()" size="sm"></b-form-select>
       </b-col>
     </b-row>
+    <div
+      class="nbase-loading-bar-wrapper"
+      style="position:absolute; top:200px left:200px"
+      v-show="isLoading"
+    >
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        xmlns:xlink="http://www.w3.org/1999/xlink"
+        style="margin: auto; background: transparent; display: block; shape-rendering: auto;"
+        width="50px"
+        height="50px"
+        viewBox="0 0 100 100"
+        preserveAspectRatio="xMidYMid"
+      >
+        <circle
+          cx="50"
+          cy="50"
+          fill="none"
+          stroke="#5b5b5b"
+          stroke-width="10"
+          r="35"
+          stroke-dasharray="164.93361431346415 56.97787143782138"
+          transform="rotate(324.486 50 50)"
+        >
+          <animateTransform
+            attributeName="transform"
+            type="rotate"
+            repeatCount="indefinite"
+            dur="1s"
+            values="0 50 50;360 50 50"
+            keyTimes="0;1"
+          />
+        </circle>
+      </svg>
+    </div>
     <b-table-simple hover small caption-top responsive>
       <b-thead head-variant="dark">
         <b-tr>
@@ -60,7 +95,7 @@
         </b-tr>
       </b-thead>
 
-      <b-tbody v-cloak>
+      <b-tbody v-cloak v-show="!isLoading">
         <b-tr
           v-for="(deck, index) in decks"
           :key="index"
@@ -107,6 +142,7 @@ export default {
   data() {
     return {
       // common
+      isLoading: false,
       query: {},
       currentPage: 1,
       orderbys: [
@@ -158,23 +194,30 @@ export default {
   },
   methods: {
     getDeckList() {
+      console.log("ziral");
       const query = this.query;
       Object.keys(query).forEach(key =>
         query[key] === undefined || query[key] === "" ? delete query[key] : {}
       );
       query.offset = this.currentPage - 1;
 
-      return this.$httpService.get("/decks", query).then(res => {
-        this.decks = res.data.decks;
-        this.totalCount = res.data.totalCount;
+      this.isLoading = true;
+      return this.$httpService
+        .get("/decks", query)
+        .then(res => {
+          this.decks = res.data.decks;
+          this.totalCount = res.data.totalCount;
 
-        // TODO
-        const originURL = window.location.href.split("?")[0];
-        const qs = Object.entries(query)
-          .map(([k, v]) => `${k}=${v}`)
-          .join("&");
-        history.pushState({}, "", originURL + "?" + qs);
-      });
+          // TODO
+          const originURL = window.location.href.split("?")[0];
+          const qs = Object.entries(query)
+            .map(([k, v]) => `${k}=${v}`)
+            .join("&");
+          history.pushState({}, "", originURL + "?" + qs);
+        })
+        .finally(() => {
+          this.isLoading = false;
+        });
     },
     deleteDeck(id) {
       if (confirm("정말 삭제하시겠습니까?") === false) {
