@@ -42,4 +42,4 @@ jobs:
         run: aws s3 sync ./dist s3://dev.just1s.xyz --exclude "*.js*" --delete
 
       - name: sync to s3 js with disabled cache
-        run: aws s3 sync ./dist s3://dev.just1s.xyz --exclude "*" --include "*.js*" --metadata-directive --cache-control max-age=0,no-cache,no-store,must-revalidate --delete
+        run: aws s3 sync ./dist s3://dev.just1s.xyz --exclude "*" --include "*.js*" --metadata-directive COPY --cache-control max-age=0,no-cache,no-store,must-revalidate --delete
