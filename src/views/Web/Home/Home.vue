@@ -9,35 +9,14 @@
         <v-text-field v-model="searchText" label="검색" class="search"></v-text-field>
       </div>
     </v-form>
+    <div class="best-deck-list" v-if="bestDecks.length > 0">
+      <div class="first" v-bg="bestDecks[0].repImgUrl"></div>
+      <div class="second-third-wrapper" v-if="bestDecks.length > 1">
+        <div class="second" v-bg="bestDecks[1].repImgUrl"></div>
+        <div class="third" v-bg="bestDecks[2].repImgUrl"></div>
+      </div>
+    </div>
 
-    <v-sheet class="best-deck-list" v-if="bestDecks.length > 0">
-      <h3>#TOP5</h3>
-      <v-slide-group v-model="bestDecks" class="deck-slide-group">
-        <v-slide-item v-for="(deck, index) in bestDecks" :key="index" class="deck-slide">
-          <v-card class="ma-4 deck" flat width="250" tile="true" @click="goPerformForm(deck.id)">
-            <v-img
-              class="white--text align-end"
-              :src="deck.repImgUrl"
-              lazy-src="/static/assets/images/placeholder.png"
-              height="300"
-            ></v-img>
-            <v-card-subtitle class="pb-0">{{ deck.title }}</v-card-subtitle>
-
-            <v-card-text class="text--primary">
-              <div>조회수 : {{ deck.hitsCount }}</div>
-            </v-card-text>
-            <div class="hashtags">
-              <v-chip
-                class="hashtag mr-1"
-                v-for="(hashtag, _index) in deck.hashtags"
-                :key="_index"
-                x-small
-              >#{{ hashtag.hashtag }}</v-chip>
-            </div>
-          </v-card>
-        </v-slide-item>
-      </v-slide-group>
-    </v-sheet>
     <div v-if="decks.length == 0">덱이 없습니다. :(</div>
 
     <div class="masonry-wrapper">
@@ -127,6 +106,24 @@ export default {
   },
   computed: mapState(["currentUser"]),
   created() {},
+  directives: {
+    bg: {
+      bind: function (el, binding, vnode) {
+        const imgUrl = binding.value || "/static/assets/images/placeholder.png";
+        const backgroundImage = `url(${imgUrl})`;
+        if (el.style.backgroundImage !== backgroundImage) {
+          el.style.backgroundImage = backgroundImage;
+        }
+      },
+      update: function (el, binding, vnode) {
+        const imgUrl = binding.value || "/static/assets/images/placeholder.png";
+        const backgroundImage = `url(${imgUrl})`;
+        if (el.style.backgroundImage !== backgroundImage) {
+          el.style.backgroundImage = backgroundImage;
+        }
+      },
+    },
+  },
 
   watch: {
     page: function (newPage) {
@@ -180,7 +177,7 @@ export default {
         orderby: "ID__DESC",
         with_hashtag: 1,
         has_music: 1,
-        take: 5,
+        take: 3,
       });
       Object.keys(query).forEach((key) =>
         query[key] === undefined || query[key] === "" ? delete query[key] : {}
@@ -206,6 +203,62 @@ export default {
   .best-deck-list {
     background-color: rgba(255, 255, 255, 0) !important;
     margin-bottom: 30px;
+    display: flex;
+
+    @include desktop {
+      max-width: 1130px;
+      margin: auto;
+      flex-direction: row;
+    }
+
+    @include mobile {
+      width: 100%;
+      flex-direction: column;
+    }
+
+    .first {
+      @include desktop {
+        flex: 3;
+        height: 400px;
+      }
+
+      @include mobile {
+        height: 30vw;
+      }
+    }
+    .second-third-wrapper {
+      display: flex;
+
+      @include desktop {
+        flex: 2;
+        flex-direction: column;
+        justify-content: space-between;
+      }
+
+      @include mobile {
+        flex-direction: row;
+      }
+      .second {
+        @include desktop {
+          height: 200px;
+        }
+
+        @include mobile {
+          height: 30vw;
+          flex: 1;
+        }
+      }
+      .third {
+        @include desktop {
+          height: 200px;
+        }
+
+        @include mobile {
+          height: 30vw;
+          flex: 1;
+        }
+      }
+    }
 
     .deck-slide {
       margin-right: 20px;
