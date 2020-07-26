@@ -4,7 +4,7 @@
     <div class="container-root">
       <router-view></router-view>
     </div>
-    <web-footer></web-footer>
+    <!-- <web-footer></web-footer> -->
   </div>
 </template>
 
@@ -17,9 +17,9 @@ export default {
   components: {
     WebHeader,
     WebFooter,
-    Decks
+    Decks,
   },
-  methods: {}
+  methods: {},
 };
 </script>
 <style lang="scss" scope>
@@ -40,10 +40,10 @@ export default {
 .web-root {
   height: 100%;
   min-height: 100vh;
-  font-family: "CookieRun", "Avenir", Helvetica, Arial, sans-serif;
-  background: linear-gradient($main-mint-dark, $main-mint-light, white);
+  font-family: "Avenir", Helvetica, Arial, sans-serif;
   position: relative;
   .container-root {
+    background-color: #ebecee;
     @include desktop {
       padding: 64px 15% 0;
       min-height: calc(100vh - 52px);

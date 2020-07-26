@@ -6,7 +6,7 @@
 
 <script>
 export default {
-  name: "WebFooter"
+  name: "WebFooter",
 };
 </script>
 

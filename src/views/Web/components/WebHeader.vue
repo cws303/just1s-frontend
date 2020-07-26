@@ -1,5 +1,5 @@
 <template>
-  <v-app-bar :collapse="false" :collapse-on-scroll="true" flat fixed class="topbar">
+  <v-app-bar class="topbar" flat fixed>
     <v-toolbar-title @click="goHome()">듣고 맞춰보세요 - 단1초!!</v-toolbar-title>
     <v-spacer></v-spacer>
     <div class="row-menu">
@@ -24,7 +24,7 @@
         </v-menu>
       </div>
       <div v-if="!currentUser">
-        <v-btn style="cursor:pointer" @click="login()">로그인</v-btn>
+        <v-btn depressed :tile="true" @click="login()">로그인</v-btn>
       </div>
     </div>
   </v-app-bar>
@@ -35,7 +35,7 @@ import { mapState } from "vuex";
 export default {
   name: "WebHeader",
   data: {
-    currentUser: {}
+    currentUser: {},
   },
   methods: {
     goBack() {
@@ -56,17 +56,16 @@ export default {
     },
     goHome() {
       this.$router.push("/");
-    }
+    },
   },
   computed: mapState(["currentUser"]),
-  created() {}
+  created() {},
 };
 </script>
 
 <style lang="scss" scoped>
 .topbar {
-  background-color: rgba(255, 255, 255, 0) !important;
-
+  background-color: $main-orange-dark !important;
   &.v-toolbar--collapsed {
     .row-user {
       display: none;

@@ -11,10 +11,10 @@
     </v-form>
 
     <v-sheet class="best-deck-list" v-if="bestDecks.length > 0">
-      <h3>#TOP 5</h3>
+      <h3>#TOP5</h3>
       <v-slide-group v-model="bestDecks" class="deck-slide-group">
         <v-slide-item v-for="(deck, index) in bestDecks" :key="index" class="deck-slide">
-          <v-card class="ma-4 deck" width="250" elevation="8" @click="goPerformForm(deck.id)">
+          <v-card class="ma-4 deck" flat width="250" tile="true" @click="goPerformForm(deck.id)">
             <v-img
               class="white--text align-end"
               :src="deck.repImgUrl"
@@ -41,7 +41,7 @@
     <div v-if="decks.length == 0">덱이 없습니다. :(</div>
 
     <div class="masonry-wrapper">
-      <h3>#최근 추가</h3>
+      <h3>#최근추가</h3>
       <div
         v-masonry
         transition-duration="0.2s"
@@ -54,6 +54,12 @@
           <v-hover v-slot:default="{ hover }">
             <div class="section-hover">
               <div class="row-deck-btns" v-if="hover">
+                <div class="hashtags" v-if="deck.hashtags.length > 0">
+                  <span
+                    v-for="(hashtag, _index) in deck.hashtags"
+                    :key="_index"
+                  >#{{hashtag.hashtag}}</span>
+                </div>
                 <v-btn icon @click="goPerformForm(deck.id)">
                   <v-icon class="deck-btn" large>mdi-play-box-multiple-outline</v-icon>
                 </v-btn>
@@ -63,8 +69,10 @@
               </div>
               <v-card
                 class="deck"
-                :elevation="hover ? 12 : 2"
+                :tile="true"
                 :class="{ 'on-hover': hover }"
+                :outlined="false"
+                flat
                 style="margin-bottom:5px"
               >
                 <v-img
@@ -78,14 +86,6 @@
                     </div>
                   </template>
                 </v-img>
-                <div class="hashtags" v-if="deck.hashtags.length > 0">
-                  <v-chip
-                    class="hashtag mr-1"
-                    v-for="(hashtag, _index) in deck.hashtags"
-                    :key="_index"
-                    x-small
-                  >#{{ hashtag.hashtag }}</v-chip>
-                </div>
               </v-card>
             </div>
           </v-hover>
@@ -121,18 +121,18 @@ export default {
       icons: [
         "mdi-pencil",
         "mdi-play-box-multiple-outline",
-        "mdi-share-variant"
-      ]
+        "mdi-share-variant",
+      ],
     };
   },
   computed: mapState(["currentUser"]),
   created() {},
 
   watch: {
-    page: function(newPage) {
+    page: function (newPage) {
       this.query.offset = newPage - 1;
       this.getDeckList(this.query);
-    }
+    },
   },
   mounted() {
     this.query = Object.assign(
@@ -141,7 +141,7 @@ export default {
         with_hashtag: 1,
         offset: this.page - 1,
         has_music: 1,
-        take: 12
+        take: 12,
       },
       this.$route.query
     );
@@ -154,11 +154,11 @@ export default {
       console.log(this.searchText);
     },
     getDeckList(query) {
-      Object.keys(query).forEach(key =>
+      Object.keys(query).forEach((key) =>
         query[key] === undefined || query[key] === "" ? delete query[key] : {}
       );
 
-      this.$httpService.get("/decks", query).then(res => {
+      this.$httpService.get("/decks", query).then((res) => {
         this.decks = res.data.decks;
         console.log(res.data);
         // this.decks = res.data.decks.concat(res.data.decks);
@@ -180,21 +180,21 @@ export default {
         orderby: "ID__DESC",
         with_hashtag: 1,
         has_music: 1,
-        take: 5
+        take: 5,
       });
-      Object.keys(query).forEach(key =>
+      Object.keys(query).forEach((key) =>
         query[key] === undefined || query[key] === "" ? delete query[key] : {}
       );
 
-      this.$httpService.get("/decks", query).then(res => {
+      this.$httpService.get("/decks", query).then((res) => {
         this.bestDecks = res.data.decks;
         console.log(res.data.decks);
       });
     },
     goPerformForm(id) {
       this.$router.push({ name: "PerformForm", params: { id: id } });
-    }
-  }
+    },
+  },
 };
 </script>
 
@@ -267,12 +267,19 @@ export default {
 
       .row-deck-btns {
         position: absolute;
-        width: 150px;
+        width: 100%;
+        height: 100%;
         display: flex;
         justify-content: space-between;
         z-index: 100;
-        top: 35%;
-        left: 30%;
+        top: 0;
+        left: 0;
+
+        .hashtags {
+          margin-top: 40px;
+          padding: 10px;
+          color: white;
+        }
 
         .deck-btn {
           color: $main-orange-dark;
@@ -280,8 +287,7 @@ export default {
       }
 
       .deck {
-        border-radius: 12%;
-        background-color: rgba(255, 255, 255, 0.7) !important;
+        background-color: rgba(255, 255, 255, 0.9) !important;
         opacity: 0.6;
         transition: opacity 0.4s ease-in-out;
 
@@ -293,10 +299,6 @@ export default {
             align-items: flex-end;
             text-align: right;
           }
-        }
-
-        .hashtags {
-          padding: 10px;
         }
       }
     }
