@@ -24,26 +24,106 @@
   }
 }
 
-// @mixin until($device-width) {
-// 	@media screen and (max-width: $device-width - 0.01) {
-// 		@content;
-// 	}
-// }
-
-// @mixin desktop {
-// 	@include at-least($breakpoint-mobile) {
-// 		@content;
-// 	}
-// }
-
-// @mixin mobile {
-// 	@include until($breakpoint-mobile) {
-// 		@content;
-// 	}
-// }
+@function decimal-round($number, $digits: 0, $mode: round) {
+  $n: 1;
+  // $number must be a number
+  @if type-of($number) != number {
+    @return $number;
+  }
+  // $digits must be a unitless number
+  @if type-of($digits) != number {
+    @return $number;
+  } @else if not unitless($digits) {
+    @return $number;
+  }
+  @if $digits > 0 {
+    @for $i from 1 through $digits {
+      $n: $n * 10;
+    }
+  }
+  @if $mode == round {
+    @return round($number * $n) / $n;
+  } @else if $mode == ceil {
+    @return ceil($number * $n) / $n;
+  } @else if $mode == floor {
+    @return floor($number * $n) / $n;
+  } @else {
+    @return $number;
+  }
+}
 
 @function vw-base($px, $base-width: $mobile-base-width) {
   $px: $px / 1px;
   $base-width: $base-width / 1px;
   @return decimal-round($px / $base-width * 100, 2) * 1vw;
+}
+
+// sass-lint:disable-block no-vendor-prefixes
+@mixin css3-prefix($property, $value) {
+  -webkit-#{$property}: #{$value};
+  -moz-#{$property}: #{$value};
+  -ms-#{$property}: #{$value};
+  -o-#{$property}: #{$value};
+  #{$property}: #{$value};
+}
+
+@mixin placeholder {
+  &::-webkit-input-placeholder {
+    @content;
+  }
+
+  &::-moz-placeholder {
+    @content;
+  }
+
+  &:-ms-input-placeholder {
+    @content;
+  }
+}
+
+@mixin bg-svg($image, $size: contain, $position: center, $repeat: no-repeat) {
+  background-image: url($image);
+  background-size: $size;
+  background-position: $position;
+  background-repeat: $repeat;
+}
+
+@mixin bg-2x($image, $size: contain, $position: center, $repeat: no-repeat) {
+  background-image: url($image);
+  background-size: $size;
+  background-position: $position;
+  background-repeat: $repeat;
+
+  @media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 2dppx) {
+    background-image: url(path-nx($image, "@2x"));
+  }
+}
+
+@mixin bg-3x($image, $size: contain, $position: center, $repeat: no-repeat) {
+  @include bg-2x($image, $size, $position, $repeat);
+
+  @media (-webkit-min-device-pixel-ratio: 3), (min-resolution: 3dppx) {
+    background-image: url(path-nx($image, "@3x"));
+  }
+}
+
+@mixin content-row($max-width: $pc-base-width) {
+  max-width: $max-width;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+@mixin parent-has($which, $has) {
+  $arr: str-split("" + &, " ");
+  $result: "";
+  @each $parent in $arr {
+    @if $parent == $which {
+      $parent: $parent + $has;
+    }
+    $result: $result + $parent + " ";
+  }
+
+  @at-root #{$result} {
+    @content;
+  }
 }

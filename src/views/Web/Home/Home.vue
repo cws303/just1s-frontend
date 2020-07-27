@@ -1,19 +1,55 @@
 <template>
   <div id="view-home">
-    <v-form
-      @submit.prevent="onSearchFormSubmit"
-      ref="searchForm"
-      style="margin:auto; max-width:1130px; display:flex; justify-content:flex-end"
-    >
-      <div style="width:240px">
-        <v-text-field v-model="searchText" label="검색" class="search"></v-text-field>
-      </div>
-    </v-form>
+    <div class="row-search">
+      <form class="form-search" @submit.prevent="onSearchFormSubmit" ref="searchForm">
+        <input v-model="searchText" label="검색" class="input-search" />
+      </form>
+    </div>
+
     <div class="best-deck-list" v-if="bestDecks.length > 0">
-      <div class="first" v-bg="bestDecks[0].repImgUrl"></div>
+      <div class="first" v-bg="bestDecks[0].repImgUrl" @click="goPerformForm(bestDecks[0].id)">
+        <div class="deck-summary">
+          <div class="row-header">
+            <div class="header">{{bestDecks[0].title}}</div>
+          </div>
+          <div class="row-hashtags" v-if="bestDecks[0].hashtags.length > 0">
+            <span
+              v-for="(hashtag, _index) in bestDecks[0].hashtags"
+              :key="_index"
+              class="hashtag"
+            >#{{hashtag.hashtag}}</span>
+          </div>
+        </div>
+      </div>
       <div class="second-third-wrapper" v-if="bestDecks.length > 1">
-        <div class="second" v-bg="bestDecks[1].repImgUrl"></div>
-        <div class="third" v-bg="bestDecks[2].repImgUrl"></div>
+        <div class="second" v-bg="bestDecks[1].repImgUrl" @click="goPerformForm(bestDecks[1].id)">
+          <div class="deck-summary">
+            <div class="row-header">
+              <div class="header">{{bestDecks[1].title}}</div>
+            </div>
+            <div class="row-hashtags" v-if="bestDecks[1].hashtags.length > 0">
+              <span
+                v-for="(hashtag, _index) in bestDecks[1].hashtags"
+                :key="_index"
+                class="hashtag"
+              >#{{hashtag.hashtag}}</span>
+            </div>
+          </div>
+        </div>
+        <div class="third" v-bg="bestDecks[2].repImgUrl" @click="goPerformForm(bestDecks[2].id)">
+          <div class="deck-summary">
+            <div class="row-header">
+              <div class="header">{{bestDecks[2].title}}</div>
+            </div>
+            <div class="row-hashtags" v-if="bestDecks[2].hashtags.length > 0">
+              <span
+                v-for="(hashtag, _index) in bestDecks[2].hashtags"
+                :key="_index"
+                class="hashtag"
+              >#{{hashtag.hashtag}}</span>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
 
@@ -113,6 +149,8 @@ export default {
         const backgroundImage = `url(${imgUrl})`;
         if (el.style.backgroundImage !== backgroundImage) {
           el.style.backgroundImage = backgroundImage;
+          el.style.backgroundSize = "cover";
+          el.style.backgroundPosition = "center";
         }
       },
       update: function (el, binding, vnode) {
@@ -120,6 +158,8 @@ export default {
         const backgroundImage = `url(${imgUrl})`;
         if (el.style.backgroundImage !== backgroundImage) {
           el.style.backgroundImage = backgroundImage;
+          el.style.backgroundSize = "cover";
+          el.style.backgroundPosition = "center";
         }
       },
     },
@@ -200,6 +240,90 @@ export default {
   width: 100%;
   height: 100%;
 
+  @mixin deck-card {
+    cursor: pointer;
+    position: relative;
+
+    &:hover {
+      .deck-summary {
+        display: flex;
+        background-color: $color-black-trans;
+      }
+    }
+    .deck-summary {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      display: none;
+      flex-direction: column;
+
+      .row-header {
+        display: flex;
+        justify-content: flex-end;
+
+        @include desktop {
+          padding: 15px;
+          font-size: 30px;
+        }
+
+        @include mobile {
+          padding: vw-base(25px);
+          font-size: vw-base(40px);
+        }
+
+        .header {
+          color: $color-white;
+        }
+      }
+
+      .row-hashtags {
+        display: flex;
+        flex-wrap: wrap;
+
+        @include desktop {
+          padding: 15px;
+        }
+
+        @include mobile {
+          padding: vw-base(20px);
+        }
+
+        .hashtag {
+          color: $color-white;
+
+          @include desktop {
+            font-size: 20px;
+            margin-right: 10px;
+          }
+
+          @include mobile {
+            font-size: vw-base(40px);
+            margin-right: vw-base(20px);
+          }
+        }
+      }
+    }
+  }
+
+  .row-search {
+    display: flex;
+
+    @include content-row;
+    display: flex;
+    justify-content: flex-end;
+
+    .form-search {
+      height: 30px;
+      margin: 10px 0px;
+
+      .input-search {
+        border-bottom: 1px solid black;
+      }
+    }
+  }
+
   .best-deck-list {
     background-color: rgba(255, 255, 255, 0) !important;
     margin-bottom: 30px;
@@ -209,6 +333,7 @@ export default {
       max-width: 1130px;
       margin: auto;
       flex-direction: row;
+      margin-bottom: 10px;
     }
 
     @include mobile {
@@ -217,13 +342,15 @@ export default {
     }
 
     .first {
+      @include deck-card();
+
       @include desktop {
         flex: 3;
         height: 400px;
       }
 
       @include mobile {
-        height: 30vw;
+        height: vw-base(500px);
       }
     }
     .second-third-wrapper {
@@ -239,22 +366,26 @@ export default {
         flex-direction: row;
       }
       .second {
+        @include deck-card();
+
         @include desktop {
           height: 200px;
         }
 
         @include mobile {
-          height: 30vw;
+          height: vw-base(300px);
           flex: 1;
         }
       }
       .third {
+        @include deck-card();
+
         @include desktop {
           height: 200px;
         }
 
         @include mobile {
-          height: 30vw;
+          height: vw-base(300px);
           flex: 1;
         }
       }
@@ -271,86 +402,92 @@ export default {
     }
   }
 
-  .deck-list {
-    display: block;
-    margin: 0 auto;
+  .masonry-wrapper {
+    @include desktop {
+      margin-top: 30px;
+    }
 
-    .grid-item {
-      @include desktop {
-        width: 250px;
-        margin-right: 1%;
-        margin-bottom: 20px;
-        height: auto;
-        &:nth-child(3n) {
-          margin-right: 0;
-        }
-      }
+    .deck-list {
+      display: block;
+      margin: 0 auto;
 
-      @include tablet {
-        width: 250px;
-        margin-right: 1%;
-        margin-bottom: 20px;
-        height: auto;
-        &:nth-child(3n) {
-          margin-right: 0;
-        }
-      }
-
-      @include mobile {
-        width: 100%;
-        margin-bottom: 20px;
-        height: auto;
-
-        &:nth-child(2n-1) {
+      .grid-item {
+        @include desktop {
+          width: 250px;
           margin-right: 1%;
-        }
-      }
-
-      .deck:not(.on-hover) {
-        opacity: 1;
-      }
-
-      .show-btns {
-        color: $main-orange-dark;
-      }
-
-      .section-hover {
-        position: relative;
-      }
-
-      .row-deck-btns {
-        position: absolute;
-        width: 100%;
-        height: 100%;
-        display: flex;
-        justify-content: space-between;
-        z-index: 100;
-        top: 0;
-        left: 0;
-
-        .hashtags {
-          margin-top: 40px;
-          padding: 10px;
-          color: white;
+          margin-bottom: 20px;
+          height: auto;
+          &:nth-child(3n) {
+            margin-right: 0;
+          }
         }
 
-        .deck-btn {
+        @include tablet {
+          width: 250px;
+          margin-right: 1%;
+          margin-bottom: 20px;
+          height: auto;
+          &:nth-child(3n) {
+            margin-right: 0;
+          }
+        }
+
+        @include mobile {
+          width: 100%;
+          margin-bottom: 20px;
+          height: auto;
+
+          &:nth-child(2n-1) {
+            margin-right: 1%;
+          }
+        }
+
+        .deck:not(.on-hover) {
+          opacity: 1;
+        }
+
+        .show-btns {
           color: $main-orange-dark;
         }
-      }
 
-      .deck {
-        background-color: rgba(255, 255, 255, 0.9) !important;
-        opacity: 0.6;
-        transition: opacity 0.4s ease-in-out;
+        .section-hover {
+          position: relative;
+        }
 
-        .deck-img {
-          height: 200px;
-          .deck-title {
-            color: white;
-            height: 100%;
-            align-items: flex-end;
-            text-align: right;
+        .row-deck-btns {
+          position: absolute;
+          width: 100%;
+          height: 100%;
+          display: flex;
+          justify-content: space-between;
+          z-index: 100;
+          top: 0;
+          left: 0;
+
+          .hashtags {
+            margin-top: 40px;
+            padding: 10px;
+            color: $color-white;
+          }
+
+          .deck-btn {
+            color: $main-orange-dark;
+          }
+        }
+
+        .deck {
+          background-color: rgba(255, 255, 255, 0.9) !important;
+          opacity: 0.6;
+          transition: opacity 0.4s ease-in-out;
+
+          .deck-img {
+            height: 200px;
+            .deck-title {
+              color: $color-white;
+              height: 100%;
+              align-items: flex-end;
+              text-align: right;
+            }
           }
         }
       }

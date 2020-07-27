@@ -24,7 +24,7 @@
         </v-menu>
       </div>
       <div v-if="!currentUser">
-        <v-btn depressed :tile="true" @click="login()">로그인</v-btn>
+        <v-btn depressed @click="login()">로그인</v-btn>
       </div>
     </div>
   </v-app-bar>
