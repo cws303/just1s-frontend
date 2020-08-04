@@ -127,3 +127,49 @@
     @content;
   }
 }
+
+// just1s
+@mixin flex-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+@mixin btn {
+  @include flex-center;
+  cursor: pointer;
+
+  @include desktop {
+    width: 100px;
+    height: 30px;
+    border-radius: 5px;
+    font-size: 16px;
+  }
+
+  @include mobile {
+    width: vw-base(160px);
+    height: vw-base(50px);
+    border-radius: vw-base(10px);
+    font-size: vw-base(24px);
+  }
+}
+@mixin btn-primary {
+  @include btn;
+  background-color: $color-primary-dark;
+  color: $color-white;
+}
+
+@mixin btn-white {
+  @include btn;
+  background-color: $color-white;
+  color: $color-primary-dark;
+}
+
+@mixin view-root {
+  @include desktop {
+    padding: 10px;
+  }
+
+  @include mobile {
+    padding: vw-base(20px);
+  }
+}

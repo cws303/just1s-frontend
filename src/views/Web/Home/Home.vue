@@ -2,6 +2,7 @@
   <div id="view-home">
     <div class="row-search">
       <form class="form-search" @submit.prevent="onSearchFormSubmit" ref="searchForm">
+        <span class="text-search">#검색</span>
         <input v-model="searchText" label="검색" class="input-search" />
       </form>
     </div>
@@ -237,8 +238,7 @@ export default {
 
 <style lang="scss" scoped>
 #view-home {
-  width: 100%;
-  height: 100%;
+  @include view-root;
 
   @mixin deck-card {
     cursor: pointer;
@@ -308,18 +308,38 @@ export default {
   }
 
   .row-search {
-    display: flex;
-
     @include content-row;
     display: flex;
     justify-content: flex-end;
 
     .form-search {
-      height: 30px;
-      margin: 10px 0px;
+      @include desktop {
+        height: 30px;
+        margin: 10px 0px;
+      }
+      @include mobile {
+        height: vw-base(60px);
+        margin: vw-base(20px) 0px;
+      }
+
+      .text-search {
+        @include desktop {
+          font-size: 16px;
+        }
+
+        @include mobile {
+          font-size: vw-base(34px);
+        }
+      }
 
       .input-search {
         border-bottom: 1px solid black;
+        @include desktop {
+          margin-left: 5px;
+        }
+        @include mobile {
+          margin-left: vw-base(10px);
+        }
       }
     }
   }
@@ -447,7 +467,7 @@ export default {
         }
 
         .show-btns {
-          color: $main-orange-dark;
+          color: $color-primary-dark;
         }
 
         .section-hover {
@@ -471,7 +491,7 @@ export default {
           }
 
           .deck-btn {
-            color: $main-orange-dark;
+            color: $color-primary-dark;
           }
         }
 
