@@ -11,29 +11,28 @@
         </div>
       </div>
       <div class="line-title"></div>
-      <span>다음 노래 제목을 적어주세요. ( 총 {{perform.answers.length}}문항 )</span>
-      <v-row v-for="(answer, index) in perform.answers" :key="index" style="border:1px solid gray">
-        <v-col cols="8" style="border:1px solid gray">
-          <v-responsive aspect-ratio="4:3">
-            <youtube-player
-              :video-id="answer.deckMusic.music.key"
-              width="320"
-              height="180"
-              ref="youtube"
-            ></youtube-player>
-          </v-responsive>
-        </v-col>
-        <v-col cols="4" style="border:1px solid gray">
-          <div v-if="answer.isCorrect">{{answer.answer}}</div>
-          <div v-if="!answer.isCorrect">
-            <h1 style="color:red">{{answer.deckMusic.music.title}}</h1>
-            <span style="color:red;text-decoration:line-through">
-              <h3 style="color:#333">{{answer.answer}}</h3>
+      <div class="col-answer">
+        <span>다음 노래 제목을 적어주세요. ( 총 {{perform.answers.length}}문항 )</span>
+        <div class="answer-wrapper" v-for="(answer, index) in perform.answers" :key="index">
+          <div>
+            <span class="index">{{index+1}}. {{answer.deckMusic.music.title}}</span>
+            <span v-if="answer.isCorrect">({{answer.answer}})</span>
+            <span v-if="!answer.isCorrect">
+              <span style="color:red;text-decoration:line-through">
+                <span style="color:#333">({{answer.answer}})</span>
+              </span>
             </span>
           </div>
-        </v-col>
-      </v-row>
+          <youtube-player
+            :video-id="answer.deckMusic.music.key"
+            width="240"
+            height="135"
+            ref="youtube"
+          ></youtube-player>
+        </div>
+      </div>
     </div>
+
     <div class="row-home">
       <div class="btn-home" to="/">다른 문제 풀기</div>
     </div>
@@ -173,6 +172,20 @@ export default {
       }
       @include mobile {
         margin: vw-base(20px) 0;
+      }
+    }
+
+    .col-answer {
+      width: 100%;
+
+      .answer-wrapper {
+        @include desktop {
+          margin-top: 10px;
+        }
+
+        @include mobile {
+          margin-top: vw-base(20px);
+        }
       }
     }
   }
