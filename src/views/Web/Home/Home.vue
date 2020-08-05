@@ -1,53 +1,72 @@
 <template>
   <div id="view-home">
     <div class="row-search">
-      <form class="form-search" @submit.prevent="onSearchFormSubmit" ref="searchForm">
+      <form
+        class="form-search"
+        @submit.prevent="onSearchFormSubmit"
+        ref="searchForm"
+      >
         <span class="text-search">#검색</span>
         <input v-model="searchText" label="검색" class="input-search" />
       </form>
     </div>
 
     <div class="best-deck-list" v-if="bestDecks.length > 0">
-      <div class="first" v-bg="bestDecks[0].repImgUrl" @click="goPerformForm(bestDecks[0].id)">
+      <div
+        class="first"
+        v-bg="bestDecks[0].repImgUrl"
+        @click="goPerformForm(bestDecks[0].id)"
+      >
         <div class="deck-summary">
           <div class="row-header">
-            <div class="header">{{bestDecks[0].title}}</div>
+            <div class="header">{{ bestDecks[0].title }}</div>
           </div>
           <div class="row-hashtags" v-if="bestDecks[0].hashtags.length > 0">
             <span
               v-for="(hashtag, _index) in bestDecks[0].hashtags"
               :key="_index"
               class="hashtag"
-            >#{{hashtag.hashtag}}</span>
+              >#{{ hashtag.hashtag }}</span
+            >
           </div>
         </div>
       </div>
       <div class="second-third-wrapper" v-if="bestDecks.length > 1">
-        <div class="second" v-bg="bestDecks[1].repImgUrl" @click="goPerformForm(bestDecks[1].id)">
+        <div
+          class="second"
+          v-bg="bestDecks[1].repImgUrl"
+          @click="goPerformForm(bestDecks[1].id)"
+        >
           <div class="deck-summary">
             <div class="row-header">
-              <div class="header">{{bestDecks[1].title}}</div>
+              <div class="header">{{ bestDecks[1].title }}</div>
             </div>
             <div class="row-hashtags" v-if="bestDecks[1].hashtags.length > 0">
               <span
                 v-for="(hashtag, _index) in bestDecks[1].hashtags"
                 :key="_index"
                 class="hashtag"
-              >#{{hashtag.hashtag}}</span>
+                >#{{ hashtag.hashtag }}</span
+              >
             </div>
           </div>
         </div>
-        <div class="third" v-bg="bestDecks[2].repImgUrl" @click="goPerformForm(bestDecks[2].id)">
+        <div
+          class="third"
+          v-bg="bestDecks[2].repImgUrl"
+          @click="goPerformForm(bestDecks[2].id)"
+        >
           <div class="deck-summary">
             <div class="row-header">
-              <div class="header">{{bestDecks[2].title}}</div>
+              <div class="header">{{ bestDecks[2].title }}</div>
             </div>
             <div class="row-hashtags" v-if="bestDecks[2].hashtags.length > 0">
               <span
                 v-for="(hashtag, _index) in bestDecks[2].hashtags"
                 :key="_index"
                 class="hashtag"
-              >#{{hashtag.hashtag}}</span>
+                >#{{ hashtag.hashtag }}</span
+              >
             </div>
           </div>
         </div>
@@ -56,7 +75,8 @@
 
     <div v-if="decks.length == 0">덱이 없습니다. :(</div>
 
-    <div class="masonry-wrapper">
+    [ #masonry ]
+    <!-- <div class="masonry-wrapper">
       <h3>#최근추가</h3>
       <div
         v-masonry
@@ -116,7 +136,7 @@
       prev-icon="mdi-chevron-left"
       :page="page"
       total-visible="10"
-    ></v-pagination>
+    ></v-pagination> -->
   </div>
 </template>
 
@@ -137,15 +157,15 @@ export default {
       icons: [
         "mdi-pencil",
         "mdi-play-box-multiple-outline",
-        "mdi-share-variant",
-      ],
+        "mdi-share-variant"
+      ]
     };
   },
   computed: mapState(["currentUser"]),
   created() {},
   directives: {
     bg: {
-      bind: function (el, binding, vnode) {
+      bind: function(el, binding, vnode) {
         const imgUrl = binding.value || "/static/assets/images/placeholder.png";
         const backgroundImage = `url(${imgUrl})`;
         if (el.style.backgroundImage !== backgroundImage) {
@@ -154,7 +174,7 @@ export default {
           el.style.backgroundPosition = "center";
         }
       },
-      update: function (el, binding, vnode) {
+      update: function(el, binding, vnode) {
         const imgUrl = binding.value || "/static/assets/images/placeholder.png";
         const backgroundImage = `url(${imgUrl})`;
         if (el.style.backgroundImage !== backgroundImage) {
@@ -162,15 +182,15 @@ export default {
           el.style.backgroundSize = "cover";
           el.style.backgroundPosition = "center";
         }
-      },
-    },
+      }
+    }
   },
 
   watch: {
-    page: function (newPage) {
+    page: function(newPage) {
       this.query.offset = newPage - 1;
       this.getDeckList(this.query);
-    },
+    }
   },
   mounted() {
     this.query = Object.assign(
@@ -179,7 +199,7 @@ export default {
         with_hashtag: 1,
         offset: this.page - 1,
         has_music: 1,
-        take: 12,
+        take: 12
       },
       this.$route.query
     );
@@ -192,11 +212,11 @@ export default {
       console.log(this.searchText);
     },
     getDeckList(query) {
-      Object.keys(query).forEach((key) =>
+      Object.keys(query).forEach(key =>
         query[key] === undefined || query[key] === "" ? delete query[key] : {}
       );
 
-      this.$httpService.get("/decks", query).then((res) => {
+      this.$httpService.get("/decks", query).then(res => {
         this.decks = res.data.decks;
         console.log(res.data);
         // this.decks = res.data.decks.concat(res.data.decks);
@@ -218,21 +238,21 @@ export default {
         orderby: "ID__DESC",
         with_hashtag: 1,
         has_music: 1,
-        take: 3,
+        take: 3
       });
-      Object.keys(query).forEach((key) =>
+      Object.keys(query).forEach(key =>
         query[key] === undefined || query[key] === "" ? delete query[key] : {}
       );
 
-      this.$httpService.get("/decks", query).then((res) => {
+      this.$httpService.get("/decks", query).then(res => {
         this.bestDecks = res.data.decks;
         console.log(res.data.decks);
       });
     },
     goPerformForm(id) {
       this.$router.push({ name: "PerformForm", params: { id: id } });
-    },
-  },
+    }
+  }
 };
 </script>
 

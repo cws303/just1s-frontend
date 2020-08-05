@@ -1,7 +1,6 @@
 import Vue from "vue";
 import App from "./App.vue";
 import router from "./router";
-import Vuetify from "./plugins/vuetify";
 import { VueMasonryPlugin } from "@/plugins/vueMasonryPlugin";
 import vueHttpService from "@/plugins/vueHttpServicePlugin";
 
@@ -43,16 +42,9 @@ declare module "vue/types/vue" {
 
 Vue.use(VueMasonryPlugin);
 Vue.use(vueHttpService);
-Vue.use(Vuetify, {
-  icons: {
-    iconfont: "fa" // default - only for display purposes
-  }
-});
-
 new Vue({
   router,
   store,
-  vuetify: Vuetify,
   async beforeCreate() {
     await this.$httpService.checkToken();
   },
