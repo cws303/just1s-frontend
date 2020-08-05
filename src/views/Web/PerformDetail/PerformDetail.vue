@@ -1,9 +1,10 @@
 <template>
   <div id="view-perform-detail">
     <div class="container-paper" v-if="perform.deck">
+      <div class="score">{{perform.score}}</div>
       <div class="text-subtitle">{{perform.createdAt | moment("YYYY년 M월") }}</div>
       <div class="row-title">
-        <div class="class">제 1교시</div>
+        <div class="class">제 2교시</div>
         <div class="title">{{perform.deck.title}}</div>
         <div class="row-name">
           <div class="text-name">성명</div>
@@ -17,10 +18,8 @@
           <div>
             <span class="index">{{index+1}}. {{answer.deckMusic.music.title}}</span>
             <span v-if="answer.isCorrect">({{answer.answer}})</span>
-            <span v-if="!answer.isCorrect">
-              <span style="color:red;text-decoration:line-through">
-                <span style="color:#333">({{answer.answer}})</span>
-              </span>
+            <span v-if="!answer.isCorrect" style="color:red;text-decoration:line-through">
+              <span style="color:#333">({{answer.answer}})</span>
             </span>
           </div>
           <youtube-player
@@ -90,14 +89,37 @@ export default {
     display: flex;
     flex-direction: column;
     align-items: center;
+    position: relative;
 
     @include desktop {
-      padding: 10px;
+      padding: 20px;
       margin: auto;
       max-width: 600px;
     }
     @include mobile {
-      padding: vw-base(20px);
+      padding: vw-base(30px);
+    }
+
+    .score {
+      position: absolute;
+      color: rgba(255, 0, 0, 0.7);
+      font-weight: 900;
+      text-decoration: underline;
+      -webkit-transform: skew(-4deg, 4deg);
+      -moz-transform: skew(-4deg, 4deg);
+      transform: skew(-4deg, 4deg);
+
+      @include desktop {
+        top: 50px;
+        right: 50px;
+        font-size: 50px;
+      }
+
+      @include mobile {
+        top: vw-base(60px);
+        right: vw-base(60px);
+        font-size: vw-base(100px);
+      }
     }
 
     .row-title {
@@ -168,10 +190,10 @@ export default {
       border-bottom: 3px solid black;
 
       @include desktop {
-        margin: 10px 0;
+        margin: 10px 0 20px;
       }
       @include mobile {
-        margin: vw-base(20px) 0;
+        margin: vw-base(20px) 0 vw-base(40px);
       }
     }
 
