@@ -1,5 +1,6 @@
 import _Vue from "vue";
 import Masonry from "masonry-layout";
+const ImageLoaded = require("imagesloaded");
 
 const attributesMap: any = {
   "column-width": "columnWidth",
@@ -19,6 +20,8 @@ const EVENT_ADD = "vuemasonry.itemAdded";
 const EVENT_REMOVE = "vuemasonry.itemRemoved";
 const EVENT_IMAGE_LOADED = "vuemasonry.imageLoaded";
 const EVENT_DESTROY = "vuemasonry.destroy";
+// kimjbstar
+const EVENT_LAYOUTCOMPLETE = "vuemasonry.layoutComplete";
 
 const stringToBool = function(val: any) {
   return (val + "").toLowerCase() === "true";
@@ -52,9 +55,14 @@ VueMasonryPlugin.install = function(Vue: any, options: any) {
   const defaultId = "VueMasonry";
 
   Vue.directive("masonry", {
-    props: ["transitionDuration", " itemSelector", "destroyDelay"],
+    props: [
+      "transitionDuration",
+      "itemSelector",
+      "destroyDelay",
+      "onLayoutComplete"
+    ],
 
-    inserted: function(el: any, binding: any) {
+    inserted: function(el: any, binding: any, vnode: any) {
       if (!Masonry) {
         throw new Error(
           "Masonry plugin is not defined. Please check it's connected and parsed correctly."
@@ -97,6 +105,13 @@ VueMasonryPlugin.install = function(Vue: any, options: any) {
       Events.$on(`${EVENT_REMOVE}__${masonryId}`, masonryRedrawHandler);
       Events.$on(`${EVENT_IMAGE_LOADED}__${masonryId}`, masonryRedrawHandler);
       Events.$on(`${EVENT_DESTROY}__${masonryId}`, masonryDestroyHandler);
+
+      // masonry.on("layoutComplete", function(items: any) {
+      //   console.log(vnode);
+      //   console.log(binding);
+      //   console.log(binding.values);
+      //   // Vue.$emit("ajax-complete", []);
+      // });
     },
     unbind: function(el: any, binding: any) {
       const masonryId = binding.value || defaultId;
@@ -111,11 +126,11 @@ VueMasonryPlugin.install = function(Vue: any, options: any) {
         element: el
       });
       // eslint-disable-next-line
-      // new ImageLoaded(el, function () {
-      //   Events.$emit(`${EVENT_IMAGE_LOADED}__${masonryId}`, {
-      //     'element': el
-      //   })
-      // })
+      new ImageLoaded(el, function() {
+        Events.$emit(`${EVENT_IMAGE_LOADED}__${masonryId}`, {
+          element: el
+        });
+      });
     },
     unbind: function(el: any, binding: any) {
       const masonryId = binding.value || defaultId;
