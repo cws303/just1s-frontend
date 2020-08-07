@@ -75,7 +75,7 @@
               : '/static/assets/images/placeholder.png'
           "
           class="deck-card"
-          @click="goPerformForm(bestDecks[1].id)"
+          @click="goPerformForm(deck.id)"
         />
       </div>
     </div>
