@@ -412,7 +412,7 @@ export default {
       // console.log(qs.stringify(formData));
       const res = await this.$httpService.post("/decks", formData);
       alert("추가되었습니다.");
-      this.$router.push({ name: "Home" });
+      this.$router.push({ name: "AdminDeckList" });
     },
     async edit() {
       const fieldsToEdit = [
@@ -436,7 +436,7 @@ export default {
         formData
       );
       alert("수정되었습니다.");
-      this.$router.push({ name: "Home" });
+      this.$router.push({ name: "AdminDeckList" });
     },
     onSubmit(e) {
       e.preventDefault();

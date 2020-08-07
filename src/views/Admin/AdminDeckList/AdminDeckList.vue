@@ -147,7 +147,7 @@ export default {
       currentPage: 1,
       orderbys: [
         { text: "ID내림차순", value: "ID__DESC" },
-        { text: "ID오름차순", value: "ID__ASC" }
+        { text: "ID오름차순", value: "ID__ASC" },
       ],
       search: {
         fieldName: null,
@@ -155,8 +155,8 @@ export default {
         fields: [
           { text: "검색할 필드명을 선택해주세요", field: null, disabled: true },
           { text: "제목", field: "title" },
-          { text: "음악제목", field: "music_title" }
-        ]
+          { text: "음악제목", field: "music_title" },
+        ],
       },
       totalCount: -1,
       // decks
@@ -164,8 +164,8 @@ export default {
       statuses: [
         { text: "status를 선택해주세요", field: null, disabled: true },
         { text: "좋음", value: 10 },
-        { text: "나쁨", value: 20 }
-      ]
+        { text: "나쁨", value: 20 },
+      ],
     };
   },
   created() {
@@ -173,15 +173,15 @@ export default {
       {
         orderby: "ID__DESC",
         with_hashtag: true,
-        take: 10
+        take: 10,
       },
       this.$route.query
     );
     Object.entries(this.$route.query).map(([k, v]) => {
-      if (this.search.fields.find(fieldObj => fieldObj.field === k)) {
+      if (this.search.fields.find((fieldObj) => fieldObj.field === k)) {
         this.search = {
           fieldName: k,
-          input: v
+          input: v,
         };
       }
     });
@@ -190,13 +190,12 @@ export default {
   watch: {
     currentPage() {
       this.getDeckList();
-    }
+    },
   },
   methods: {
     getDeckList() {
-      console.log("ziral");
       const query = this.query;
-      Object.keys(query).forEach(key =>
+      Object.keys(query).forEach((key) =>
         query[key] === undefined || query[key] === "" ? delete query[key] : {}
       );
       query.offset = this.currentPage - 1;
@@ -204,7 +203,7 @@ export default {
       this.isLoading = true;
       return this.$httpService
         .get("/decks", query)
-        .then(res => {
+        .then((res) => {
           this.decks = res.data.decks;
           this.totalCount = res.data.totalCount;
 
@@ -223,7 +222,7 @@ export default {
       if (confirm("정말 삭제하시겠습니까?") === false) {
         return;
       }
-      this.$httpService.delete("/decks/" + id).then(res => {
+      this.$httpService.delete("/decks/" + id).then((res) => {
         this.getDeckList();
       });
     },
@@ -236,8 +235,8 @@ export default {
       }
       this.query[this.search.fieldName] = this.search.input;
       this.getDeckList();
-    }
-  }
+    },
+  },
 };
 </script>
 <style lang="scss" scoped>
