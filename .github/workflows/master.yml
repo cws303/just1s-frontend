@@ -1,33 +1,45 @@
-name: Deploy to Production
+name: Deploy to Development
 on:
   push:
     branches:
       - master
-jobs:
-  build_docker:
-    name: Build Docker Image
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@master
-      - name: Publish to Registry
-        uses: elgohr/Publish-Docker-Github-Action@master
-        with:
-          name: cws303/just1s-frontend
-          username: ${{ secrets.DOCKER_USERNAME }}
-          password: ${{ secrets.DOCKER_PASSWORD }}
-          dockerfile: Dockerfile
-  update-service:
-    name: Update AWS ESC Service
-    needs: build_docker
-    runs-on: ubuntu-latest
 
+jobs:
+  build_vue:
+    name: Build Vue
+    runs-on: ubuntu-latest
+    env:
+      NODE_ENV: "production"
     steps:
+      - name: checkout
+        uses: actions/checkout@master
+      - name: setup node
+        uses: actions/setup-node@v1
+        with:
+          node-version: "12"
+
+      - name: Cache node modules
+        uses: actions/cache@v2
+        with:
+          path: |
+            **/node_modules
+          key: ${{ runner.OS }}-master-build-${{ hashFiles('**/package-lock.json') }}
+
+      - name: npm install
+        run: npm install
+
+      - name: Build
+        run: npm run build:production
+
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v1
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ap-northeast-2
-      - name: force update ecs
-        run: |
-          aws ecs update-service --cluster=ecs-cluster-01 --service=service-front-1 --force-new-deployment
+
+      - name: sync to s3 exclude js
+        run: aws s3 sync ./dist s3://www.just1s.xyz --exclude "*.js*" --delete
+
+      - name: sync to s3 js with disabled cache
+        run: aws s3 sync ./dist s3://www.just1s.xyz --exclude "*" --include "*.js*" --metadata-directive COPY --cache-control max-age=0,no-cache,no-store,must-revalidate --delete
