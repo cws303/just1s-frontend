@@ -1,53 +1,86 @@
 <template>
-  <v-app-bar 
-    :collapse="false"
-    :collapse-on-scroll="true"
-    flat 
-    fixed 
-    class="topbar"
-  >
-    <v-toolbar-title @click="goHome()">듣고 맞춰보세요 - 단1초</v-toolbar-title>
-    <v-spacer></v-spacer>
-    <div class="row-menu">
+  <header>
+    <div class="row-left-menu">
+      <div class="left-title" @click="goHome()">듣고 맞춰보세요 - 단1초!!</div>
+    </div>
+
+    <div class="row-right-menu">
       <div v-if="currentUser">
-        <span class="row-user">
-          <v-avatar to="/user-index">
-            <img :src="currentUser.imgUrl" />
-          </v-avatar>
-          {{currentUser.name}}
-        </span>
-        <v-menu>
-          <template v-slot:activator="{ on, attrs }">
-            <v-btn icon
-              v-bind="attrs"
-              v-on="on"
-            >
-              <v-icon large>mdi-view-list</v-icon>
-            </v-btn>
-          </template>
-          <v-list>
-            <v-list-item @click="goDeckAdd()">
-              <v-list-item-title>퀴즈 만들기</v-list-item-title>
-            </v-list-item>
-            <v-list-item @click="logout()">
-              <v-list-item-title>로그아웃</v-list-item-title>
-            </v-list-item>
-          </v-list>
-        </v-menu>
+        <div class="row-user">
+          <div class="user-img-url" v-bg="currentUser.imgUrl"></div>
+          <div class="user-name">{{ currentUser.name }}</div>
+        </div>
+        <div class="btn-logout" @click="logout()">로그아웃</div>
       </div>
       <div v-if="!currentUser">
-        <v-btn style="cursor:pointer" @click="login()">로그인</v-btn>
+        <div class="btn-login" @click="login()">로그인</div>
       </div>
     </div>
-  </v-app-bar>
+  </header>
 </template>
+
+<style lang="scss" scoped>
+header {
+  position: fixed;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  background-color: $color-primary-dark;
+  z-index: 10;
+
+  @include desktop {
+    height: 60px;
+  }
+
+  @include mobile {
+    height: vw-base(100px);
+  }
+
+  .row-left-menu {
+    @include flex-center;
+
+    @include desktop {
+      padding: 10px;
+    }
+    @include mobile {
+      padding: vw-base(20px);
+    }
+
+    .left-title {
+      @include flex-center;
+      @include desktop {
+        font-size: 25px;
+      }
+
+      @include mobile {
+        font-size: vw-base(30px);
+      }
+    }
+  }
+
+  .row-right-menu {
+    @include flex-center;
+
+    @include desktop {
+      padding: 10px;
+    }
+    @include mobile {
+      padding: vw-base(20px);
+    }
+
+    .btn-login {
+      @include btn-white;
+    }
+  }
+}
+</style>
 
 <script>
 import { mapState } from "vuex";
 export default {
   name: "WebHeader",
   data: {
-    currentUser: {}
+    currentUser: {},
   },
   methods: {
     goBack() {
@@ -64,27 +97,14 @@ export default {
       window.alert("로그아웃되었습니다.");
     },
     goDeckAdd() {
-      this.$router.push('deck-add');
+      this.$router.push("deck-add");
     },
     goHome() {
-      this.$router.push('/');
-    }
+      this.$router.push("/");
+    },
   },
   computed: mapState(["currentUser"]),
-  created() {
-    
-  }
+  created() {},
 };
 </script>
 
-<style lang="scss" scoped>
-.topbar {
-  background-color: rgba(255, 255, 255, 0) !important;
-
-  &.v-toolbar--collapsed {
-    .row-user {
-      display:none;
-    }
-  }
-}
-</style>

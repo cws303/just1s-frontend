@@ -5,6 +5,8 @@ import Web from "./web/routes";
 import PageNotFound from "@/components/PageNotFound.vue";
 import { store } from "@/store/index";
 
+import { BootstrapVue, BootstrapVueIcons } from "bootstrap-vue";
+
 Vue.use(VueRouter);
 
 const routes: Array<RouteConfig> = [
@@ -17,8 +19,16 @@ const router = new VueRouter({
   base: process.env.BASE_URL,
   routes
 });
+const DEFAULT_TITLE = "단1초";
+
+let isBootstrapLoaded = false;
 
 router.beforeEach(async (to, from, next) => {
+  if (isBootstrapLoaded === false && to.name?.toLowerCase().includes("admin")) {
+    Vue.use(BootstrapVue);
+    Vue.use(BootstrapVueIcons);
+    isBootstrapLoaded = true;
+  }
   if (to.matched.some(record => record.meta.accessibleTo)) {
     await router.app.$httpService.checkToken();
     // You can use store variable here to access globalError or commit mutation
@@ -38,6 +48,16 @@ router.beforeEach(async (to, from, next) => {
   } else {
     next();
   }
+});
+
+router.afterEach((to, from) => {
+  Vue.nextTick(() => {
+    let title = to.meta.title || DEFAULT_TITLE;
+    if (process.env.NODE_ENV != "production") {
+      title += " - " + process.env.NODE_ENV;
+    }
+    document.title = title;
+  });
 });
 
 export default router;

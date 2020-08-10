@@ -1,25 +1,19 @@
 import Vue from "vue";
 import App from "./App.vue";
 import router from "./router";
-import vuetify from "./plugins/vuetify";
-import {VueMasonryPlugin} from "@/plugins/vueMasonryPlugin"
+import { VueMasonryPlugin } from "@/plugins/vueMasonryPlugin";
 import vueHttpService from "@/plugins/vueHttpServicePlugin";
 
-// import vueMasonry from "@/plugins/vueMasonryPlugin"
-import { BootstrapVue, BootstrapVueIcons } from "bootstrap-vue";
+// service
+import "@mdi/font/css/materialdesignicons.css";
 
-import '@mdi/font/css/materialdesignicons.css' 
+// admin
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap-vue/dist/bootstrap-vue.css";
-Vue.use(BootstrapVue);
-Vue.use(BootstrapVueIcons);
 
 import { store } from "./store";
 
-// const moment = require("moment");
 import moment from "moment-timezone";
-// require("moment/locale/ko");
-
 Vue.use(require("vue-moment"), {
   moment
 });
@@ -27,13 +21,9 @@ Vue.use(require("vue-moment"), {
 import YoutubePlayerPlugin from "@/plugins/youtubePlayerPlugin";
 Vue.use(YoutubePlayerPlugin);
 
-import DeviceTypEnum from "@/utils/DeviceTypeEnum"
+import DeviceTypEnum from "@/utils/DeviceTypeEnum";
 import DeviceDetector from "@/plugins/deviceDetector";
 Vue.use(DeviceDetector, { breaker: DeviceTypEnum.desktop });
-
-
-import VueCookies from "vue-cookies";
-Vue.use(VueCookies);
 
 Vue.config.productionTip = false;
 
@@ -52,16 +42,9 @@ declare module "vue/types/vue" {
 
 Vue.use(VueMasonryPlugin);
 Vue.use(vueHttpService);
-Vue.use(vuetify, {
-  icons: {
-    iconfont: 'fa', // default - only for display purposes
-  },
-})
-
 new Vue({
   router,
   store,
-  vuetify,
   async beforeCreate() {
     await this.$httpService.checkToken();
   },

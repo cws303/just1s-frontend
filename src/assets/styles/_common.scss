@@ -1,0 +1,19 @@
+a {
+  text-decoration: none;
+  color: $color-black;
+}
+
+// sass-lint:disable-block force-attribute-nesting, no-qualifying-elements
+input[type="text"],
+input[type="button"],
+input[type="submit"],
+input[type="password"],
+input[type="search"],
+input[type="date"],
+input[type="time"],
+input[type="email"],
+input[type="number"],
+input[type="tel"],
+textarea {
+  -webkit-appearance: none; // sass-lint:disable-line no-vendor-prefixes
+}

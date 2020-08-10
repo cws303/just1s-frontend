@@ -5,22 +5,27 @@ $breakpoint-desktop: 1024px;
 $pc-base-width: 1100px !default;
 $mobile-base-width: 750px !default;
 
-// $breakpoint-mobile: 768px !default;
+$color-black: #000;
+$color-white: #fff;
+$color-red: #f00;
+$color-green: #0f0;
+$color-blue: #00f;
+$color-gray: #aaa;
 
+$color-primary: #fac366;
+$color-primary-light: #fadaa7;
+$color-primary-dark: #fa9f02;
+$color-secondary: #7ffaf6;
+$color-secondary-light: #c1faf6;
+$color-secondary-dark: #1bfaf6;
+$color-sub-blue: #8cc3fa;
+$color-sub-blue-light: #cde5fa;
+$color-sub-blue-dark: #288ffa;
+$color-sub-red: #fa9e98;
+$color-sub-red-light: #fadbd9;
+$color-sub-red-dark: #fa4234;
+$color-sub-green: #73faa9;
+$color-sub-green-light: #b4face;
+$color-sub-green-dark: #0ffa71;
 
-
-$main-mint: #7FFAF6;
-$main-mint-light: #C1FAF6;
-$main-mint-dark: #1BFAF6;
-$main-orange: #fac366;
-$main-orange-light: #FADAA7;
-$main-orange-dark: #FA9F02;
-$sub-blue: #8CC3FA;
-$sub-blue-light: #CDE5FA;
-$sub-blue-dark: #288FFA;
-$sub-red: #FA9E98;
-$sub-red-light: #FADBD9;
-$sub-red-dark: #FA4234;
-$sub-green: #73FAA9;
-$sub-green-light: #B4FACE;
-$sub-green-dark: #0FFA71;
+$color-black-trans: rgba(0, 0, 0, 0.3);

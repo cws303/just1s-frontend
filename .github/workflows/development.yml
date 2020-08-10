@@ -4,20 +4,14 @@ on:
     branches:
       - development
 jobs:
-  always_run:
-    name: Always Run
-    runs-on: ubuntu-latest
-    steps:
-      - name: checkout
-        run: echo 1
-
   build_vue:
     name: Build Vue
     runs-on: ubuntu-latest
+    env:
+      NODE_ENV: "development"
     steps:
       - name: checkout
         uses: actions/checkout@master
-
       - name: setup node
         uses: actions/setup-node@v1
         with:
@@ -28,16 +22,13 @@ jobs:
         with:
           path: |
             **/node_modules
-          key: ${{ runner.OS }}-build-${{ hashFiles('**/package-lock.json') }}
+          key: ${{ runner.OS }}-development-build-${{ hashFiles('**/package-lock.json') }}
 
       - name: npm install
         run: npm install
 
       - name: Install Serverless Framework
         run: npm run build:development
-
-      - name: Deploy Lambda functions
-        run: sls deploy --stage development
 
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v1
@@ -46,6 +37,8 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ap-northeast-2
 
-      - name: sync to s3
-        run: |
-        aws s3 sync ./dist s3://dev.just1s.xyz
+      - name: sync to s3 exclude js
+        run: aws s3 sync ./dist s3://dev.just1s.xyz --exclude "*.js*" --delete
+
+      - name: sync to s3 js with disabled cache
+        run: aws s3 sync ./dist s3://dev.just1s.xyz --exclude "*" --include "*.js*" --metadata-directive COPY --cache-control max-age=0,no-cache,no-store,must-revalidate --delete

@@ -1,12 +1,17 @@
 const CopyWebpackPlugin = require("copy-webpack-plugin");
+const CompressionPlugin = require("compression-webpack-plugin");
 const path = require("path");
 
 module.exports = {
-  transpileDependencies: ["vuetify"],
+  transpileDependencies: [],
   css: {
     loaderOptions: {
       scss: {
-        prependData: `@import "@/assets/styles/_variables.scss"; @import "@/assets/styles/_mixins.scss";`
+        prependData: `
+          @import "@/assets/styles/_reset.scss";
+          @import "@/assets/styles/_variables.scss";
+          @import "@/assets/styles/_mixins.scss";
+          `
       }
     }
   },
@@ -18,7 +23,8 @@ module.exports = {
           to: "static",
           ignore: [".*"]
         }
-      ])
+      ]),
+      new CompressionPlugin()
     ]
   },
   runtimeCompiler: true,

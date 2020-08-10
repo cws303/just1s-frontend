@@ -107,14 +107,17 @@ export default {
       );
       query.offset = this.currentPage - 1;
 
-      return this.$httpService
-        .get("/musics", {
-          params: query
-        })
-        .then(res => {
-          this.musics = res.data.musics;
-          this.totalCount = res.data.totalCount;
-        });
+      return this.$httpService.get("/musics", query).then(res => {
+        this.musics = res.data.musics;
+        this.totalCount = res.data.totalCount;
+
+        // TODO
+        const originURL = window.location.href.split("?")[0];
+        const qs = Object.entries(query)
+          .map(([k, v]) => `${k}=${v}`)
+          .join("&");
+        history.pushState({}, "", originURL + "?" + qs);
+      });
     },
     deleteMusic(id) {
       if (confirm("정말 삭제하시겠습니까?") !== false) {

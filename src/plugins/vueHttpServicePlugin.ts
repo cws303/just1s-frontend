@@ -5,9 +5,8 @@ import { store } from "@/store";
 
 // let http: AxiosInstance; // not possible to create a private property in JavaScript, so we move it outside of the class, so that it's only accessible within this module
 const baseURLs: any = {
-  // local: "/api",
   local: "/api",
-  development: "https://api.just1s.xyz",
+  development: "https://dev-api.just1s.xyz",
   production: "https://api.just1s.xyz"
 };
 
@@ -29,7 +28,7 @@ class VueHttpService {
         }
       },
       async checkToken() {
-        console.log("checkToken START");
+        console.debug("checkToken START");
         // CRITICAL SECTION
         if (store.getters["isInitLoading"] === true) {
           while (true) {
@@ -72,21 +71,10 @@ class VueHttpService {
           });
         } catch (error) {
           if (error.response?.status == 401) {
-            const refreshToken = localStorage.getItem("refreshToken");
-            if (refreshToken && refreshToken !== "") {
-              res = await axios.post(
-                "/auth/refresh",
-                {
-                  token: refreshToken
-                },
-                {
-                  baseURL: baseURLs[process.env.NODE_ENV]
-                }
-              );
-            }
+            localStorage.removeItem("accessToken");
+            res = await this.checkRefreshToken();
           } else {
             console.log("Error", error.message);
-
             return Promise.resolve(false);
           }
         } finally {
@@ -94,19 +82,39 @@ class VueHttpService {
         }
 
         if (res === undefined) {
-          console.error("기존 유저 조회 실패");
           return Promise.resolve(false);
         }
 
         const user = res.data;
         if (user.id === undefined) {
           localStorage.removeItem("accessToken");
-          // wrong token
           return Promise.resolve(false);
         }
         store.commit("setAccessToken", token);
         store.commit("setCurrentUser", user);
         return Promise.resolve(true);
+      },
+
+      async checkRefreshToken() {
+        let res;
+        const refreshToken = localStorage.getItem("refreshToken");
+        if (!refreshToken || refreshToken === "") {
+          return Promise.resolve();
+        }
+        try {
+          res = await axios.post(
+            "/auth/refresh",
+            { token: refreshToken },
+            {
+              baseURL: baseURLs[process.env.NODE_ENV]
+            }
+          );
+        } catch (error) {
+          localStorage.removeItem("accessToken");
+          localStorage.removeItem("refreshToken");
+          return Promise.resolve();
+        }
+        return res;
       },
 
       async login(email: any, password: any) {
@@ -155,7 +163,7 @@ class VueHttpService {
         const options = { ...this.options };
 
         const accessToken = store.getters["accessToken"];
-        console.log("accessToken in GET", accessToken);
+        console.debug("accessToken in GET Request", accessToken);
         if (accessToken && accessToken != "") {
           options.headers["Authorization"] = `Bearer ${accessToken}`;
         }

@@ -44,7 +44,7 @@
       <hr />
 
       <b-form-group label="pw" label-for="input-pw">
-        <b-form-input id="input-pw" v-model="user.pw" placeholder="Enter"></b-form-input>
+        <b-form-input id="input-pw" v-model="user.pw" type="password" placeholder="Enter"></b-form-input>
       </b-form-group>
 
       <b-button type="submit" variant="primary">Submit</b-button>
