@@ -26,6 +26,8 @@ jobs:
 
       - name: npm install
         run: npm install
+        env:
+          NODE_ENV: "development"
 
       - name: Build
         run: npm run build:production
