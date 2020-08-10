@@ -30,8 +30,6 @@ jobs:
       - name: Install Serverless Framework
         run: npm run build:development
 
-      - name: Deploy Lambda functions
-        run: sls deploy --stage development
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v1
         with:
