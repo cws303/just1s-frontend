@@ -42,7 +42,7 @@
     "@vue/cli-plugin-vuex": "~4.4.0",
     "@vue/cli-service": "~4.4.0",
     "@vue/test-utils": "^1.0.3",
-    "chromedriver": "83",
+    "chromedriver": "119",
     "compression-webpack-plugin": "^4.0.0",
     "geckodriver": "^1.19.1",
     "moment": "^2.26.0",
